@@ -1,0 +1,19 @@
+
+.modal {
+    z-index: 2;
+    width: auto;
+    padding: 30px;
+    background-color: whitesmoke;
+    border-radius: 15px;
+
+}
+.overlay {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    z-index: 1;
+    background-color: rgba(0, 0, 0, 0.3);
+}
