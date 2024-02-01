@@ -27,20 +27,14 @@ namespace Data_Layer.Repositories.Implementations
 
         public async Task<List<LanguageCategory?>> GetAll()
         {
-            return await _context.LanguageCategories.ToListAsync();
+            return await _context.LanguageCategories.Include(lc => lc.Subcategories).ToListAsync();
         }
 
         public async Task<LanguageCategory?> GetById(int id)
         {
-            return await _context.LanguageCategories.FindAsync(id);
-        }
-
-        public async Task<List<QuizSubcategory?>> GetSubcategories(int id)
-        {
-            return await _context.Subcategories
-                .Where(sc => sc.LanguageCategoryId == id)
-                .Include(qz => qz.LanguageCategory)
-                .ToListAsync();
+            return await _context.LanguageCategories.Include(lc => lc.Subcategories)
+                .Include(lc => lc.Quizzes)
+                .FirstOrDefaultAsync(lc => lc.Id == id);
         }
     }
 }

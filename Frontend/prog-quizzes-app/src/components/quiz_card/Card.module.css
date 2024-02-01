@@ -1,0 +1,72 @@
+
+.cardBlock {
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    border: 5px solid rgb(58, 58, 168);
+    border-radius: 10px;
+    background-color: rgb(110, 130, 243);
+}
+
+.cardImage {
+    padding-top: 5px;
+    width: 95%;
+}
+
+.titleCard {
+    margin-top: 10px;
+    font-size: 25px;
+    align-self: flex-start;
+    padding-left: 10px;
+    flex-wrap: wrap;
+}
+
+.cardDescription {
+    margin-top: 10px;
+    align-self: flex-start;
+    font-size: 20px;
+    margin-left: 7px;
+}
+
+.difficultyBlock {
+    margin-top: 10px;
+    width: 100%;
+    padding: 5px 3px;
+    background-color: rgb(58, 75, 58);
+    border: 0;
+}
+
+.difficultySpan {
+    padding-left: 5px;
+}
+
+.categoriesBlock {
+    margin-top: 10px;
+    display: flex;
+    flex-grow: 1;
+    min-width: 0;
+    flex-direction: row;
+    gap: 5px;
+    flex-wrap: wrap;
+    padding: 2px 7px;
+    justify-content: space-evenly;
+}
+
+.categorySpan {
+    display: inline-block;
+    text-align: center;
+    padding: 5px;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+.dateSpan {
+    margin-top: 10px;
+    align-self: flex-end;
+    padding-right: 7px;
+    color:beige;
+    margin-bottom: 5px;
+}

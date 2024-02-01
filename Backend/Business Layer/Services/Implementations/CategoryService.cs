@@ -1,4 +1,5 @@
-﻿using Business_Layer.Services.Interfaces;
+﻿using AutoMapper;
+using Business_Layer.Services.Interfaces;
 using Data_Layer.Models.CategoryModels;
 using Data_Layer.Repositories.Interfaces;
 using System;
@@ -13,10 +14,12 @@ namespace Business_Layer.Services.Implementations
     public class CategoryService : ICategoryService
     {
         private readonly ICategoryRepository _repository;
+        private readonly IMapper _mapper;
 
-        public CategoryService(ICategoryRepository repository)
+        public CategoryService(ICategoryRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
         public async Task<bool> AddCategory(LanguageCategory category)
@@ -42,11 +45,6 @@ namespace Business_Layer.Services.Implementations
         public async Task<LanguageCategory?> GetById(int id)
         {
             return await _repository.GetById(id);
-        }
-
-        public async Task<List<QuizSubcategory?>> GetSubcategories(int id)
-        {
-            return await _repository.GetSubcategories(id);
         }
 
         private async Task<bool> IsUnique(string categoryName)

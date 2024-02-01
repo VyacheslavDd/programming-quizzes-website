@@ -12,6 +12,7 @@ using System.Reflection;
 using FluentValidation.AspNetCore;
 using Business_Layer.Validators;
 using FluentValidation;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,16 +20,18 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddDbContext<QuizAppContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("QuizDB"),
     m => m.MigrationsAssembly("ProgQuizWebsite")), ServiceLifetime.Scoped);
 
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ISubcategoryRepository, SubcategoryRepository>();
+builder.Services.AddScoped<IQuizRepository, QuizRepository>();
 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ISubcategoryService, SubcategoryService>();
+builder.Services.AddScoped<IQuizService, QuizService>();
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(QuizMapper)));
 builder.Services.AddFluentValidationAutoValidation();

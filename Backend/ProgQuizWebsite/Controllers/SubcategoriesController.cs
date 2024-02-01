@@ -30,7 +30,7 @@ namespace ProgQuizWebsite.Controllers
         {
             var results = await _service.GetAll();
             if (results is null || results.Count == 0)
-                return StatusCode(204, new ResponseObject(ResponseType.NoResult.GetDisplayNameProperty(), "Подкатегорий не существует!"));
+                return StatusCode(404, new ResponseObject(ResponseType.NoResult.GetDisplayNameProperty(), "Подкатегорий не существует!"));
             var viewResults = _mapper.Map<List<SubcategoryViewModel>>(results);
             return StatusCode(200, viewResults);
         }

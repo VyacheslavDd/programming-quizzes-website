@@ -12,6 +12,5 @@ namespace Data_Layer.Repositories.Interfaces
         Task<List<LanguageCategory?>> GetAll();
         Task<LanguageCategory?> GetById(int id);
         Task AddCategory(LanguageCategory category);
-        Task<List<QuizSubcategory?>> GetSubcategories(int id);
     }
 }

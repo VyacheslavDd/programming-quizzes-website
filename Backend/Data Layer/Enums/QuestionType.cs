@@ -11,7 +11,7 @@ namespace Data_Layer.Enums
     public enum QuestionType
     {
         [Display(Name = "Одиночный выбор")]
-        Single,
+        Single = 1,
         [Display(Name = "Множественный выбор")]
         Multiple
     }

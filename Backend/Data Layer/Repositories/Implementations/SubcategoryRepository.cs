@@ -32,7 +32,9 @@ namespace Data_Layer.Repositories.Implementations
 
         public async Task<QuizSubcategory?> GetSubcategoryById(int id)
         {
-            return await _context.Subcategories.FindAsync(id);
+            return await _context.Subcategories.Include(qz => qz.LanguageCategory)
+                .Include(qz => qz.Quizzes)
+                .FirstOrDefaultAsync(qz => qz.Id == id);
         }
     }
 }

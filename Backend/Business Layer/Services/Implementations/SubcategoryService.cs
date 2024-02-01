@@ -12,14 +12,18 @@ namespace Business_Layer.Services.Implementations
     public class SubcategoryService : ISubcategoryService
     {
         private readonly ISubcategoryRepository _repository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public SubcategoryService(ISubcategoryRepository repository)
+        public SubcategoryService(ISubcategoryRepository repository, ICategoryRepository categoryRepository)
         {
             _repository = repository;
+            _categoryRepository = categoryRepository;
         }
 
         public async Task<bool> AddSubcategory(QuizSubcategory quizSubcategory)
         {
+            var doesCategoryExist = await DoesCategoryExist(quizSubcategory.LanguageCategoryId);
+            if (!doesCategoryExist) return false;
             var isUnique = await IsUnique(quizSubcategory.LanguageCategoryId, quizSubcategory.Name);
             if (!isUnique) return false;
             try
@@ -41,6 +45,12 @@ namespace Business_Layer.Services.Implementations
         public async Task<QuizSubcategory?> GetSubcategoryById(int id)
         {
             return await _repository.GetSubcategoryById(id);
+        }
+
+        private async Task<bool> DoesCategoryExist(int categoryId)
+        {
+            var categories = await _categoryRepository.GetAll();
+            return categories.Any(c => c.Id == categoryId);
         }
 
         private async Task<bool> IsUnique(int categoryId, string subcategoryName)

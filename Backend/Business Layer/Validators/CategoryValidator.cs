@@ -1,4 +1,5 @@
-﻿using Data_Layer.PostModels;
+﻿using Data_Layer.Constants;
+using Data_Layer.PostModels;
 using Data_Layer.ViewModels;
 using FluentValidation;
 using System;
@@ -13,7 +14,9 @@ namespace Business_Layer.Validators
     {
         public CategoryValidator()
         {
-            RuleFor(c => c.Name).NotNull().NotEmpty().MinimumLength(2).MaximumLength(10).WithMessage("Введено некорректное название категории!");
+            RuleFor(c => c.Name).NotNull().NotEmpty().
+                MinimumLength(DataRestrictions.CategoryNameMinLength).MaximumLength(DataRestrictions.CategoryNameMaxLength).
+                WithMessage("Введено некорректное название категории");
         }
     }
 }

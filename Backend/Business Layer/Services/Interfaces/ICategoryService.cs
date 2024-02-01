@@ -12,6 +12,5 @@ namespace Business_Layer.Services.Interfaces
         Task<List<LanguageCategory?>> GetAll();
         Task<LanguageCategory?> GetById(int id);
         Task<bool> AddCategory(LanguageCategory category);
-        Task<List<QuizSubcategory?>> GetSubcategories(int id);
     }
 }

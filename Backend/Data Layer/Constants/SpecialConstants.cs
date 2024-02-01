@@ -8,6 +8,6 @@ namespace Data_Layer.Constants
 {
     public static class SpecialConstants
     {
-        public static string UnknownValue = "Unknown";
+        public static string UnknownValue { get; } = "Unknown";
     }
 }
