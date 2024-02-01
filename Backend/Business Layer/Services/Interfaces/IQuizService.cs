@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace Business_Layer.Services.Interfaces
 {
-    public interface IQuizService
+    public interface IQuizService : IService<Quiz> 
     {
-        Task<List<Quiz>> GetAll();
-        Task<Quiz?> GetById(int id);
-        Task<bool> AddQuiz(Quiz quiz, List<int> subcategoriesId);
+        Task<bool> AddAsync(Quiz quiz, List<int> subcategoriesId);
     }
 }

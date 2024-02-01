@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data_Layer.Repositories.Implementations
 {
-    public class SubcategoryRepository : ISubcategoryRepository
+    public class SubcategoryRepository : IRepository<QuizSubcategory>
     {
         private readonly QuizAppContext _context;
 
@@ -19,18 +19,18 @@ namespace Data_Layer.Repositories.Implementations
             _context = context;
         }
 
-        public async Task AddSubcategory(QuizSubcategory quizSubcategory)
+        public async Task AddAsync(QuizSubcategory quizSubcategory)
         {
             await _context.Subcategories.AddAsync(quizSubcategory);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<QuizSubcategory?>> GetAll()
+        public async Task<List<QuizSubcategory?>> GetAllAsync()
         {
             return await _context.Subcategories.Include(qz => qz.LanguageCategory).ToListAsync();
         }
 
-        public async Task<QuizSubcategory?> GetSubcategoryById(int id)
+        public async Task<QuizSubcategory?> GetByIdAsync(int id)
         {
             return await _context.Subcategories.Include(qz => qz.LanguageCategory)
                 .Include(qz => qz.Quizzes)

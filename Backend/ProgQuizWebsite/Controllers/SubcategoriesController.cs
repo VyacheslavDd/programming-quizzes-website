@@ -13,12 +13,12 @@ namespace ProgQuizWebsite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SubcategoriesController : ControllerBase
+    public class SubcategoriesController : BaseController
     {
-        private readonly ISubcategoryService _service;
+        private readonly IService<QuizSubcategory> _service;
         private readonly IMapper _mapper;
 
-        public SubcategoriesController(ISubcategoryService service, IMapper mapper)
+        public SubcategoriesController(IService<QuizSubcategory> service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
@@ -28,34 +28,26 @@ namespace ProgQuizWebsite.Controllers
         [Route("all")]
         public async Task<IActionResult> GetAll()
         {
-            var results = await _service.GetAll();
-            if (results is null || results.Count == 0)
-                return StatusCode(404, new ResponseObject(ResponseType.NoResult.GetDisplayNameProperty(), "Подкатегорий не существует!"));
-            var viewResults = _mapper.Map<List<SubcategoryViewModel>>(results);
-            return StatusCode(200, viewResults);
+            var results = await _service.GetAllAsync();
+            return ProcessItems<QuizSubcategory?, SubcategoryViewModel>(results, _mapper, "Подкатегорий не существует");
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var entry = await _service.GetSubcategoryById(id);
-            if (entry is null)
-                return StatusCode(404, new ResponseObject(ResponseType.NoResult.GetDisplayNameProperty(), "Подкатегории не существует!"));
-            var mappedEntry = _mapper.Map<SubcategoryViewModel>(entry);
-            return StatusCode(200, mappedEntry);
+            var entry = await _service.GetByIdAsync(id);
+            return ProcessItem<QuizSubcategory?, SubcategoryViewModel>(entry, _mapper, "Подкатегории не существует");
         }
 
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> AddSubcategory(SubcategoryPostModel subcategoryPostModel)
+        public async Task<IActionResult> Add(SubcategoryPostModel subcategoryPostModel)
         {
             var model = _mapper.Map<QuizSubcategory>(subcategoryPostModel);
-            var isAdded = await _service.AddSubcategory(model);
-            if (isAdded)
-                return StatusCode(201, new ResponseObject(ResponseType.Success.GetDisplayNameProperty(), "Подкатегория создана!"));
-            return StatusCode(422, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
-                "Не удалось создать подкатегорию. Убедитесь, что: категория существует; название подкатегории уникально в пределах категории."));
+            var isAdded = await _service.AddAsync(model);
+            return ProcessAdding(isAdded, "Подкатегория создана",
+                "Не удалось создать подкатегорию. Убедитесь, что: категория существует; название подкатегории уникально в пределах категории.");
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Business_Layer.Validators
         {
             RuleFor(c => c.Name).NotNull().NotEmpty().
                 MinimumLength(DataRestrictions.CategoryNameMinLength).MaximumLength(DataRestrictions.CategoryNameMaxLength).
-                WithMessage("Введено некорректное название категории");
+                WithMessage("Длина названия категории не соответствует норме");
         }
     }
 }

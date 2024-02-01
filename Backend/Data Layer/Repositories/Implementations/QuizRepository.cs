@@ -12,7 +12,7 @@ namespace Data_Layer.Repositories.Implementations
 {
 
 
-    public class QuizRepository : IQuizRepository
+    public class QuizRepository : IRepository<Quiz>
     {
         private readonly QuizAppContext _context;
 
@@ -21,19 +21,19 @@ namespace Data_Layer.Repositories.Implementations
             _context = context;
         }
 
-        public async Task AddQuiz(Quiz quiz)
+        public async Task AddAsync(Quiz quiz)
         {
             await _context.Quizzes.AddAsync(quiz);
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Quiz>> GetAll()
+        public async Task<List<Quiz>> GetAllAsync()
         {
             return await _context.Quizzes.Include(qz => qz.LanguageCategory)
                 .Include(qz => qz.Subcategories).ToListAsync();
         }
 
-        public async Task<Quiz?> GetById(int id)
+        public async Task<Quiz?> GetByIdAsync(int id)
         {
             return await _context.Quizzes.Include(qz => qz.LanguageCategory)
                 .Include(qz => qz.Subcategories).Include(qz => qz.Questions)

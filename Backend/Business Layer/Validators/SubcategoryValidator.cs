@@ -16,7 +16,7 @@ namespace Business_Layer.Validators
             RuleFor(sc => sc.LanguageCategoryId).NotNull().NotEmpty().GreaterThan(0).WithMessage("Id категории должен быть больше 0");
             RuleFor(sc => sc.Name).NotNull().NotEmpty().
                 MinimumLength(DataRestrictions.SubcategoryNameMinLength).MaximumLength(DataRestrictions.SubcategoryNameMaxLength).
-                WithMessage("Название подкатегории должно быть от 3 до 10 символов!");
+                WithMessage("Длина названия подкатегории не соответствует норме");
         }
 
     }

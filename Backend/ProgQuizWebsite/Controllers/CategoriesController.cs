@@ -13,12 +13,12 @@ namespace ProgQuizWebsite.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : ControllerBase
+    public class CategoriesController : BaseController
     {
-        private readonly ICategoryService _service;
+        private readonly IService<LanguageCategory> _service;
         private readonly IMapper _mapper;
 
-        public CategoriesController(ICategoryService service, IMapper mapper)
+        public CategoriesController(IService<LanguageCategory> service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
@@ -27,22 +27,17 @@ namespace ProgQuizWebsite.Controllers
 
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetAllCategories()
+        public async Task<IActionResult> GetAll()
         {
-            var results = await _service.GetAll();
-            if (results is not null && results.Count > 0)
-            {
-                var mappedResults = _mapper.Map<List<LanguageCategory>, List<CategoryViewModel>>(results);
-                return StatusCode(200, mappedResults);
-            }
-            return StatusCode(404, new ResponseObject(ResponseType.NoResult.GetDisplayNameProperty(), "Не существует ни одной категории!"));
+            var results = await _service.GetAllAsync();
+            return ProcessItems<LanguageCategory?, CategoryViewModel>(results, _mapper, "Не существует ни одной категории");
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetCategoryById([FromRoute] int id)
+        public async Task<IActionResult> GetById([FromRoute] int id)
         {
-            var result = await _service.GetById(id);
+            var result = await _service.GetByIdAsync(id);
             if (result is null)
             {
                 return StatusCode(404, new ResponseObject(ResponseType.NoResult.GetDisplayNameProperty(), "Категория не найдена."));
@@ -55,15 +50,11 @@ namespace ProgQuizWebsite.Controllers
 
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> AddCategory(CategoryPostModel categoryModel)
+        public async Task<IActionResult> Add(CategoryPostModel categoryModel)
         {
             var entityModel = _mapper.Map<LanguageCategory>(categoryModel);
-            bool isAdded = await _service.AddCategory(entityModel);
-            if (isAdded)
-            {
-                return StatusCode(201, new ResponseObject(ResponseType.Success.GetDisplayNameProperty(), "Категория создана!"));
-            }
-            return StatusCode(422, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(), "Не удалось создать категорию."));
+            bool isAdded = await _service.AddAsync(entityModel);
+            return ProcessAdding(isAdded, "Категория создана", "Не удалось создать категорию.");
         }
     }
 }

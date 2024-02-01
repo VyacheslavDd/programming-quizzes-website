@@ -15,10 +15,10 @@ namespace Business_Layer.Validators
         {
             RuleFor(qz => qz.Title).NotNull().NotEmpty().
                 MinimumLength(DataRestrictions.QuizTitleMinLength).MaximumLength(DataRestrictions.QuizTitleMaxLength).
-                WithMessage("Название викторины должно быть от 5 до 20 символов");
+                WithMessage("Длина названия викторины не соответствует норме");
             RuleFor(qz => qz.Description).NotNull().NotEmpty().
                 MinimumLength(DataRestrictions.QuizDescriptionMinLength).MaximumLength(DataRestrictions.QuizDescriptionMaxLength).
-                WithMessage("Описание викторины должно быть от 4 до 30 символов");
+                WithMessage("Длина описания викторины не соответствует норме");
             RuleFor(qz => qz.Difficulty).NotNull().NotEmpty().IsInEnum().WithMessage("Значение сложности не соответствует ни одной из существующих");
             RuleFor(qz => qz.LanguageCategoryId).NotNull().NotEmpty().GreaterThan(0).WithMessage("Id категории должен быть больше 0");
             RuleFor(qz => qz.SubcategoriesId).NotNull().NotEmpty().
