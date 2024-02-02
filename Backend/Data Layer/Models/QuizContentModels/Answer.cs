@@ -12,6 +12,7 @@ namespace Data_Layer.Models.QuizContentModels
     {
         public int Id { get; set; }
         public string? Name { get; set; }
+        public bool IsCorrect { get; set; }
         public int QuestionId { get; set; }
         public Question? Question { get; set; }
     }

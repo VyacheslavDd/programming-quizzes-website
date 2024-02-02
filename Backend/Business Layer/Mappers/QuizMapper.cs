@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Business_Layer.Extensions;
 using Data_Layer.Models.CategoryModels;
+using Data_Layer.Models.QuizContentModels;
 using Data_Layer.Models.QuizModels;
 using Data_Layer.PostModels;
 using Data_Layer.ViewModels;
@@ -30,13 +31,22 @@ namespace Business_Layer.Mappers
             CreateMap<Quiz, QuizViewModel>()
                 .ForMember(qzm => qzm.Difficulty, m => m.MapFrom(qz => qz.Difficulty.GetDisplayNameProperty()))
                 .ForMember(qzm => qzm.CreationDate, m => m.MapFrom(qz => qz.CreationDate.ToShortDateString()))
-                .ForMember(qzm => qzm.CategoryName, m => m.MapFrom(qz => qz.LanguageCategory.Name))
-                .ForMember(qzm => qzm.Subcategories,
-            m => m.MapFrom(qz => qz.Subcategories.Select(sc => new SubcategoryViewModel() { Id = sc.Id, Name = sc.Name, CategoryName = sc.LanguageCategory.Name })));
+                .ForMember(qzm => qzm.CategoryName, m => m.MapFrom(qz => qz.LanguageCategory.Name));
 
             CreateMap<QuizPostModel, Quiz>()
                 .ForMember(qz => qz.CreationDate, m => m.MapFrom(qpm => DateTime.UtcNow))
                 .ForMember(qz => qz.Subcategories, m => m.MapFrom(qpm => new List<QuizSubcategory>()));
+
+            CreateMap<Question, QuestionViewModel>()
+                .ForMember(qvm => qvm.QuestionType, m => m.MapFrom(q => q.Type.GetDisplayNameProperty()))
+                .ForMember(qvm => qvm.Answers, m => m.MapFrom(q =>
+                q.Answers.Select(a => new AnswerViewModel() { Id = a.Id, Name = a.Name, QuestionTitle = q.Title,
+                IsCorrect = a.IsCorrect})));
+            CreateMap<QuestionPostModel, Question>();
+
+            CreateMap<Answer, AnswerViewModel>()
+                .ForMember(avm => avm.QuestionTitle, m => m.MapFrom(a => a.Question.Title));
+            CreateMap<AnswerPostModel, Answer>();
         }
     }
 }

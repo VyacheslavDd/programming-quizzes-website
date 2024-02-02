@@ -2,6 +2,7 @@
 using Business_Layer.Services.Interfaces;
 using Data_Layer.Models.CategoryModels;
 using Data_Layer.Repositories.Interfaces;
+using Data_Layer.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,11 @@ namespace Business_Layer.Services.Implementations
 {
     public class CategoryService : IService<LanguageCategory>
     {
-        private readonly IRepository<LanguageCategory> _repository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CategoryService(IRepository<LanguageCategory> repository)
+        public CategoryService(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
+            _unitOfWork= unitOfWork;
         }
 
         public async Task<bool> AddAsync(LanguageCategory category)
@@ -26,7 +27,8 @@ namespace Business_Layer.Services.Implementations
             if (!isUnique) return false;
             try
             {
-                await _repository.AddAsync(category);
+                await _unitOfWork.CategoryRepository.AddAsync(category);
+                await _unitOfWork.Save();
                 return true;
             }
             catch
@@ -37,17 +39,17 @@ namespace Business_Layer.Services.Implementations
 
         public async Task<List<LanguageCategory?>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            return await _unitOfWork.CategoryRepository.GetAllAsync();
         }
 
         public async Task<LanguageCategory?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            return await _unitOfWork.CategoryRepository.GetByIdAsync(id);
         }
 
         private async Task<bool> IsUnique(string categoryName)
         {
-            var categories = await _repository.GetAllAsync();
+            var categories = await GetAllAsync();
             return !categories.Any(c => c.Name.ToLower() == categoryName);
         }
     }

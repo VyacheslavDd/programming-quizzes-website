@@ -47,7 +47,12 @@ namespace ProgQuizWebsite.Controllers
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var result = await _service.GetByIdAsync(id);
-            return ProcessItem<Quiz?, QuizViewModel>(result, _mapper, "Викторины не существует");
+            if (result is null)
+                return StatusCode(404, new ResponseObject(ResponseType.NoResult.GetDisplayNameProperty(), "Викторины не существует"));
+            var mappedResult = _mapper.Map<QuizViewModel>(result);
+            mappedResult.Subcategories = _mapper.Map<List<SubcategoryViewModel>>(result.Subcategories);
+            mappedResult.Questions = _mapper.Map<List<QuestionViewModel>>(result.Questions);
+            return StatusCode(200, mappedResult);
         }
     }
 }

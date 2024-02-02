@@ -22,7 +22,6 @@ namespace Data_Layer.Repositories.Implementations
         public async Task AddAsync(QuizSubcategory quizSubcategory)
         {
             await _context.Subcategories.AddAsync(quizSubcategory);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<List<QuizSubcategory?>> GetAllAsync()
@@ -33,7 +32,6 @@ namespace Data_Layer.Repositories.Implementations
         public async Task<QuizSubcategory?> GetByIdAsync(int id)
         {
             return await _context.Subcategories.Include(qz => qz.LanguageCategory)
-                .Include(qz => qz.Quizzes)
                 .FirstOrDefaultAsync(qz => qz.Id == id);
         }
     }

@@ -2,6 +2,7 @@
 using Data_Layer.Models.CategoryModels;
 using Data_Layer.Models.QuizModels;
 using Data_Layer.Repositories.Interfaces;
+using Data_Layer.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -13,15 +14,11 @@ namespace Business_Layer.Services.Implementations
 {
     public class QuizService : IQuizService
     {
-        private readonly IRepository<Quiz> _quizRepository;
-        private readonly IService<QuizSubcategory> _subcategoryService;
-        private readonly IService<LanguageCategory> _categoryService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public QuizService(IRepository<Quiz> repository, IService<LanguageCategory> categoryService, IService<QuizSubcategory> subcategoryService)
+        public QuizService(IUnitOfWork unitOfWork)
         {
-            _quizRepository = repository;
-            _categoryService = categoryService;
-            _subcategoryService = subcategoryService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<bool> AddAsync(Quiz quiz)
@@ -39,7 +36,8 @@ namespace Business_Layer.Services.Implementations
             if (!isUnique) return false;
             try
             {
-                await _quizRepository.AddAsync(quiz);
+                await _unitOfWork.QuizRepository.AddAsync(quiz);
+                await _unitOfWork.Save();
                 return true;
             }
             catch
@@ -50,17 +48,17 @@ namespace Business_Layer.Services.Implementations
 
         public async Task<List<Quiz>> GetAllAsync()
         {
-            return await _quizRepository.GetAllAsync();
+            return await _unitOfWork.QuizRepository.GetAllAsync();
         }
 
         public async Task<Quiz?> GetByIdAsync(int id)
         {
-            return await _quizRepository.GetByIdAsync(id);
+            return await _unitOfWork.QuizRepository.GetByIdAsync(id);
         }
 
         private async Task<bool> DoesCategoryExist(int categoryId)
         {
-            return (await _categoryService.GetByIdAsync(categoryId)) is not null;
+            return (await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId)) is not null;
         }
 
         private async Task<bool> MatchSubcategories(Quiz quiz, List<int> subcategoriesId)
@@ -68,7 +66,7 @@ namespace Business_Layer.Services.Implementations
             List<QuizSubcategory> subcategories = new List<QuizSubcategory>();
             foreach (var subcategoryId in subcategoriesId)
             {
-                var subcategory = await _subcategoryService.GetByIdAsync(subcategoryId);
+                var subcategory = await _unitOfWork.SubcategoryRepository.GetByIdAsync(subcategoryId);
                 if (subcategory is null) return false;
                 subcategories.Add(subcategory);
             }
@@ -82,7 +80,7 @@ namespace Business_Layer.Services.Implementations
 
         private async Task<bool> IsUnique(int categoryId, string title)
         {
-            var quizzes = (await _quizRepository.GetAllAsync()).Where(qz => qz.LanguageCategoryId == categoryId);
+            var quizzes = (await _unitOfWork.QuizRepository.GetAllAsync()).Where(qz => qz.LanguageCategoryId == categoryId);
             return !quizzes.Any(qz => qz.Title.ToLower() == title);
         }
     }

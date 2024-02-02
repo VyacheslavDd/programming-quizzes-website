@@ -24,19 +24,18 @@ namespace Data_Layer.Repositories.Implementations
         public async Task AddAsync(Quiz quiz)
         {
             await _context.Quizzes.AddAsync(quiz);
-            await _context.SaveChangesAsync();
         }
 
         public async Task<List<Quiz>> GetAllAsync()
         {
-            return await _context.Quizzes.Include(qz => qz.LanguageCategory)
-                .Include(qz => qz.Subcategories).ToListAsync();
+            return await _context.Quizzes.Include(qz => qz.Subcategories)
+                .ThenInclude(qz => qz.LanguageCategory).ToListAsync();
         }
 
         public async Task<Quiz?> GetByIdAsync(int id)
         {
-            return await _context.Quizzes.Include(qz => qz.LanguageCategory)
-                .Include(qz => qz.Subcategories).Include(qz => qz.Questions)
+            return await _context.Quizzes.Include(qz => qz.Questions).ThenInclude(q => q.Answers).Include(qz => qz.Subcategories)
+                .ThenInclude(qz => qz.LanguageCategory)
                 .FirstOrDefaultAsync(qz => qz.Id == id);
         }
     }

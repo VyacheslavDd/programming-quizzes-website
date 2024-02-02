@@ -6,18 +6,17 @@ using System.Threading.Tasks;
 using Business_Layer.Services.Interfaces;
 using Data_Layer.Models.CategoryModels;
 using Data_Layer.Repositories.Interfaces;
+using Data_Layer.UnitOfWork;
 
 namespace Business_Layer.Services.Implementations
 {
     public class SubcategoryService : IService<QuizSubcategory>
     {
-        private readonly IRepository<QuizSubcategory> _repository;
-        private readonly IRepository<LanguageCategory> _categoryRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public SubcategoryService(IRepository<QuizSubcategory> repository, IRepository<LanguageCategory> categoryRepository)
+        public SubcategoryService(IUnitOfWork unitOfWork)
         {
-            _repository = repository;
-            _categoryRepository = categoryRepository;
+            _unitOfWork= unitOfWork;
         }
 
         public async Task<bool> AddAsync(QuizSubcategory quizSubcategory)
@@ -28,7 +27,8 @@ namespace Business_Layer.Services.Implementations
             if (!isUnique) return false;
             try
             {
-                await _repository.AddAsync(quizSubcategory);
+                await _unitOfWork.SubcategoryRepository.AddAsync(quizSubcategory);
+                await _unitOfWork.Save();
                 return true;
             }
             catch
@@ -39,17 +39,17 @@ namespace Business_Layer.Services.Implementations
 
         public async Task<List<QuizSubcategory?>> GetAllAsync()
         {
-            return await _repository.GetAllAsync();
+            return await _unitOfWork.SubcategoryRepository.GetAllAsync();
         }
 
         public async Task<QuizSubcategory?> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(id);
+            return await _unitOfWork.SubcategoryRepository.GetByIdAsync(id);
         }
 
         private async Task<bool> DoesCategoryExist(int categoryId)
         {
-            var categories = await _categoryRepository.GetAllAsync();
+            var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
             return categories.Any(c => c.Id == categoryId);
         }
 

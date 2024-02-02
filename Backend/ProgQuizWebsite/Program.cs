@@ -15,6 +15,8 @@ using FluentValidation;
 using System.Text.Json.Serialization;
 using Data_Layer.Models.CategoryModels;
 using Data_Layer.Models.QuizModels;
+using Data_Layer.UnitOfWork;
+using Data_Layer.Models.QuizContentModels;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,13 +29,13 @@ builder.Services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.Re
 builder.Services.AddDbContext<QuizAppContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("QuizDB"),
     m => m.MigrationsAssembly("ProgQuizWebsite")), ServiceLifetime.Scoped);
 
-builder.Services.AddScoped<IRepository<LanguageCategory>, CategoryRepository>();
-builder.Services.AddScoped<IRepository<QuizSubcategory>, SubcategoryRepository>();
-builder.Services.AddScoped<IRepository<Quiz>, QuizRepository>();
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 builder.Services.AddScoped<IService<LanguageCategory>, CategoryService>();
 builder.Services.AddScoped<IService<QuizSubcategory>, SubcategoryService>();
 builder.Services.AddScoped<IQuizService, QuizService>();
+builder.Services.AddScoped<IService<Question>, QuestionService>();
+builder.Services.AddScoped<IService<Answer>, AnswerService>();
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(QuizMapper)));
 builder.Services.AddFluentValidationAutoValidation();

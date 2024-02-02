@@ -15,5 +15,6 @@ namespace Data_Layer.ViewModels
         public string? CreationDate { get; set; }
         public string? CategoryName { get; set; }
         public List<SubcategoryViewModel?> Subcategories { get; set; }
+        public List<QuestionViewModel> Questions { get; set; }
     }
 }
