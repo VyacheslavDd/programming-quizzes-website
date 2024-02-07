@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Business_Layer.Extensions;
 using Data_Layer.ViewModels;
+using Data_Layer.FilterModels.QuizFilters;
 
 namespace ProgQuizWebsite.Controllers
 {
@@ -41,6 +42,14 @@ namespace ProgQuizWebsite.Controllers
             var results = await _service.GetAllAsync();
             return ProcessItems<Quiz?, QuizViewModel>(results, _mapper, "Викторины отсутствуют");
         }
+
+        [HttpGet]
+        [Route("")]
+        public async Task<IActionResult> GetPage([FromQuery] GetQuizzesFilter filter)
+        {
+            var results = await _service.GetByPageFilter(filter);
+			return ProcessItems<Quiz?, QuizViewModel>(results, _mapper, "Empty");
+		}
 
         [HttpGet]
         [Route("{id}")]

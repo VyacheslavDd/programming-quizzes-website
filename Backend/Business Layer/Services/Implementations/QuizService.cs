@@ -1,4 +1,5 @@
 ﻿using Business_Layer.Services.Interfaces;
+using Data_Layer.FilterModels.QuizFilters;
 using Data_Layer.Models.CategoryModels;
 using Data_Layer.Models.QuizModels;
 using Data_Layer.Repositories.Interfaces;
@@ -83,5 +84,12 @@ namespace Business_Layer.Services.Implementations
             var quizzes = (await _unitOfWork.QuizRepository.GetAllAsync()).Where(qz => qz.LanguageCategoryId == categoryId);
             return !quizzes.Any(qz => qz.Title.ToLower() == title);
         }
-    }
+
+		public async Task<List<Quiz?>> GetByPageFilter(GetQuizzesFilter filter)
+		{
+            if (filter is null || filter.Page - 1 < 0) return new List<Quiz?>();
+            return (await GetAllAsync())
+                .Skip((filter.Page - 1) * filter.Limit).Take(filter.Limit).ToList();
+		}
+	}
 }
