@@ -49,5 +49,13 @@ namespace ProgQuizWebsite.Controllers
             return ProcessAdding(isAdded, "Подкатегория создана",
                 "Не удалось создать подкатегорию. Убедитесь, что: категория существует; название подкатегории уникально в пределах категории.");
         }
-    }
+
+		[HttpDelete]
+		[Route("{id}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
+		{
+			var isDeleted = await _service.DeteteAsync(id);
+			return ProcessDeleting(isDeleted, "Подкатегория удалена", "Не удалось удалить данные! Проверьте существование объекта.");
+		}
+	}
 }

@@ -12,16 +12,13 @@ using System.Threading.Tasks;
 
 namespace Business_Layer.Services.Implementations
 {
-    public class CategoryService : IService<LanguageCategory>
+    public class CategoryService : BaseService<LanguageCategory>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public CategoryService(IUnitOfWork unitOfWork)
+        public CategoryService(IUnitOfWork unitOfWork) : base(unitOfWork.CategoryRepository, unitOfWork)
         {
-            _unitOfWork= unitOfWork;
         }
 
-        public async Task<bool> AddAsync(LanguageCategory category)
+        public override async Task<bool> AddAsync(LanguageCategory category)
         {
             var isUnique = await IsUnique(category.Name.ToLower());
             if (!isUnique) return false;
@@ -35,16 +32,6 @@ namespace Business_Layer.Services.Implementations
             {
                 return false;
             }
-        }
-
-        public async Task<List<LanguageCategory?>> GetAllAsync()
-        {
-            return await _unitOfWork.CategoryRepository.GetAllAsync();
-        }
-
-        public async Task<LanguageCategory?> GetByIdAsync(int id)
-        {
-            return await _unitOfWork.CategoryRepository.GetByIdAsync(id);
         }
 
         private async Task<bool> IsUnique(string categoryName)

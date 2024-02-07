@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ProgQuizWebsite.Controllers
 {
-    public class BaseController : ControllerBase
+    public abstract class BaseController : ControllerBase
     {
         protected IActionResult ProcessItem<T, V>(T result, IMapper mapper, string failureMessage)
         {
@@ -34,5 +34,13 @@ namespace ProgQuizWebsite.Controllers
             return StatusCode(422, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
                 failureMessage));
         }
+
+        protected IActionResult ProcessDeleting(bool isDeleted, string successMessage, string failureMessage)
+        {
+            if (isDeleted)
+				return StatusCode(200, new ResponseObject(ResponseType.Success.GetDisplayNameProperty(), successMessage));
+			return StatusCode(422, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
+				failureMessage));
+		}
     }
 }

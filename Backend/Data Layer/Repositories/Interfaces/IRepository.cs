@@ -11,5 +11,6 @@ namespace Data_Layer.Repositories.Interfaces
         Task<List<T?>> GetAllAsync();
         Task<T?> GetByIdAsync(int id);
         Task AddAsync(T? item);
+        Task DeleteAsync(int id);
     }
 }

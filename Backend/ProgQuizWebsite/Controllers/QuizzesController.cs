@@ -63,5 +63,13 @@ namespace ProgQuizWebsite.Controllers
             mappedResult.Questions = _mapper.Map<List<QuestionViewModel>>(result.Questions);
             return StatusCode(200, mappedResult);
         }
-    }
+
+		[HttpDelete]
+		[Route("{id}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
+		{
+			var isDeleted = await _service.DeteteAsync(id);
+			return ProcessDeleting(isDeleted, "Викторина удалена", "Не удалось удалить данные! Проверьте существование объекта.");
+		}
+	}
 }

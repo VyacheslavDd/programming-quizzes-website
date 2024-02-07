@@ -8,19 +8,18 @@ using System.Text;
 using Data_Layer.Enums;
 using System.Threading.Tasks;
 using Data_Layer.Constants;
+using System.Net.Http.Headers;
 
 namespace Business_Layer.Services.Implementations
 {
-	public class AnswerService : IService<Answer>
+	public class AnswerService : BaseService<Answer>
 	{
-		private readonly IUnitOfWork _unitOfWork;
 
-		public AnswerService(IUnitOfWork unitOfWork)
+		public AnswerService(IUnitOfWork unitOfWork) : base(unitOfWork.AnswerRepository, unitOfWork)
 		{
-			_unitOfWork = unitOfWork;
 		}
 
-		public async Task<bool> AddAsync(Answer? answer)
+		public override async Task<bool> AddAsync(Answer? answer)
 		{
 			var doesQuestionExist = await DoesQuestionExist(answer.QuestionId);
 			if (!doesQuestionExist) return false;
@@ -38,16 +37,6 @@ namespace Business_Layer.Services.Implementations
 			{
 				return false;
 			}
-		}
-
-		public async Task<List<Answer?>> GetAllAsync()
-		{
-			return await _unitOfWork.AnswerRepository.GetAllAsync();
-		}
-
-		public async Task<Answer?> GetByIdAsync(int id)
-		{
-			return await _unitOfWork.AnswerRepository.GetByIdAsync(id);
 		}
 
 		private async Task<bool> DoesQuestionExist(int questionId)

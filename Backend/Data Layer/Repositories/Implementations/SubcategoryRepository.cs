@@ -24,7 +24,13 @@ namespace Data_Layer.Repositories.Implementations
             await _context.Subcategories.AddAsync(quizSubcategory);
         }
 
-        public async Task<List<QuizSubcategory?>> GetAllAsync()
+		public async Task DeleteAsync(int id)
+		{
+            var item = await GetByIdAsync(id);
+            _context.Subcategories.Remove(item);
+		}
+
+		public async Task<List<QuizSubcategory?>> GetAllAsync()
         {
             return await _context.Subcategories.Include(qz => qz.LanguageCategory).ToListAsync();
         }

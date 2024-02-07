@@ -10,16 +10,13 @@ using Data_Layer.UnitOfWork;
 
 namespace Business_Layer.Services.Implementations
 {
-    public class SubcategoryService : IService<QuizSubcategory>
+    public class SubcategoryService : BaseService<QuizSubcategory>
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        public SubcategoryService(IUnitOfWork unitOfWork)
+        public SubcategoryService(IUnitOfWork unitOfWork) : base(unitOfWork.SubcategoryRepository, unitOfWork)
         {
-            _unitOfWork= unitOfWork;
         }
 
-        public async Task<bool> AddAsync(QuizSubcategory quizSubcategory)
+        public override async Task<bool> AddAsync(QuizSubcategory quizSubcategory)
         {
             var doesCategoryExist = await DoesCategoryExist(quizSubcategory.LanguageCategoryId);
             if (!doesCategoryExist) return false;
@@ -35,16 +32,6 @@ namespace Business_Layer.Services.Implementations
             {
                 return false;
             }
-        }
-
-        public async Task<List<QuizSubcategory?>> GetAllAsync()
-        {
-            return await _unitOfWork.SubcategoryRepository.GetAllAsync();
-        }
-
-        public async Task<QuizSubcategory?> GetByIdAsync(int id)
-        {
-            return await _unitOfWork.SubcategoryRepository.GetByIdAsync(id);
         }
 
         private async Task<bool> DoesCategoryExist(int categoryId)

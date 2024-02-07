@@ -26,6 +26,12 @@ namespace Data_Layer.Repositories.Implementations
             await _context.Quizzes.AddAsync(quiz);
         }
 
+        public async Task DeleteAsync(int id)
+        {
+            var item = await GetByIdAsync(id);
+            _context.Quizzes.Remove(item);
+        }
+
         public async Task<List<Quiz>> GetAllAsync()
         {
             return await _context.Quizzes.Include(qz => qz.Subcategories)
@@ -38,5 +44,5 @@ namespace Data_Layer.Repositories.Implementations
                 .ThenInclude(qz => qz.LanguageCategory)
                 .FirstOrDefaultAsync(qz => qz.Id == id);
         }
-    }
+	}
 }

@@ -22,8 +22,13 @@ namespace Data_Layer.Repositories.Implementations
 		public async Task AddAsync(Answer? answer)
 		{
 			await _context.Answers.AddAsync(answer);
-			await _context.SaveChangesAsync();
 
+		}
+
+		public async Task DeleteAsync(int id)
+		{
+			var item = await GetByIdAsync(id);
+			_context.Answers.Remove(item);
 		}
 
 		public async Task<List<Answer?>> GetAllAsync()

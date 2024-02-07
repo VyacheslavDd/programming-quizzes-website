@@ -47,5 +47,13 @@ namespace ProgQuizWebsite.Controllers
 				"Не удалось добавить ответ. Проверьте уникальность ответа," +
 				" существование вопроса, соответствие кол-ва правильных ответов к типу вопроса, количество ответов");
 		}
+
+		[HttpDelete]
+		[Route("{id}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
+		{
+			var isDeleted = await _service.DeteteAsync(id);
+			return ProcessDeleting(isDeleted, "Ответ удалён", "Не удалось удалить данные! Проверьте существование объекта.");
+		}
 	}
 }

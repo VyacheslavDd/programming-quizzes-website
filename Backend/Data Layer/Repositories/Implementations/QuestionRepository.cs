@@ -24,6 +24,12 @@ namespace Data_Layer.Repositories.Implementations
 			await _context.Questions.AddAsync(item);
 		}
 
+		public async Task DeleteAsync(int id)
+		{
+			var item = await GetByIdAsync(id);
+			_context.Questions.Remove(item);
+		}
+
 		public async Task<List<Question?>> GetAllAsync()
 		{
 			return await _context.Questions.Include(q => q.Quiz).ToListAsync();

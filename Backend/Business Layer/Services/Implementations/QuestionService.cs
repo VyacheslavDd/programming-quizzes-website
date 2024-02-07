@@ -9,16 +9,13 @@ using System.Threading.Tasks;
 
 namespace Business_Layer.Services.Implementations
 {
-	public class QuestionService : IService<Question>
+	public class QuestionService : BaseService<Question>
 	{
-		private readonly IUnitOfWork _unitOfWork;
-
-		public QuestionService(IUnitOfWork unitOfWork)
+		public QuestionService(IUnitOfWork unitOfWork) : base(unitOfWork.QuestionRepository, unitOfWork)
 		{
-			_unitOfWork = unitOfWork;
 		}
 
-		public async Task<bool> AddAsync(Question? question)
+		public override async Task<bool> AddAsync(Question? question)
 		{
 			var doesQuizExist = await DoesQuizExist(question.QuizId);
 			if (!doesQuizExist) return false;
@@ -34,16 +31,6 @@ namespace Business_Layer.Services.Implementations
 			{
 				return false;
 			}
-		}
-
-		public async Task<List<Question?>> GetAllAsync()
-		{
-			return await _unitOfWork.QuestionRepository.GetAllAsync();
-		}
-
-		public async Task<Question?> GetByIdAsync(int id)
-		{
-			return await _unitOfWork.QuestionRepository.GetByIdAsync(id);
 		}
 
 		private async Task<bool> DoesQuizExist(int quizId)

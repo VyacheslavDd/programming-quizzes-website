@@ -44,5 +44,13 @@ namespace ProgQuizWebsite.Controllers
 			var isAdded = await _service.AddAsync(mappedQuestion);
 			return ProcessAdding(isAdded, "Вопрос добавлен", "Не удалось добавить вопрос. Проверьте уникальность вопроса и существование викторины");
 		}
+
+		[HttpDelete]
+		[Route("{id}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
+		{
+			var isDeleted = await _service.DeteteAsync(id);
+			return ProcessDeleting(isDeleted, "Вопрос удалён", "Не удалось удалить данные! Проверьте существование объекта.");
+		}
 	}
 }

@@ -11,5 +11,6 @@ namespace Business_Layer.Services.Interfaces
         Task<List<T?>> GetAllAsync();
         Task<T?> GetByIdAsync(int id);
         Task<bool> AddAsync(T? item);
+        Task<bool> DeteteAsync(int id);
     }
 }

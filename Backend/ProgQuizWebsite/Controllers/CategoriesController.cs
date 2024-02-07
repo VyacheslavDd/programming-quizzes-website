@@ -56,5 +56,13 @@ namespace ProgQuizWebsite.Controllers
             bool isAdded = await _service.AddAsync(entityModel);
             return ProcessAdding(isAdded, "Категория создана", "Не удалось создать категорию.");
         }
-    }
+
+		[HttpDelete]
+		[Route("{id}")]
+		public async Task<IActionResult> Delete([FromRoute] int id)
+		{
+			var isDeleted = await _service.DeteteAsync(id);
+			return ProcessDeleting(isDeleted, "Категория удалена", "Не удалось удалить данные! Проверьте существование объекта.");
+		}
+	}
 }
