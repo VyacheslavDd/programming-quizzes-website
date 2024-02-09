@@ -1,0 +1,48 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.header {
+    display: flex;
+    justify-content: space-between;
+    vertical-align: middle;
+    border-bottom: 3px dashed rgb(31, 90, 179);
+}
+.navigationLinks, .logLinks {
+    margin: 35px;
+    display: inline-block;
+    text-align: center;
+    list-style: none;
+}
+.navigationLinksItem, .logLinksItem {
+    display: inline-block;
+    margin: 0 30px;
+    font-size: 25px;
+}
+a {
+    display: inline-block;
+    padding: 7px;
+    text-decoration: none;
+}
+a:hover, a:visited {
+    color: black;
+}
+.navigationLinks a {
+    border: 2px dashed rgb(238, 118, 49);
+}
+.navigationLinks a:hover {
+    background-color: rgb(255, 243, 218);
+}
+
+.logInButton {
+   border: 2px solid rgb(68, 161, 238);
+}
+.regButton {
+    border: 2px solid rgb(17, 0, 255);
+}
+.logInButton:hover {
+    background-color: rgb(172, 205, 233);
+}
+.regButton:hover {
+    background-color: rgb(220, 218, 255);
+}
