@@ -1,0 +1,14 @@
+.footerBlock {
+    height: 100px;
+    margin-top: 80px;
+    background-color: rgb(61, 61, 61);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    vertical-align: middle;
+}
+.copyright {
+    font-size: 25px;
+    color:aliceblue;
+    padding-left: 20px;
+}

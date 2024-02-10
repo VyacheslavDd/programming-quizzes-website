@@ -1,0 +1,8 @@
+
+.subcategorySpan {
+    padding: 5px;
+    border: 3px solid rgb(86, 159, 228);
+    border-radius: 10px;
+    margin-top: 3px;
+    font-size: 18px;
+}

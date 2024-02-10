@@ -1,0 +1,45 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+.outer {
+    display: flex;
+    justify-content: center;
+}
+.wrapper {
+    width: 70%;
+}
+.section {
+    margin-top: 50px;
+    padding: 10px;
+    border: 3px dashed rgb(58, 164, 224);
+}
+.section h2{
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+.section p {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.difList {
+    list-style: none;
+}
+.difList li {
+    font-size: 20px;
+}
+.difList li span {
+    font-size: 35px;
+}
+.easyDif {
+    color: rgb(69, 196, 76)
+}
+.medDif {
+    color: rgb(228, 228, 80)
+}
+.hardDif {
+    color: rgb(236, 182, 80)
+}
+.expDif {
+    color: rgb(238, 97, 97);
+}

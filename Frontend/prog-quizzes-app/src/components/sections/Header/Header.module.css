@@ -7,6 +7,7 @@
     justify-content: space-between;
     vertical-align: middle;
     border-bottom: 3px dashed rgb(31, 90, 179);
+    margin-bottom: 50px;
 }
 .navigationLinks, .logLinks {
     margin: 35px;

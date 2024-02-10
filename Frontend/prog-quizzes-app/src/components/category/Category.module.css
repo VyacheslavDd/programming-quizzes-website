@@ -1,0 +1,7 @@
+
+.categorySpan {
+    text-align: center;
+    padding: 7px;
+    border: 3px solid rgb(240, 116, 234);
+    border-radius: 50%;
+}

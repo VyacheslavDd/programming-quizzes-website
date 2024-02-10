@@ -8,22 +8,21 @@ export default function Header() {
 
   return (
     <>
-      <div className={styles.header}>
-          <a href='#'><img src={logo} alt='Логотип сайта' width={150} height={100}/></a>
+      <header className={styles.header}>
+          <Link to='#'><img src={logo} alt='Логотип сайта' width={150} height={100}/></Link>
           <nav className={styles.navBar}>
             <ul className={styles.navigationLinks}>
                 <li className={styles.navigationLinksItem}><Link to='/'>Главная</Link></li>
-                <li className={styles.navigationLinksItem}><Link to='/about'>О сайте</Link></li>
-                <li className={styles.navigationLinksItem}><a href='#'>Категории</a></li>
+                <li className={styles.navigationLinksItem}><Link to='/quizzes'>Викторины</Link></li>
             </ul>
           </nav>
           <div className={styles.logDiv}>
           <ul className={styles.logLinks}>
-                <li className={styles.logLinksItem}><a href='#' className={styles.logInButton}>Войти</a></li>
-                <li className={styles.logLinksItem}><a href='#' className={styles.regButton}>Регистрация</a></li>
+                <li className={styles.logLinksItem}><Link to='#' className={styles.logInButton}>Войти</Link></li>
+                <li className={styles.logLinksItem}><Link to='#' className={styles.regButton}>Регистрация</Link></li>
             </ul>
           </div>
-      </div>
+      </header>
     </>
   )
 }
