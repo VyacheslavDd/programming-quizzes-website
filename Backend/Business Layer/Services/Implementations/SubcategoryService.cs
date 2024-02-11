@@ -16,25 +16,16 @@ namespace Business_Layer.Services.Implementations
         {
         }
 
-        public override async Task<bool> AddAsync(QuizSubcategory quizSubcategory)
-        {
-            var doesCategoryExist = await DoesCategoryExist(quizSubcategory.LanguageCategoryId);
-            if (!doesCategoryExist) return false;
-            var isUnique = await IsUnique(quizSubcategory.LanguageCategoryId, quizSubcategory.Name);
-            if (!isUnique) return false;
-            try
-            {
-                await _unitOfWork.SubcategoryRepository.AddAsync(quizSubcategory);
-                await _unitOfWork.Save();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+		public async override Task<bool> ValidateItemData(QuizSubcategory? quizSubcategory)
+		{
+			var doesCategoryExist = await DoesCategoryExist(quizSubcategory.LanguageCategoryId);
+			if (!doesCategoryExist) return false;
+			var isUnique = await IsUnique(quizSubcategory.LanguageCategoryId, quizSubcategory.Name);
+			if (!isUnique) return false;
+            return true;
+		}
 
-        private async Task<bool> DoesCategoryExist(int categoryId)
+		private async Task<bool> DoesCategoryExist(int categoryId)
         {
             var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
             return categories.Any(c => c.Id == categoryId);

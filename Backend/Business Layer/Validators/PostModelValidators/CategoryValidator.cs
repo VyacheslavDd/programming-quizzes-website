@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business_Layer.Validators
+namespace Business_Layer.Validators.PostModelValidators
 {
     public class CategoryValidator : AbstractValidator<CategoryPostModel>
     {

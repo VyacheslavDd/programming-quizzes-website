@@ -18,23 +18,14 @@ namespace Business_Layer.Services.Implementations
         {
         }
 
-        public override async Task<bool> AddAsync(LanguageCategory category)
-        {
-            var isUnique = await IsUnique(category.Name.ToLower());
-            if (!isUnique) return false;
-            try
-            {
-                await _unitOfWork.CategoryRepository.AddAsync(category);
-                await _unitOfWork.Save();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
+		public async override Task<bool> ValidateItemData(LanguageCategory? category)
+		{
+			var isUnique = await IsUnique(category.Name.ToLower());
+			if (!isUnique) return false;
+            return true;
+		}
 
-        private async Task<bool> IsUnique(string categoryName)
+		private async Task<bool> IsUnique(string categoryName)
         {
             var categories = await GetAllAsync();
             return !categories.Any(c => c.Name.ToLower() == categoryName);

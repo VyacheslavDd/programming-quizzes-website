@@ -64,6 +64,23 @@ namespace ProgQuizWebsite.Controllers
             return StatusCode(200, mappedResult);
         }
 
+		[HttpPut]
+		[Route("{id}/update")]
+		public async Task<IActionResult> Update([FromRoute] int id, QuizPostModel quizModel)
+		{
+			var entity = await _service.GetByIdAsync(id);
+			if (entity is not null)
+			{
+				entity.Title = quizModel.Title;
+                entity.Description = quizModel.Description;
+                entity.LanguageCategoryId = quizModel.LanguageCategoryId;
+                entity.Difficulty = quizModel.Difficulty;
+			}
+			bool isUpdated = await _service.MatchSubcategories(entity, quizModel.SubcategoriesId) && await _service.UpdateAsync(entity);
+			return ProcessUpdating(isUpdated, "Викторина обновлена", "Не удалось обновить викторину." +
+                "Проверьте уникальность, идентификаторы категории и подкатегорий");
+		}
+
 		[HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)

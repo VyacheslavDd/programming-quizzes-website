@@ -45,6 +45,24 @@ namespace ProgQuizWebsite.Controllers
 			return ProcessAdding(isAdded, "Вопрос добавлен", "Не удалось добавить вопрос. Проверьте уникальность вопроса и существование викторины");
 		}
 
+		[HttpPut]
+		[Route("{id}/update")]
+		public async Task<IActionResult> Update([FromRoute] int id, QuestionPostModel questionModel)
+		{
+			var entity = await _service.GetByIdAsync(id);
+			if (entity is not null)
+			{
+				entity.Title = questionModel.Title;
+				entity.Description = questionModel.Description;
+				entity.SuccessInfo = questionModel.SuccessInfo;
+				entity.FailureInfo = questionModel.FailureInfo;
+				entity.QuizId = questionModel.QuizId;
+				entity.Type = questionModel.Type;
+			}
+			bool isUpdated = await _service.UpdateAsync(entity);
+			return ProcessUpdating(isUpdated, "Вопрос обновлен", "Не удалось обновить вопрос. Проверьте уникальность вопроса и существование викторины");
+		}
+
 		[HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)

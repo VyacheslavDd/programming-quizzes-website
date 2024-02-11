@@ -29,7 +29,6 @@ namespace Business_Layer.Mappers
             CreateMap<SubcategoryPostModel, QuizSubcategory>();
 
             CreateMap<Quiz, QuizViewModel>()
-                .ForMember(qzm => qzm.Difficulty, m => m.MapFrom(qz => qz.Difficulty.GetDisplayNameProperty()))
                 .ForMember(qzm => qzm.CreationDate, m => m.MapFrom(qz => qz.CreationDate.ToShortDateString()))
                 .ForMember(qzm => qzm.CategoryName, m => m.MapFrom(qz => qz.LanguageCategory.Name));
 

@@ -50,6 +50,21 @@ namespace ProgQuizWebsite.Controllers
                 "Не удалось создать подкатегорию. Убедитесь, что: категория существует; название подкатегории уникально в пределах категории.");
         }
 
+		[HttpPut]
+		[Route("{id}/update")]
+		public async Task<IActionResult> Update([FromRoute] int id, SubcategoryPostModel subcategoryModel)
+		{
+			var entity = await _service.GetByIdAsync(id);
+			if (entity is not null)
+			{
+                entity.Name = subcategoryModel.Name;
+                entity.LanguageCategoryId = subcategoryModel.LanguageCategoryId;
+			}
+			bool isUpdated = await _service.UpdateAsync(entity);
+			return ProcessUpdating(isUpdated, "Подкатегория обновлена", "Не удалось обновить подкатегорию." +
+                "Проверьте существование подкатегории, уникальность названия в пределах категории");
+		}
+
 		[HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)

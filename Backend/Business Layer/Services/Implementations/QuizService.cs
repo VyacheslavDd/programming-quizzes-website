@@ -25,6 +25,11 @@ namespace Business_Layer.Services.Implementations
             return true;
         }
 
+        public async override Task<bool> ValidateItemData(Quiz? quiz)
+        {
+            return true;
+        }
+
         public async Task<bool> AddAsync(Quiz quiz, List<int> subcategoriesId)
         {
             var doesCategoryExist = await DoesCategoryExist(quiz.LanguageCategoryId);
@@ -33,16 +38,7 @@ namespace Business_Layer.Services.Implementations
             if (!matchSubcategories) return false;
             var isUnique = await IsUnique(quiz.LanguageCategoryId, quiz.Title.ToLower());
             if (!isUnique) return false;
-            try
-            {
-                await _unitOfWork.QuizRepository.AddAsync(quiz);
-                await _unitOfWork.Save();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            return await base.AddAsync(quiz);
         }
 
         private async Task<bool> DoesCategoryExist(int categoryId)
@@ -50,13 +46,17 @@ namespace Business_Layer.Services.Implementations
             return (await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId)) is not null;
         }
 
-        private async Task<bool> MatchSubcategories(Quiz quiz, List<int> subcategoriesId)
+        public async Task<bool> MatchSubcategories(Quiz quiz, List<int> subcategoriesId)
         {
+            if (quiz is null) return false;
             List<QuizSubcategory> subcategories = new List<QuizSubcategory>();
-            foreach (var subcategoryId in subcategoriesId)
+            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(quiz.LanguageCategoryId);
+            if (category is null) return false;
+			foreach (var subcategoryId in subcategoriesId)
             {
                 var subcategory = await _unitOfWork.SubcategoryRepository.GetByIdAsync(subcategoryId);
                 if (subcategory is null) return false;
+                if (!category.Subcategories.Any(sc => sc.Id == subcategoryId)) return false;
                 subcategories.Add(subcategory);
             }
             foreach (var subcategory in subcategories)

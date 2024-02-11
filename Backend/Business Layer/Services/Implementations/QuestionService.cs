@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Data_Layer.Enums;
 
 namespace Business_Layer.Services.Implementations
 {
@@ -15,22 +16,13 @@ namespace Business_Layer.Services.Implementations
 		{
 		}
 
-		public override async Task<bool> AddAsync(Question? question)
+		public async override Task<bool> ValidateItemData(Question? question)
 		{
 			var doesQuizExist = await DoesQuizExist(question.QuizId);
 			if (!doesQuizExist) return false;
-			var isUnique = await IsUnique(question.QuizId, question.Title);
-			if (!isUnique) return false;
-			try
-			{
-				await _unitOfWork.QuestionRepository.AddAsync(question);
-				await _unitOfWork.Save();
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
+			var isTypeCorresponding = IsTypeCorresponding(question);
+			if (!isTypeCorresponding) return false;
+			return true;
 		}
 
 		private async Task<bool> DoesQuizExist(int quizId)
@@ -38,10 +30,11 @@ namespace Business_Layer.Services.Implementations
 			return (await _unitOfWork.QuizRepository.GetByIdAsync(quizId)) is not null;
 		}
 
-		private async Task<bool> IsUnique(int quizId, string? title)
+		private bool IsTypeCorresponding(Question? question)
 		{
-			var entries = (await _unitOfWork.QuizRepository.GetAllAsync()).Where(qz => qz.Id == quizId);
-			return !entries.Any(qz => qz.Questions.Any(q => q.Title == title));
+			if (question.Answers is null) return true;
+			if (question.Type == QuestionType.Single && question.Answers.Where(a => a.IsCorrect).Count() > 1) return false;
+			return true;
 		}
 	}
 }

@@ -10,32 +10,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data_Layer.Repositories.Implementations
 {
-	internal class QuestionRepository : IRepository<Question>
+	internal class QuestionRepository : BaseRepository<Question>
 	{
 		private readonly QuizAppContext _context;
 
-		public QuestionRepository(QuizAppContext context)
+		public QuestionRepository(QuizAppContext context) : base(context.Questions)
 		{
 			_context = context;
 		}
 
-		public async Task AddAsync(Question? item)
+		public override async Task<List<Question?>> GetAllAsync()
 		{
-			await _context.Questions.AddAsync(item);
+			return await _context.Questions.AsNoTracking().Include(q => q.Quiz).ToListAsync();
 		}
 
-		public async Task DeleteAsync(int id)
-		{
-			var item = await GetByIdAsync(id);
-			_context.Questions.Remove(item);
-		}
-
-		public async Task<List<Question?>> GetAllAsync()
-		{
-			return await _context.Questions.Include(q => q.Quiz).ToListAsync();
-		}
-
-		public async Task<Question?> GetByIdAsync(int id)
+		public override async Task<Question?> GetByIdAsync(int id)
 		{
 			return await _context.Questions.Include(q => q.Quiz).Include(q => q.Answers)
 				.FirstOrDefaultAsync(q => q.Id == id);

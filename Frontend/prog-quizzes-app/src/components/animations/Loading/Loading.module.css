@@ -1,0 +1,17 @@
+
+.animation {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    border: 3px dashed rgb(228, 106, 173);
+    animation: 2s infinite rotatingAnim;
+}
+
+@keyframes rotatingAnim {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}

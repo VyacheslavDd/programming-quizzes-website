@@ -48,6 +48,22 @@ namespace ProgQuizWebsite.Controllers
 				" существование вопроса, соответствие кол-ва правильных ответов к типу вопроса, количество ответов");
 		}
 
+		[HttpPut]
+		[Route("{id}/update")]
+		public async Task<IActionResult> Update([FromRoute] int id, AnswerPostModel answerModel)
+		{
+			var entity = await _service.GetByIdAsync(id);
+			if (entity is not null)
+			{
+				entity.Name = answerModel.Name;
+				entity.IsCorrect = answerModel.IsCorrect;
+				entity.QuestionId = answerModel.QuestionId;
+			}
+			bool isUpdated = await _service.UpdateAsync(entity);
+			return ProcessUpdating(isUpdated, "Ответ обновлён", "Не удалось обновить ответ. Проверьте уникальность," +
+				"существование вопроса, соответствие кол-ва правильных ответов к типу вопроса, количество ответов");
+		}
+
 		[HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)

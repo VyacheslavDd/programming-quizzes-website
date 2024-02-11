@@ -19,35 +19,18 @@ namespace Business_Layer.Services.Implementations
 		{
 		}
 
-		public override async Task<bool> AddAsync(Answer? answer)
+		public async override Task<bool> ValidateItemData(Answer? answer)
 		{
 			var doesQuestionExist = await DoesQuestionExist(answer.QuestionId);
 			if (!doesQuestionExist) return false;
 			var isCorresponding = await CorrespondingToQuestionRestrictions(answer.QuestionId, answer.IsCorrect);
 			if (!isCorresponding) return false;
-			var isUnique = await IsUnique(answer.QuestionId, answer.Name);
-			if (!isUnique) return false;
-			try
-			{
-				await _unitOfWork.AnswerRepository.AddAsync(answer);
-				await _unitOfWork.Save();
-				return true;
-			}
-			catch
-			{
-				return false;
-			}
+			return true;
 		}
 
 		private async Task<bool> DoesQuestionExist(int questionId)
 		{
 			return (await _unitOfWork.QuestionRepository.GetByIdAsync(questionId)) is not null;
-		}
-
-		private async Task<bool> IsUnique(int questionId, string name)
-		{
-			var questions = (await _unitOfWork.QuestionRepository.GetAllAsync()).Where(q => q.Id == questionId);
-			return !questions.Any(q => q.Answers.Any(a => a.Name == name));
 		}
 
 		private async Task<bool> CorrespondingToQuestionRestrictions(int questionId, bool isCorrectAnswer)

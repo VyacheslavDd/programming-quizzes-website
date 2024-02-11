@@ -10,17 +10,24 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using System.Reflection;
 using FluentValidation.AspNetCore;
-using Business_Layer.Validators;
 using FluentValidation;
 using System.Text.Json.Serialization;
 using Data_Layer.Models.CategoryModels;
 using Data_Layer.Models.QuizModels;
 using Data_Layer.UnitOfWork;
 using Data_Layer.Models.QuizContentModels;
+using Business_Layer.Validators.PostModelValidators;
 
 var builder = WebApplication.CreateBuilder(args);
+var defaultPolicyName = "FrontPolicy";
 
-// Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(defaultPolicyName, policy =>
+    {
+        policy.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader();
+    });
+});
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
 
@@ -55,6 +62,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(defaultPolicyName);
 
 app.UseAuthorization();
 

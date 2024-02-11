@@ -10,34 +10,23 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Data_Layer.Repositories.Implementations
 {
-    public class SubcategoryRepository : IRepository<QuizSubcategory>
+    public class SubcategoryRepository : BaseRepository<QuizSubcategory>
     {
         private readonly QuizAppContext _context;
 
-        public SubcategoryRepository(QuizAppContext context)
+        public SubcategoryRepository(QuizAppContext context) : base(context.Subcategories)
         {
             _context = context;
         }
 
-        public async Task AddAsync(QuizSubcategory quizSubcategory)
+		public override async Task<List<QuizSubcategory?>> GetAllAsync()
         {
-            await _context.Subcategories.AddAsync(quizSubcategory);
+            return await _context.Subcategories.AsNoTracking().Include(qz => qz.LanguageCategory).ToListAsync();
         }
 
-		public async Task DeleteAsync(int id)
-		{
-            var item = await GetByIdAsync(id);
-            _context.Subcategories.Remove(item);
-		}
-
-		public async Task<List<QuizSubcategory?>> GetAllAsync()
+        public override async Task<QuizSubcategory?> GetByIdAsync(int id)
         {
-            return await _context.Subcategories.Include(qz => qz.LanguageCategory).ToListAsync();
-        }
-
-        public async Task<QuizSubcategory?> GetByIdAsync(int id)
-        {
-            return await _context.Subcategories.Include(qz => qz.LanguageCategory)
+            return await _context.Subcategories.Include(qz => qz.LanguageCategory).Include(s => s.Quizzes)
                 .FirstOrDefaultAsync(qz => qz.Id == id);
         }
     }

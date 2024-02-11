@@ -1,0 +1,6 @@
+
+.errorMsg {
+    border: 3px dashed rgb(211, 59, 59);
+    padding: 15px;
+    text-align: center;
+}

@@ -10,33 +10,21 @@ using System.Threading.Tasks;
 
 namespace Data_Layer.Repositories.Implementations
 {
-	public class AnswerRepository : IRepository<Answer>
+	public class AnswerRepository : BaseRepository<Answer>
 	{
 		private readonly QuizAppContext _context;
 
-		public AnswerRepository(QuizAppContext context)
+		public AnswerRepository(QuizAppContext context) : base(context.Answers)
 		{
 			_context = context;
 		}
 
-		public async Task AddAsync(Answer? answer)
+		public override async Task<List<Answer?>> GetAllAsync()
 		{
-			await _context.Answers.AddAsync(answer);
-
+			return await _context.Answers.AsNoTracking().Include(a => a.Question).ToListAsync();
 		}
 
-		public async Task DeleteAsync(int id)
-		{
-			var item = await GetByIdAsync(id);
-			_context.Answers.Remove(item);
-		}
-
-		public async Task<List<Answer?>> GetAllAsync()
-		{
-			return await _context.Answers.ToListAsync();
-		}
-
-		public async Task<Answer?> GetByIdAsync(int id)
+		public override async Task<Answer?> GetByIdAsync(int id)
 		{
 			return await _context.Answers.Include(a => a.Question).FirstOrDefaultAsync(a => a.Id == id);
 		}

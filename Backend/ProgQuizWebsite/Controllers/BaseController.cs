@@ -35,6 +35,14 @@ namespace ProgQuizWebsite.Controllers
                 failureMessage));
         }
 
+        protected IActionResult ProcessUpdating(bool isUpdated, string successMessage, string failureMessage)
+        {
+			if (isUpdated)
+				return StatusCode(200, new ResponseObject(ResponseType.Success.GetDisplayNameProperty(), successMessage));
+			return StatusCode(422, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
+				failureMessage));
+		}
+
         protected IActionResult ProcessDeleting(bool isDeleted, string successMessage, string failureMessage)
         {
             if (isDeleted)

@@ -10,32 +10,21 @@ using System.Threading.Tasks;
 
 namespace Data_Layer.Repositories.Implementations
 {
-    public class CategoryRepository : IRepository<LanguageCategory>
+    public class CategoryRepository : BaseRepository<LanguageCategory>
     {
         private readonly QuizAppContext _context;
 
-        public CategoryRepository(QuizAppContext context)
+        public CategoryRepository(QuizAppContext context) : base(context.LanguageCategories)
         {
             _context = context;
         }
 
-        public async Task AddAsync(LanguageCategory category)
+		public override async Task<List<LanguageCategory?>> GetAllAsync()
         {
-            await _context.LanguageCategories.AddAsync(category);
+            return await _context.LanguageCategories.AsNoTracking().Include(lc => lc.Subcategories).ToListAsync();
         }
 
-		public async Task DeleteAsync(int id)
-		{
-            var item = await GetByIdAsync(id);
-            _context.LanguageCategories.Remove(item);
-		}
-
-		public async Task<List<LanguageCategory?>> GetAllAsync()
-        {
-            return await _context.LanguageCategories.Include(lc => lc.Subcategories).ToListAsync();
-        }
-
-        public async Task<LanguageCategory?> GetByIdAsync(int id)
+        public override async Task<LanguageCategory?> GetByIdAsync(int id)
         {
             return await _context.LanguageCategories.Include(lc => lc.Subcategories).ThenInclude(lc => lc.Quizzes)
                 .FirstOrDefaultAsync(lc => lc.Id == id);

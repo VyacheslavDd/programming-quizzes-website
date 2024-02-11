@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business_Layer.Validators
+namespace Business_Layer.Validators.PostModelValidators
 {
     public class QuizValidator : AbstractValidator<QuizPostModel>
     {
@@ -24,7 +24,7 @@ namespace Business_Layer.Validators
             RuleFor(qz => qz.SubcategoriesId).NotNull().NotEmpty().
                 Must(list => list.Count >= DataRestrictions.QuizSubcategoriesListMinLength && list.Count <= DataRestrictions.QizSubcategoriesListMaxLength)
                 .ForEach(sub => sub.NotNull().NotEmpty().GreaterThan(0).WithMessage("Id подкатегории должен быть больше 0"))
-                .WithMessage("Количество подкатегорий должно быть от 0 до 3");
+                .WithMessage("Количество подкатегорий должно быть от 1 до 3");
         }
     }
 }

@@ -57,6 +57,19 @@ namespace ProgQuizWebsite.Controllers
             return ProcessAdding(isAdded, "Категория создана", "Не удалось создать категорию.");
         }
 
+        [HttpPut]
+        [Route("{id}/update")]
+        public async Task<IActionResult> Update([FromRoute] int id, CategoryPostModel categoryModel)
+        {
+            var entity = await _service.GetByIdAsync(id);
+            if (entity is not null)
+            {
+                entity.Name = categoryModel.Name;
+            }
+            bool isUpdated = await _service.UpdateAsync(entity);
+			return ProcessUpdating(isUpdated, "Категория обновлена", "Не удалось обновить категорию. Проверьте существование категории");
+		}
+
 		[HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)

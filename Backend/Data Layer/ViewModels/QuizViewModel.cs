@@ -11,7 +11,7 @@ namespace Data_Layer.ViewModels
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
-        public string? Difficulty { get; set; }
+        public int Difficulty { get; set; }
         public string? CreationDate { get; set; }
         public string? CategoryName { get; set; }
         public List<SubcategoryViewModel?> Subcategories { get; set; }

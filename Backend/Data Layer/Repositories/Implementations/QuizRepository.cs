@@ -12,33 +12,22 @@ namespace Data_Layer.Repositories.Implementations
 {
 
 
-    public class QuizRepository : IRepository<Quiz>
+    public class QuizRepository : BaseRepository<Quiz>
     {
         private readonly QuizAppContext _context;
 
-        public QuizRepository(QuizAppContext context)
+        public QuizRepository(QuizAppContext context) : base(context.Quizzes)
         {
             _context = context;
         }
 
-        public async Task AddAsync(Quiz quiz)
+        public override async Task<List<Quiz>> GetAllAsync()
         {
-            await _context.Quizzes.AddAsync(quiz);
-        }
-
-        public async Task DeleteAsync(int id)
-        {
-            var item = await GetByIdAsync(id);
-            _context.Quizzes.Remove(item);
-        }
-
-        public async Task<List<Quiz>> GetAllAsync()
-        {
-            return await _context.Quizzes.Include(qz => qz.Subcategories)
+            return await _context.Quizzes.AsNoTracking().Include(qz => qz.LanguageCategory).Include(qz => qz.Subcategories)
                 .ThenInclude(qz => qz.LanguageCategory).ToListAsync();
         }
 
-        public async Task<Quiz?> GetByIdAsync(int id)
+        public override async Task<Quiz?> GetByIdAsync(int id)
         {
             return await _context.Quizzes.Include(qz => qz.Questions).ThenInclude(q => q.Answers).Include(qz => qz.Subcategories)
                 .ThenInclude(qz => qz.LanguageCategory)
