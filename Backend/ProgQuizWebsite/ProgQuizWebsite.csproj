@@ -34,4 +34,8 @@
     <ProjectReference Include="..\Data Layer\Data Layer.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Uploads\QuizImages\" />
+  </ItemGroup>
+
 </Project>

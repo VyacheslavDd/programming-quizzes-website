@@ -1,4 +1,3 @@
-using Business_Layer.Services.Implementations;
 using Business_Layer.Services.Interfaces;
 using Business_Layer.Mappers;
 using Data_Layer.Contexts;
@@ -17,6 +16,8 @@ using Data_Layer.Models.QuizModels;
 using Data_Layer.UnitOfWork;
 using Data_Layer.Models.QuizContentModels;
 using Business_Layer.Validators.PostModelValidators;
+using Business_Layer.Services.Implementations.MainServices;
+using Business_Layer.Services.Implementations.AdditionalServices;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
@@ -38,6 +39,7 @@ builder.Services.AddDbContext<QuizAppContext>(opt => opt.UseSqlServer(builder.Co
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IService<LanguageCategory>, CategoryService>();
 builder.Services.AddScoped<IService<QuizSubcategory>, SubcategoryService>();
 builder.Services.AddScoped<IQuizService, QuizService>();

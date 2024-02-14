@@ -8,7 +8,7 @@ using Data_Layer.Models.CategoryModels;
 using Data_Layer.Repositories.Interfaces;
 using Data_Layer.UnitOfWork;
 
-namespace Business_Layer.Services.Implementations
+namespace Business_Layer.Services.Implementations.MainServices
 {
     public class SubcategoryService : BaseService<QuizSubcategory>
     {
@@ -16,16 +16,16 @@ namespace Business_Layer.Services.Implementations
         {
         }
 
-		public async override Task<bool> ValidateItemData(QuizSubcategory? quizSubcategory)
-		{
-			var doesCategoryExist = await DoesCategoryExist(quizSubcategory.LanguageCategoryId);
-			if (!doesCategoryExist) return false;
-			var isUnique = await IsUnique(quizSubcategory.LanguageCategoryId, quizSubcategory.Name);
-			if (!isUnique) return false;
+        public async override Task<bool> ValidateItemData(QuizSubcategory? quizSubcategory)
+        {
+            var doesCategoryExist = await DoesCategoryExist(quizSubcategory.LanguageCategoryId);
+            if (!doesCategoryExist) return false;
+            var isUnique = await IsUnique(quizSubcategory.LanguageCategoryId, quizSubcategory.Name);
+            if (!isUnique) return false;
             return true;
-		}
+        }
 
-		private async Task<bool> DoesCategoryExist(int categoryId)
+        private async Task<bool> DoesCategoryExist(int categoryId)
         {
             var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
             return categories.Any(c => c.Id == categoryId);

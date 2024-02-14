@@ -1,4 +1,5 @@
 ﻿using Data_Layer.Enums;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace Data_Layer.PostModels
         public int LanguageCategoryId { get; set; }
         public QuizDifficulty Difficulty { get; set; }
         public List<int> SubcategoriesId { get; set; }
+        public IFormFile QuizImage { get; set; }
     }
 }

@@ -31,7 +31,7 @@ namespace ProgQuizWebsite.Controllers
         {
             if (isAdded)
                 return StatusCode(201, new ResponseObject(ResponseType.Success.GetDisplayNameProperty(), successMessage));
-            return StatusCode(422, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
+            return StatusCode(404, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
                 failureMessage));
         }
 
@@ -39,7 +39,7 @@ namespace ProgQuizWebsite.Controllers
         {
 			if (isUpdated)
 				return StatusCode(200, new ResponseObject(ResponseType.Success.GetDisplayNameProperty(), successMessage));
-			return StatusCode(422, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
+			return StatusCode(404, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
 				failureMessage));
 		}
 
@@ -47,7 +47,7 @@ namespace ProgQuizWebsite.Controllers
         {
             if (isDeleted)
 				return StatusCode(200, new ResponseObject(ResponseType.Success.GetDisplayNameProperty(), successMessage));
-			return StatusCode(422, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
+			return StatusCode(404, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
 				failureMessage));
 		}
     }

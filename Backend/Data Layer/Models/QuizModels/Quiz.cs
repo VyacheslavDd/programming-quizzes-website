@@ -16,6 +16,7 @@ namespace Data_Layer.Models.QuizModels
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
+        public string? ImageUrl { get; set; }
         public QuizDifficulty Difficulty { get; set; }
         public DateTime CreationDate { get; set; }
         public int LanguageCategoryId { get; set; }

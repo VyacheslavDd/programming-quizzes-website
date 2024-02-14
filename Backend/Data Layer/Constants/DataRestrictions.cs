@@ -29,5 +29,9 @@ namespace Data_Layer.Constants
         public static int AnswerMinLength { get; } = 2;
         public static int AnswerMaxLength { get; } = 50;
         public static int AnswersMaxQuantity { get; } = 10;
+        public static string[] AllowedImageExtensions = new string[]
+        {
+            "png", "jpg", "jpeg"
+        };
 	}
 }

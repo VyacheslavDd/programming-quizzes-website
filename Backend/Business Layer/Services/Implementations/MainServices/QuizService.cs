@@ -11,7 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business_Layer.Services.Implementations
+namespace Business_Layer.Services.Implementations.MainServices
 {
     public class QuizService : BaseService<Quiz>, IQuizService
     {
@@ -43,7 +43,7 @@ namespace Business_Layer.Services.Implementations
 
         private async Task<bool> DoesCategoryExist(int categoryId)
         {
-            return (await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId)) is not null;
+            return await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId) is not null;
         }
 
         public async Task<bool> MatchSubcategories(Quiz quiz, List<int> subcategoriesId)
@@ -52,7 +52,7 @@ namespace Business_Layer.Services.Implementations
             List<QuizSubcategory> subcategories = new List<QuizSubcategory>();
             var category = await _unitOfWork.CategoryRepository.GetByIdAsync(quiz.LanguageCategoryId);
             if (category is null) return false;
-			foreach (var subcategoryId in subcategoriesId)
+            foreach (var subcategoryId in subcategoriesId)
             {
                 var subcategory = await _unitOfWork.SubcategoryRepository.GetByIdAsync(subcategoryId);
                 if (subcategory is null) return false;
@@ -73,11 +73,11 @@ namespace Business_Layer.Services.Implementations
             return !quizzes.Any(qz => qz.Title.ToLower() == title);
         }
 
-		public async Task<List<Quiz?>> GetByPageFilter(GetQuizzesFilter filter)
-		{
+        public async Task<List<Quiz?>> GetByPageFilter(GetQuizzesFilter filter)
+        {
             if (filter is null || filter.Page - 1 < 0) return new List<Quiz?>();
             return (await GetAllAsync())
                 .Skip((filter.Page - 1) * filter.Limit).Take(filter.Limit).ToList();
-		}
-	}
+        }
+    }
 }
