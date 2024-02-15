@@ -6,7 +6,7 @@ export default function QuizList({quizzes}) {
   return (
     <ul className={styles.quizList}>
         {quizzes.map(curQuiz => <li key={curQuiz.id}>
-            <QuizCard quiz={{title: curQuiz.title, description: curQuiz.description,
+            <QuizCard quiz={{id: curQuiz.id, title: curQuiz.title, description: curQuiz.description,
     difficulty: curQuiz.difficulty, imageUrl: curQuiz.imageUrl, categoryName: curQuiz.categoryName,
      subcategories: curQuiz.subcategories}}/>
             </li>)}

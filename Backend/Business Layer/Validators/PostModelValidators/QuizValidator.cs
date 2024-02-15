@@ -1,4 +1,5 @@
-﻿using Data_Layer.Constants;
+﻿using Business_Layer.CommonFunctions;
+using Data_Layer.Constants;
 using Data_Layer.PostModels;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -26,13 +27,8 @@ namespace Business_Layer.Validators.PostModelValidators
                 Must(list => list.Count >= DataRestrictions.QuizSubcategoriesListMinLength && list.Count <= DataRestrictions.QizSubcategoriesListMaxLength)
                 .ForEach(sub => sub.NotNull().NotEmpty().GreaterThan(0).WithMessage("Id подкатегории должен быть больше 0"))
                 .WithMessage("Количество подкатегорий должно быть от 1 до 3");
-            RuleFor(qz => qz.QuizImage).NotNull().NotEmpty().Must(BeCorrectExtension).WithMessage("Выберите изображение формата png, jpg, jpeg");
-        }
-
-        private bool BeCorrectExtension(IFormFile file)
-        {
-            var extension = Path.GetExtension(file.FileName);
-            return DataRestrictions.AllowedImageExtensions.Any(ext => extension.EndsWith(ext));
+            RuleFor(qz => qz.QuizImage).NotNull().NotEmpty().Must(CommonUtils.BeCorrectExtension)
+                .WithMessage("Выберите изображение формата png, jpg, jpeg");
         }
     }
 }

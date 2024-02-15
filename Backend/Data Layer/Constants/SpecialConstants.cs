@@ -11,5 +11,6 @@ namespace Data_Layer.Constants
         public static string UnknownValue { get; } = "Unknown";
         public static string UploadsDirectoryName { get; } = "Uploads";
         public static string QuizImagesDirectoryName { get; } = "QuizImages";
+        public static string QuestionImagesDirectoryName { get; } = "QuestionImages";
     }
 }

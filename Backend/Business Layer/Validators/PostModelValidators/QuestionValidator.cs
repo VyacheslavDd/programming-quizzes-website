@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Business_Layer.CommonFunctions;
 
 namespace Business_Layer.Validators.PostModelValidators
 {
@@ -27,6 +29,8 @@ namespace Business_Layer.Validators.PostModelValidators
             RuleFor(q => q.FailureInfo).NotNull().NotEmpty()
                 .Length(DataRestrictions.QuestionFailureInfoMinLength, DataRestrictions.QuestionFailureInfoMaxLength)
                 .WithMessage("Несоответствие описания в случае неправильного ответа заданной длине.");
+            RuleFor(q => q.Image).NotNull().NotEmpty().Must(CommonUtils.BeCorrectExtension)
+                .WithMessage("Выберите изображение формата png, jpg, jpeg");
         }
     }
 }

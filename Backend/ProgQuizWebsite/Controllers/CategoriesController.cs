@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ProgQuizWebsite.Controllers
 {
+    /// <summary>
+    /// Контроллер для работы с категориями викторин (Python, C#...)
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CategoriesController : BaseController
@@ -24,7 +27,10 @@ namespace ProgQuizWebsite.Controllers
             _mapper = mapper;
         }
 
-
+        /// <summary>
+        /// Метод для получения всех категорий. Включает в себя существующие подкатегории, не включает викторины, соответствующие категории
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("all")]
         public async Task<IActionResult> GetAll()
@@ -32,8 +38,12 @@ namespace ProgQuizWebsite.Controllers
             var results = await _service.GetAllAsync();
             return ProcessItems<LanguageCategory?, CategoryViewModel>(results, _mapper, "Не существует ни одной категории");
         }
-
-        [HttpGet]
+		/// <summary>
+		/// Метод для получения категории. Включает в себя существующие подкатегории, и викторины, соответствующие категории
+		/// </summary>
+		/// <param name="id">Id категории</param>
+		/// <returns></returns>
+		[HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
@@ -47,7 +57,11 @@ namespace ProgQuizWebsite.Controllers
             mappedResult.Quizzes = quizViewModels;
             return StatusCode(200, mappedResult);
         }
-
+        /// <summary>
+        /// Метод для добавления новой категории
+        /// </summary>
+        /// <param name="categoryModel">Модель категории. Нужно указать название категории</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("create")]
         public async Task<IActionResult> Add(CategoryPostModel categoryModel)
@@ -56,8 +70,13 @@ namespace ProgQuizWebsite.Controllers
             bool isAdded = await _service.AddAsync(entityModel);
             return ProcessAdding(isAdded, "Категория создана", "Не удалось создать категорию.");
         }
-
-        [HttpPut]
+		/// <summary>
+		/// Метод для обновления категории
+		/// </summary>
+		/// <param name="id">Id категории</param>
+		/// <param name="categoryModel">Модель категории. Нужно указать название категории</param>
+		/// <returns></returns>
+		[HttpPut]
         [Route("{id}/update")]
         public async Task<IActionResult> Update([FromRoute] int id, CategoryPostModel categoryModel)
         {
@@ -69,7 +88,11 @@ namespace ProgQuizWebsite.Controllers
             bool isUpdated = await _service.UpdateAsync(entity);
 			return ProcessUpdating(isUpdated, "Категория обновлена", "Не удалось обновить категорию. Проверьте существование категории");
 		}
-
+        /// <summary>
+        /// Метод для удаления категории
+        /// </summary>
+        /// <param name="id">Id категории</param>
+        /// <returns></returns>
 		[HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)

@@ -9,13 +9,25 @@ namespace Data_Layer.Enums
 {
     public enum QuizDifficulty
     {
-        [Display(Name = "Легкий")]
+        /// <summary>
+        /// Лёгкая
+        /// </summary>
+        [Display(Name = "Легкая")]
         Easy = 1,
-        [Display(Name = "Средний")]
+		/// <summary>
+		/// Средняя
+		/// </summary>
+		[Display(Name = "Средняя")]
         Medium,
-        [Display(Name = "Тяжелый")]
+		/// <summary>
+		/// Тяжелая
+		/// </summary>
+		[Display(Name = "Тяжелая")]
         Hard,
-        [Display(Name = "Эксперт")]
+		/// <summary>
+		/// Эксперт
+		/// </summary>
+		[Display(Name = "Эксперт")]
         Expert
     }
 }

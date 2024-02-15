@@ -13,6 +13,9 @@ using Data_Layer.FilterModels.QuizFilters;
 
 namespace ProgQuizWebsite.Controllers
 {
+    /// <summary>
+    /// Контроллер для работы с викторинами
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class QuizzesController : BaseController
@@ -29,7 +32,11 @@ namespace ProgQuizWebsite.Controllers
             _environment = environment;
             _imageService = imageService;
         }
-
+        /// <summary>
+        /// Метод для добавления викторины
+        /// </summary>
+        /// <param name="model">Модель викторины. Нужно указать: название, описание, Id категории, сложность, Id подкатегорий, обложку викторины</param>
+        /// <returns></returns>
         [HttpPost]
         [Route("create")]
 		[Consumes("multipart/form-data")]
@@ -43,7 +50,10 @@ namespace ProgQuizWebsite.Controllers
 			return ProcessAdding(isAdded, "Объект викторины создан!",
                 "Не удалось создать викторину. Проверьте идентификаторы категории и подкатегорий, уникальность викторины.");
         }
-
+        /// <summary>
+        /// Метод для получения всех викторин. Не включает вопросы с ответами
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("all")]
         public async Task<IActionResult> GetAll()
@@ -51,7 +61,11 @@ namespace ProgQuizWebsite.Controllers
             var results = await _service.GetAllAsync();
             return ProcessItems<Quiz, QuizViewModel>(results, _mapper, "Викторины отсутствуют");
 		}
-
+        /// <summary>
+        /// Метод для получения всех викторин в соответствии с заданным фильтром
+        /// </summary>
+        /// <param name="filter">Модель фильтра. Нужно указать: кол-во викторин на страницу, желаемую страницу</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("")]
         public async Task<IActionResult> GetPage([FromQuery] GetQuizzesFilter filter)
@@ -59,7 +73,11 @@ namespace ProgQuizWebsite.Controllers
             var results = await _service.GetByPageFilter(filter);
 			return ProcessItems<Quiz?, QuizViewModel>(results, _mapper, "Empty");
 		}
-
+        /// <summary>
+        /// Метод для получения викторины. Включает вопросы с ответами
+        /// </summary>
+        /// <param name="id">Id викторины</param>
+        /// <returns></returns>
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById([FromRoute] int id)
@@ -72,7 +90,12 @@ namespace ProgQuizWebsite.Controllers
             mappedResult.Questions = _mapper.Map<List<QuestionViewModel>>(result.Questions);
             return StatusCode(200, mappedResult);
         }
-
+		/// <summary>
+		/// Метод для обновления викторины
+		/// </summary>
+		/// <param name="id">Id викторины</param>
+		/// <param name="quizModel">Модель викторины. Нужно указать: название, описание, Id категории, сложность, Id подкатегорий, обложку викторины</param>
+		/// <returns></returns>
 		[HttpPut]
 		[Route("{id}/update")]
         [Consumes("multipart/form-data")]
@@ -93,7 +116,11 @@ namespace ProgQuizWebsite.Controllers
 			return ProcessUpdating(isUpdated, "Викторина обновлена", "Не удалось обновить викторину." +
                 "Проверьте уникальность, идентификаторы категории и подкатегорий");
 		}
-
+        /// <summary>
+        /// Метод для удаления викторины
+        /// </summary>
+        /// <param name="id">Id викторины</param>
+        /// <returns></returns>
 		[HttpDelete]
 		[Route("{id}")]
 		public async Task<IActionResult> Delete([FromRoute] int id)

@@ -14,6 +14,7 @@ namespace Data_Layer.ViewModels
 		public string? Description { get; set; }
 		public string? SuccessInfo { get; set; }
 		public string? FailureInfo { get; set; }
+		public string? ImageUrl { get; set; }
 		public int QuizId { get; set; }
 		public List<AnswerViewModel?> Answers { get; set; }
 	}

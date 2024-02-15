@@ -6,23 +6,26 @@ import Helper from '../../../services/Helper'
 import useFetching from '../../../hooks/useFetching'
 import ImageAPI from '../../../services/API/ImageAPI'
 import Loading from '../../animations/Loading/Loading'
+import { useNavigate } from 'react-router-dom'
 
 export default function QuizCard({quiz}) {
 
   const [difficulty, setDifficulty] = useState("");
   const [imageBytesRepr, setImageBytesRepr] = useState("");
+
   const [fetchImage, isLoading, isError] = useFetching(async () => {
     let imageBytes = await ImageAPI.getImage(quiz.imageUrl);
     setImageBytesRepr(imageBytes);
   });
-  console.log(quiz);
   useEffect(() => {
     setDifficulty(Helper.getDifficultyProperty(quiz.difficulty));
     fetchImage();
   }, [])
 
+  const router = useNavigate();
+
   return (
-    <div className={styles.cardBlock}>
+    <div className={styles.cardBlock} onClick={() => router(`${quiz.id}`)}>
         <div className={styles.container}>
             {isLoading
             ? <Loading/>

@@ -20,6 +20,7 @@ namespace Data_Layer.Models.QuizContentModels
         public string? Description { get; set; }
         public string? SuccessInfo { get; set; }
         public string? FailureInfo { get; set; }
+        public string? ImageUrl { get; set; }
         public int QuizId { get; set; }
         public Quiz? Quiz { get; set; }
         public List<Answer?> Answers { get; set; }
