@@ -9,7 +9,7 @@ export default function Header() {
   return (
     <>
       <header className={styles.header}>
-          <Link to='#'><img src={logo} alt='Логотип сайта' width={150} height={100}/></Link>
+          <Link to='/'><img src={logo} alt='Логотип сайта' width={150} height={100}/></Link>
           <nav className={styles.navBar}>
             <ul className={styles.navigationLinks}>
                 <li className={styles.navigationLinksItem}><Link to='/'>Главная</Link></li>

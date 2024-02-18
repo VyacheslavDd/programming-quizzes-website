@@ -49,7 +49,7 @@ builder.Services.AddControllers()
     })
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-builder.Services.AddDbContext<QuizAppContext>(opt => opt.UseSqlServer(builder.Configuration.GetConnectionString("QuizDB"),
+builder.Services.AddDbContext<QuizAppContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("QuizDB"),
     m => m.MigrationsAssembly("ProgQuizWebsite")), ServiceLifetime.Scoped);
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -75,6 +75,7 @@ builder.Services.AddSwaggerGen(opt =>
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -89,5 +90,10 @@ app.UseCors(defaultPolicyName);
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope =
+  app.Services.CreateScope())
+using (var context = scope.ServiceProvider.GetService<QuizAppContext>())
+	context.Database.Migrate();
 
 app.Run();
