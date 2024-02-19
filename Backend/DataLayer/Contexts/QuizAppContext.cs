@@ -12,11 +12,11 @@ namespace Data_Layer.Contexts
 {
     public class QuizAppContext : DbContext
     {
-        public DbSet<Quiz?> Quizzes { get; set; }
-        public DbSet<LanguageCategory?> LanguageCategories { get; set; }
-        public DbSet<QuizSubcategory?> Subcategories { get; set; }
-        public DbSet<Question?> Questions { get; set; }
-        public DbSet<Answer?> Answers { get; set; }
+        public virtual DbSet<Quiz?> Quizzes { get; set; }
+        public virtual DbSet<LanguageCategory?> LanguageCategories { get; set; }
+        public virtual DbSet<QuizSubcategory?> Subcategories { get; set; }
+        public virtual DbSet<Question?> Questions { get; set; }
+        public virtual DbSet<Answer?> Answers { get; set; }
 
         public QuizAppContext(DbContextOptions<QuizAppContext> options) : base(options)
         {
