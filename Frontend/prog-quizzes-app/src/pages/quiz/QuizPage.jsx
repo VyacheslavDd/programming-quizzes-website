@@ -13,35 +13,30 @@ import QuizQuestion from '../../components/quiz_page_components/quiz_question/Qu
 import PaginationButton from '../../components/pagination/pagination_button/PaginationButton'
 import PaginationRow from '../../components/pagination/pagination_row/PaginationRow'
 import ImageAPI from '../../services/API/ImageAPI'
+import { useDispatch, useSelector } from 'react-redux'
+import { setQuestionsCount, setCurrentQuestion, setQuestionAnswersInfo, resetState } from '../../redux/slices/QuizSlice'
 
 export default function QuizPage() {
 
     const id = useParams()['id'];
     const [quiz, setQuiz] = useState({});
-    const [images, setImages] = useState({});
-    const [currentQuestion, setCurrentQuestion] = useState(0);
-
+    const quizDispatch = useDispatch();
+    const questionsCount = useSelector(state => state.questionsCount);
+    const currentQuestion = useSelector(state => state.currentQuestion);
     const [fetchQuiz, isLoading, isError] = useFetching(async () => {
       const data = await QuizAPI.getQuiz(id);
       setQuiz(data);
+      quizDispatch(setQuestionsCount(data.questions.length));
+      quizDispatch(setQuestionAnswersInfo(data.questions));
+
     }, true);
-    const [fetchImages, areImagesLoading, areImagesError] = useFetching(async () => {
-      let counter = 0;
-      for (let question of quiz.questions) {
-        let data = await ImageAPI.getQuestionImage(question.imageUrl);
-        setImages(prevImages => ({...prevImages, [counter - 1]: data}));
-        counter++;
-      }
-  }, true);
+
     const [isIntro, setIsIntro] = useState(true);
 
     useEffect(() => {
+      quizDispatch(resetState())
       fetchQuiz();
     }, [])
-
-    useEffect(() => {
-      fetchImages();
-    }, [quiz])
 
     return (
     <>
@@ -53,10 +48,9 @@ export default function QuizPage() {
     : isIntro
       ? <QuizIntro setIsIntro={setIsIntro} quiz={quiz}/>
       : <>
-        <QuizQuestion question={quiz.questions[currentQuestion]} counterState={setCurrentQuestion}
-        image={images[currentQuestion]} currentQuestionId={currentQuestion}/>
-        <PaginationRow count={quiz.questions.length} currentPage={currentQuestion} onPaginationClick={(pageNumber) => {
-          setCurrentQuestion(pageNumber);
+        <QuizQuestion question={quiz.questions[currentQuestion]}/>
+        <PaginationRow count={questionsCount} currentPage={currentQuestion} onPaginationClick={(pageNumber) => {
+          quizDispatch(setCurrentQuestion(pageNumber));
       }}/>
       </>
     }

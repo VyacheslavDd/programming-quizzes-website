@@ -5,7 +5,16 @@ import AnswerSelect from "../answer_select/AnswerSelect";
 import styles from "./QuizQuestion.module.css"
 import React, { useEffect, useState } from 'react'
 
-export default function QuizQuestion({currentQuestionId, counterState, question, image}) {
+export default function QuizQuestion({question}) {
+
+  const [image, setImage] = useState("");
+  const [fetchImage, isLoading, isError] = useFetching(async () => {
+    setImage(await ImageAPI.getQuestionImage(question.imageUrl));
+  })
+
+  useEffect(() => {
+    fetchImage();
+  }, [question]);
 
   return (
     <>

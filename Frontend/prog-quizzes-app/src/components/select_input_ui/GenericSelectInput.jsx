@@ -1,7 +1,9 @@
+import { useSelector } from "react-redux"
 import styles from "./GenericSelectInput.module.css"
 import React from 'react'
 
 export default function GenericSelectInput(props) {
+
   return (
     <>
         <label className={styles.container}>
