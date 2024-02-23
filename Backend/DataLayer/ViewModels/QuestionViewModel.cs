@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Data_Layer.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Data_Layer.ViewModels
 	{
 		public int Id { get; set; }
 		public string? Title { get; set; }
-		public string? QuestionType { get; set; }
+		public int QuestionType { get; set; }
 		public string? Description { get; set; }
 		public string? SuccessInfo { get; set; }
 		public string? FailureInfo { get; set; }

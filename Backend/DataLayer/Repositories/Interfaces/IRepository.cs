@@ -8,6 +8,7 @@ namespace Data_Layer.Repositories.Interfaces
 {
     public interface IRepository<T> where T: class
     {
+        void Add(T entity);
         Task<List<T?>> GetAllAsync();
         Task<T?> GetByIdAsync(int id);
         Task AddAsync(T? item);

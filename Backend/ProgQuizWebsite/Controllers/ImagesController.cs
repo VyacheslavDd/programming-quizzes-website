@@ -22,15 +22,27 @@ namespace ProgQuizWebsite.Controllers
 		}
 
 		/// <summary>
-		/// Метод для получения изображения по имени файла
+		/// Метод для получения изображения викторины по имени файла
 		/// </summary>
 		/// <param name="url">Название файла полностью, с расширением</param>
 		/// <returns>Возвращает изображение как массив байтов (base64)</returns>
 		[HttpGet]
-		[Route("{url}")]
-		public async Task<IActionResult> GetImageAsByteArray([FromRoute] string url)
+		[Route("quiz/{url}")]
+		public async Task<IActionResult> GetQuizImageAsByteArray([FromRoute] string url)
 		{
 			return StatusCode(200, await _imageService.GetFileAsByteArrayAsync(_environment.ContentRootPath, SpecialConstants.QuizImagesDirectoryName, url));
+		}
+
+		/// <summary>
+		/// Метод для получения изображения вопроса по имени файла
+		/// </summary>
+		/// <param name="url">Название файла полностью, с расширением</param>
+		/// <returns>Возвращает изображение как массив байтов (base64)</returns>
+		[HttpGet]
+		[Route("question/{url}")]
+		public async Task<IActionResult> GetQuestionImageAsByteArray([FromRoute] string url)
+		{
+			return StatusCode(200, await _imageService.GetFileAsByteArrayAsync(_environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, url));
 		}
 	}
 }

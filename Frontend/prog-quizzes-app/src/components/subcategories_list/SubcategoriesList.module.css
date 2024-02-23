@@ -1,0 +1,9 @@
+
+.subcategories {
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}

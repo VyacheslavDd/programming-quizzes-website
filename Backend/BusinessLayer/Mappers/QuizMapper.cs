@@ -38,7 +38,7 @@ namespace Business_Layer.Mappers
                 .ForMember(qz => qz.Subcategories, m => m.MapFrom(qpm => new List<QuizSubcategory>()));
 
             CreateMap<Question, QuestionViewModel>()
-                .ForMember(qvm => qvm.QuestionType, m => m.MapFrom(q => q.Type.GetDisplayNameProperty()))
+                .ForMember(qvm => qvm.QuestionType, m => m.MapFrom(q => q.Type))
                 .ForMember(qvm => qvm.Answers, m => m.MapFrom(q =>
                 q.Answers.Select(a => new AnswerViewModel() { Id = a.Id, Name = a.Name, QuestionTitle = q.Title,
                 IsCorrect = a.IsCorrect})));

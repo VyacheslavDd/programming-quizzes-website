@@ -7,18 +7,23 @@ import useFetching from '../../../hooks/useFetching'
 import ImageAPI from '../../../services/API/ImageAPI'
 import Loading from '../../animations/Loading/Loading'
 import { useNavigate } from 'react-router-dom'
+import SubcategoriesList from '../../subcategories_list/SubcategoriesList'
+import useDifficulty from '../../../hooks/useDifficulty'
+import CategoryDifficulty from '../../category_difficulty/CategoryDifficulty'
 
 export default function QuizCard({quiz}) {
 
-  const [difficulty, setDifficulty] = useState("");
+  const [parseDifficulty, difficulty] = useDifficulty(() => {
+    return Helper.getDifficultyProperty(quiz.difficulty);
+  });
   const [imageBytesRepr, setImageBytesRepr] = useState("");
 
   const [fetchImage, isLoading, isError] = useFetching(async () => {
-    let imageBytes = await ImageAPI.getImage(quiz.imageUrl);
+    let imageBytes = await ImageAPI.getQuizImage(quiz.imageUrl);
     setImageBytesRepr(imageBytes);
   });
   useEffect(() => {
-    setDifficulty(Helper.getDifficultyProperty(quiz.difficulty));
+    parseDifficulty();
     fetchImage();
   }, [])
 
@@ -29,16 +34,11 @@ export default function QuizCard({quiz}) {
         <div className={styles.container}>
             {isLoading
             ? <Loading/>
-            : <img width={230} height={200} className={styles.quizImage} src={`data:image;base64,${imageBytesRepr}`} alt='Изображение викторины'></img>}
+            : <img width={230} height={200} style={{alignSelf: "center"}} className={styles.quizImage} src={`data:image;base64,${imageBytesRepr}`} alt='Изображение викторины'></img>}
             <h2>{quiz.title}</h2>
-            <p className={styles.description}>{quiz.description}</p>
-            <div className={styles.categoryDif}>
-                <Category name={quiz.categoryName}/>
-                <span className={styles.difSpan}>{difficulty}</span>
-            </div>
-            <div className={styles.subcategories}>
-                {quiz.subcategories.map(subcategory => <Subcategory key={subcategory.id} name={subcategory.name}/>)}
-            </div>
+            <p className={styles.description}>{Helper.shortenQuizDescription(quiz.description)}</p>
+            <CategoryDifficulty difficulty={difficulty} categoryName={quiz.categoryName}/>
+            <SubcategoriesList subcategories={quiz.subcategories}/>
         </div>
     </div>
   )

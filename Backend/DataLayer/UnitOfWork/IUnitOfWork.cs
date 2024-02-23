@@ -17,6 +17,7 @@ namespace Data_Layer.UnitOfWork
         IRepository<Quiz> QuizRepository { get; }
         IRepository<Question> QuestionRepository { get; }
         IRepository<Answer> AnswerRepository { get; }
-        Task Save();
+        Task SaveAsync();
+        void Save();
     }
 }

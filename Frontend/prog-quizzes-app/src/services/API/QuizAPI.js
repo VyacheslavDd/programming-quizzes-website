@@ -5,4 +5,9 @@ export default class QuizAPI {
         const response = await axios.get("https://localhost:7184/api/quizzes/all");
         return response.data;
     }
+
+    static async getQuiz(id) {
+        const response = await axios.get(`https://localhost:7184/api/quizzes/${id}`);
+        return response.data;
+    }
 }

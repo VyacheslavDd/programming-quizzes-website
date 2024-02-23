@@ -1,0 +1,15 @@
+
+.questionImage {
+    margin-top: 15px;
+    max-width: 100%;
+    border-radius: 20px;
+}
+.title {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.description {
+    align-self: flex-start;
+    text-align: left;
+    font-size: 20px;
+}

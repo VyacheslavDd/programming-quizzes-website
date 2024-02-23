@@ -27,9 +27,13 @@ namespace Data_Layer.UnitOfWork
         public IRepository<Question> QuestionRepository => new QuestionRepository(_context);
         public IRepository<Answer> AnswerRepository => new AnswerRepository(_context);
 
-		public async Task Save()
+		public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
+        }
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

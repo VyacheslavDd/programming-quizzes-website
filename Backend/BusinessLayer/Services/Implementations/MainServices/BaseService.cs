@@ -31,7 +31,7 @@ namespace Business_Layer.Services.Implementations.MainServices
             try
             {
                 await _repository.AddAsync(item);
-                await _unitOfWork.Save();
+                await _unitOfWork.SaveAsync();
                 return true;
             }
             catch
@@ -45,7 +45,7 @@ namespace Business_Layer.Services.Implementations.MainServices
             try
             {
                 await _repository.DeleteAsync(id);
-                await _unitOfWork.Save();
+                await _unitOfWork.SaveAsync();
                 return true;
             }
             catch
@@ -70,7 +70,7 @@ namespace Business_Layer.Services.Implementations.MainServices
             if (!await ValidateItemData(item)) return false;
             try
             {
-                await _unitOfWork.Save();
+                await _unitOfWork.SaveAsync();
                 return true;
             }
             catch
@@ -78,5 +78,21 @@ namespace Business_Layer.Services.Implementations.MainServices
                 return false;
             }
         }
-    }
+
+		public bool Add(T? item)
+		{
+            var isCorrect = ValidateItemData(item).Result;
+            if (!isCorrect) return false;
+            try
+            {
+                _repository.Add(item);
+                _unitOfWork.Save();
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+		}
+	}
 }

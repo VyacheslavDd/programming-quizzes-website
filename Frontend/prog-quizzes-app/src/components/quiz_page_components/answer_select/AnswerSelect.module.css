@@ -1,0 +1,12 @@
+
+.answersContainer {
+    width: 80%;
+    padding: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgb(196, 225, 250);
+    margin-top: 15px;
+    margin-bottom: 15px;
+}

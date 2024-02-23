@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 
-export default function useFetching(callback) {
+export default function useFetching(callback, isLoadingInitial=false) {
 
-    const [isLoading, setLoading] = useState(false);
+    const [isLoading, setLoading] = useState(isLoadingInitial);
     const [isError, setIsError] = useState(false);
 
     async function fetch() {

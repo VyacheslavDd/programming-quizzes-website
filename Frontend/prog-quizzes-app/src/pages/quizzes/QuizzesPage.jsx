@@ -15,7 +15,7 @@ export default function QuizzesPage() {
   const [fetchQuizzes, isLoadingQuizzes, isErrorOnLoadingQuizzes] = useFetching(async () => {
     const data = await QuizAPI.getAllAsync();
     setQuizzes(data);
-  })
+  }, true)
 
   useEffect(() => {
     fetchQuizzes();
