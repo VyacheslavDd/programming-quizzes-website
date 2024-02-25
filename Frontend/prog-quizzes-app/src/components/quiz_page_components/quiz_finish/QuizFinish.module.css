@@ -26,3 +26,9 @@
     margin-top: 25px;
     margin-bottom: 20px;
 }
+.hint {
+    font-size: 18px;
+    margin-bottom: 20px;
+    align-self: flex-start;
+    padding-left: 20px;
+}

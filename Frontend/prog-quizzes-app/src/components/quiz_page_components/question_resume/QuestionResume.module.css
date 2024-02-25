@@ -6,4 +6,27 @@
     padding: 15px;
     display: flex;
     justify-content: flex-start;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+.question {
+    font-size: 25px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+.answersList {
+    padding-left: 35px;
+    margin-top: -10px;
+    list-style: decimal;
+}
+.answer {
+    text-align: left;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-size: 20px;
+}
+.info {
+    margin-top: 25px;
+    font-size: 22px;
 }

@@ -55,6 +55,7 @@ export default function QuizFinish({questions, setIsFinished}) {
             : <>
                 {questions.map((question, index) => <QuestionResume key={question.id}
                 question={question} questionIndex={index} isCorrect={questionsCorrect[index]}/>)}
+                <span className={styles.hint}>*Нижней чертой обозначены выбранные ответы</span>
                 <button className={styles.detailsButton} onClick={() => setDoShowDetails(false)}>Скрыть результаты</button>
             </>}
             <div className={styles.buttonsRow}>
