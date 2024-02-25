@@ -14,7 +14,9 @@ import PaginationButton from '../../components/pagination/pagination_button/Pagi
 import PaginationRow from '../../components/pagination/pagination_row/PaginationRow'
 import ImageAPI from '../../services/API/ImageAPI'
 import { useDispatch, useSelector } from 'react-redux'
-import { setQuestionsCount, setCurrentQuestion, setQuestionAnswersInfo, resetState } from '../../redux/slices/QuizSlice'
+import { setQuestionsCount, setCurrentQuestion, setQuestionAnswersInfo, setAnsweredQuestionsInfo, resetState } from '../../redux/slices/QuizSlice'
+import GenericButton from '../../components/buttons/generic_button/GenericButton'
+import QuizFinish from '../../components/quiz_page_components/quiz_finish/QuizFinish'
 
 export default function QuizPage() {
 
@@ -23,15 +25,18 @@ export default function QuizPage() {
     const quizDispatch = useDispatch();
     const questionsCount = useSelector(state => state.questionsCount);
     const currentQuestion = useSelector(state => state.currentQuestion);
+    const answeredQuestionsCount = useSelector(state => state.answeredQuestionsCount);
+    const answeredQuestions = useSelector(state => state.answeredQuestions);
     const [fetchQuiz, isLoading, isError] = useFetching(async () => {
       const data = await QuizAPI.getQuiz(id);
       setQuiz(data);
       quizDispatch(setQuestionsCount(data.questions.length));
       quizDispatch(setQuestionAnswersInfo(data.questions));
-
+      quizDispatch(setAnsweredQuestionsInfo(data.questions.length));
     }, true);
 
     const [isIntro, setIsIntro] = useState(true);
+    const [isFinished, setIsFinished] = useState(false);
 
     useEffect(() => {
       quizDispatch(resetState())
@@ -47,12 +52,17 @@ export default function QuizPage() {
     : isError ? <ErrorMessage errorMsg={"Не удалось загрузить викторину. Попробуйте позже!"}/>
     : isIntro
       ? <QuizIntro setIsIntro={setIsIntro} quiz={quiz}/>
-      : <>
+      : !isFinished ? <>
         <QuizQuestion question={quiz.questions[currentQuestion]}/>
         <PaginationRow count={questionsCount} currentPage={currentQuestion} onPaginationClick={(pageNumber) => {
           quizDispatch(setCurrentQuestion(pageNumber));
-      }}/>
+      } } markedPages={answeredQuestions}/>
+        <div className={styles.finishBlock}>
+          <GenericButton disabled={answeredQuestionsCount == questionsCount ? false : true}
+          onClick={() => setIsFinished(true)}>Закончить попытку</GenericButton>
+        </div>
       </>
+      : <QuizFinish questions={quiz.questions} setIsFinished={setIsFinished}/>
     }
       </div>
     </div>

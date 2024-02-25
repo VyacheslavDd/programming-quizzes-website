@@ -14,3 +14,8 @@
     border: 3px solid blueviolet;
     background-color: rgba(247, 247, 215, 0.26);
 }
+.button[disabled]:hover {
+    background-color: rgba(0, 0, 0, 0);
+    border: 3px dashed blueviolet;
+    cursor: default;
+}

@@ -1,0 +1,28 @@
+.finishMessage {
+    font-size: 35px;
+    margin-bottom: 15px;
+}
+.resume {
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 25px;
+}
+.detailsButton {
+    border: 0;
+    background-color: rgba(0, 0, 0, 0);
+    font-size: 28px;
+    color: rgb(134, 18, 230);
+    margin-top: 15px;
+}
+.detailsButton:hover {
+    cursor: pointer;
+}
+.buttonsRow {
+    max-width: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 25px;
+    margin-bottom: 20px;
+}

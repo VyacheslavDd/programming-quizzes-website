@@ -4,6 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     questionsCount: 0,
     currentQuestion: 0,
+    answeredQuestionsCount: 0,
     answeredQuestions: {},
     questionAnswers: {}
 };
@@ -29,6 +30,12 @@ export const quizSlice = createSlice({
                 counter++;
             }
         },
+        setAnsweredQuestionsInfo: (state, action) => {
+            const count = action.payload;
+            for (let i = 0; i < count; i++) {
+                state.answeredQuestions[i] = false;
+            }
+        },
         updateQuestionAnswersInfo: (state, action) => {
             const [questionNumber, data, isRadio] = action.payload;
             if (isRadio) {
@@ -40,6 +47,9 @@ export const quizSlice = createSlice({
         },
         updateAnsweredQuestionsInfo: (state, action) => {
             const questionNumber = action.payload;
+            if (!state.answeredQuestions[questionNumber]) {
+                state.answeredQuestionsCount++;
+            }
             state.answeredQuestions[questionNumber] = true;
         },
         resetState: (state) => {
@@ -48,6 +58,6 @@ export const quizSlice = createSlice({
     }
 })
 
-export const {setQuestionsCount, setCurrentQuestion, setQuestionAnswersInfo,
+export const {setQuestionsCount, setCurrentQuestion, setQuestionAnswersInfo, setAnsweredQuestionsInfo,
      updateQuestionAnswersInfo, updateAnsweredQuestionsInfo, resetState} = quizSlice.actions;
 export default quizSlice.reducer;

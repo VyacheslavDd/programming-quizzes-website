@@ -19,3 +19,7 @@
     text-align: center;
     margin-bottom: 20px;
 }
+.finishBlock {
+    margin-top: 20px;
+    align-self: flex-end;
+}

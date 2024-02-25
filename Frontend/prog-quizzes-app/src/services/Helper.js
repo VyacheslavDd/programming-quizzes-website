@@ -31,4 +31,17 @@ export default class Helper {
         }
         return description.slice(0, Helper.quizDescriptionLength) + "...";
     }
+
+    static defineQuizResumeColor(correctAnswersCount, count) {
+        let percent = correctAnswersCount / 2 * 100 / count;
+        if (percent < 50) {
+            return "#e84c55";
+        }
+        else if (percent < 80) {
+            return "#98780d"
+        }
+        else {
+            return "#10871a"
+        }
+    }
 }

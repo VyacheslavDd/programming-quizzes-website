@@ -13,7 +13,7 @@
     cursor: pointer;
 }
 .current {
-    background-color: rgb(252, 252, 188);
+    background-color: rgb(252, 252, 188) !important;
 }
 .current:hover {
     cursor: pointer;
