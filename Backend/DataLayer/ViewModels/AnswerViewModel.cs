@@ -8,7 +8,7 @@ namespace Data_Layer.ViewModels
 {
 	public class AnswerViewModel
 	{
-		public int Id { get; set; }
+		public Guid Id { get; set; }
 		public string? Name { get; set; }
 		public bool IsCorrect { get; set; }
 		public string? QuestionTitle { get; set; }

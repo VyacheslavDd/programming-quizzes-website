@@ -27,7 +27,7 @@ namespace Data_Layer.Repositories.Implementations
                 .ThenInclude(qz => qz.LanguageCategory).ToListAsync();
         }
 
-        public override async Task<Quiz?> GetByIdAsync(int id)
+        public override async Task<Quiz?> GetByGuidAsync(Guid id)
         {
             return await _context.Quizzes.Include(qz => qz.Questions).ThenInclude(q => q.Answers).Include(qz => qz.Subcategories)
                 .ThenInclude(qz => qz.LanguageCategory)

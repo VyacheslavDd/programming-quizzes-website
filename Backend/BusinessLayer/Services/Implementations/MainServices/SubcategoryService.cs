@@ -25,13 +25,13 @@ namespace Business_Layer.Services.Implementations.MainServices
             return true;
         }
 
-        private async Task<bool> DoesCategoryExist(int categoryId)
+        private async Task<bool> DoesCategoryExist(Guid categoryId)
         {
             var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
             return categories.Any(c => c.Id == categoryId);
         }
 
-        private async Task<bool> IsUnique(int categoryId, string subcategoryName)
+        private async Task<bool> IsUnique(Guid categoryId, string subcategoryName)
         {
             var entries = (await GetAllAsync()).Where(sc => sc.LanguageCategoryId == categoryId);
             return !entries.Any(sc => sc.Name.ToLower() == subcategoryName);

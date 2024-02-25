@@ -25,22 +25,22 @@ namespace Business_Layer.Services.Implementations.MainServices
 
         public abstract Task<bool> ValidateItemData(T? item);
 
-        public async virtual Task<bool> AddAsync(T? item)
+        public async virtual Task<Guid> AddAsync(T? item)
         {
-            if (!await ValidateItemData(item)) return false;
+            if (!await ValidateItemData(item)) return Guid.Empty;
             try
             {
-                await _repository.AddAsync(item);
+                var guid = await _repository.AddAsync(item);
                 await _unitOfWork.SaveAsync();
-                return true;
+                return guid;
             }
             catch
             {
-                return false;
+                return Guid.Empty;
             }
         }
 
-        public virtual async Task<bool> DeteteAsync(int id)
+        public virtual async Task<bool> DeteteAsync(Guid id)
         {
             try
             {
@@ -59,9 +59,9 @@ namespace Business_Layer.Services.Implementations.MainServices
             return await _repository.GetAllAsync();
         }
 
-        public virtual async Task<T?> GetByIdAsync(int id)
+        public virtual async Task<T?> GetByGuidAsync(Guid id)
         {
-            return await _repository.GetByIdAsync(id);
+            return await _repository.GetByGuidAsync(id);
         }
 
         public virtual async Task<bool> UpdateAsync(T? item)

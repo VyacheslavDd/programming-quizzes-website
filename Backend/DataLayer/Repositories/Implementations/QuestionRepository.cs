@@ -24,7 +24,7 @@ namespace Data_Layer.Repositories.Implementations
 			return await _context.Questions.AsNoTracking().Include(q => q.Quiz).ToListAsync();
 		}
 
-		public override async Task<Question?> GetByIdAsync(int id)
+		public override async Task<Question?> GetByGuidAsync(Guid id)
 		{
 			return await _context.Questions.Include(q => q.Quiz).Include(q => q.Answers)
 				.FirstOrDefaultAsync(q => q.Id == id);

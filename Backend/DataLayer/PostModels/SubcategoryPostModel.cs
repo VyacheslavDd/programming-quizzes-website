@@ -9,6 +9,6 @@ namespace Data_Layer.PostModels
     public class SubcategoryPostModel
     {
         public string? Name { get; set; }
-        public int LanguageCategoryId { get; set; }
+        public Guid LanguageCategoryId { get; set; }
     }
 }

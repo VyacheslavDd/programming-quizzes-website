@@ -20,7 +20,7 @@ namespace Data_Layer.PostModels
 		public string? Description { get; set; }
 		public string? SuccessInfo { get; set; }
 		public string? FailureInfo { get; set; }
-		public int QuizId { get; set; }
+		public Guid QuizId { get; set; }
 		public IFormFile Image { get; set; }
 	}
 }

@@ -25,9 +25,9 @@ namespace Business_Layer.Services.Implementations.MainServices
             return true;
         }
 
-        private async Task<bool> DoesQuizExist(int quizId)
+        private async Task<bool> DoesQuizExist(Guid quizId)
         {
-            return await _unitOfWork.QuizRepository.GetByIdAsync(quizId) is not null;
+            return await _unitOfWork.QuizRepository.GetByGuidAsync(quizId) is not null;
         }
 
         private bool IsTypeCorresponding(Question? question)

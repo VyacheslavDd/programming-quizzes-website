@@ -10,8 +10,8 @@ namespace Business_Layer.Services.Interfaces
 {
     public interface IQuizService : IService<Quiz> 
     {
-        Task<bool> AddAsync(Quiz quiz, List<int> subcategoriesId);
+        Task<Guid> AddAsync(Quiz quiz, List<Guid> subcategoriesId);
         Task<List<Quiz?>> GetByPageFilter(GetQuizzesFilter filter);
-        Task<bool> MatchSubcategories(Quiz quiz, List<int> subcategoriesId);
+        Task<bool> MatchSubcategories(Quiz quiz, List<Guid> subcategoriesId);
     }
 }

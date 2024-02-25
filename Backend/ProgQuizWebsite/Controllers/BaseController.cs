@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Business_Layer.Extensions;
+using Business_Layer.Services.Interfaces;
 using Data_Layer.Enums;
+using Data_Layer.Models.QuizContentModels;
 using Data_Layer.ResponseObjects;
 using Data_Layer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
@@ -9,46 +11,31 @@ namespace ProgQuizWebsite.Controllers
 {
     public abstract class BaseController : ControllerBase
     {
-        protected IActionResult ProcessItem<T, V>(T result, IMapper mapper, string failureMessage)
+        public async Task<IActionResult> GetAllAsync<T, V>(IService<T> service, IMapper mapper) where T: class
         {
-            if (result is null)
-                return StatusCode(404, new ResponseObject(ResponseType.NoResult.GetDisplayNameProperty(), failureMessage));
-            var mappedResult = mapper.Map<V>(result);
-            return StatusCode(200, mappedResult);
+            var entities = await service.GetAllAsync();
+            var models = mapper.Map<List<V>>(entities);
+            return StatusCode(200, models);
         }
 
-        protected IActionResult ProcessItems<T, V>(List<T> results, IMapper mapper, string failureMessage)
+        public async Task<IActionResult> GetByIdAsync<T, V>(Guid guid, IService<T> service, IMapper mapper) where T : class
         {
-            if (results is not null && results.Count > 0)
-            {
-                var mappedResults = mapper.Map<List<V>>(results);
-                return StatusCode(200, mappedResults);
-            }
-            return StatusCode(404, new ResponseObject(ResponseType.NoResult.GetDisplayNameProperty(), failureMessage));
+            var entity = await service.GetByGuidAsync(guid);
+            var model = mapper.Map<V>(entity);
+            return StatusCode(200, model);
         }
 
-        protected IActionResult ProcessAdding(bool isAdded, string successMessage, string failureMessage)
+        public async Task<IActionResult> AddAsync<T, V>(T model, IService<V> service, IMapper mapper) where V: class
         {
-            if (isAdded)
-                return StatusCode(201, new ResponseObject(ResponseType.Success.GetDisplayNameProperty(), successMessage));
-            return StatusCode(404, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
-                failureMessage));
-        }
-
-        protected IActionResult ProcessUpdating(bool isUpdated, string successMessage, string failureMessage)
-        {
-			if (isUpdated)
-				return StatusCode(200, new ResponseObject(ResponseType.Success.GetDisplayNameProperty(), successMessage));
-			return StatusCode(404, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
-				failureMessage));
+			var entity = mapper.Map<V>(model);
+			var entityGuid = await service.AddAsync(entity);
+			return StatusCode(201, entityGuid);
 		}
 
-        protected IActionResult ProcessDeleting(bool isDeleted, string successMessage, string failureMessage)
+        public async Task<IActionResult> DeleteAsync<T>(Guid id, IService<T> service) where T: class
         {
-            if (isDeleted)
-				return StatusCode(200, new ResponseObject(ResponseType.Success.GetDisplayNameProperty(), successMessage));
-			return StatusCode(404, new ResponseObject(ResponseType.Failure.GetDisplayNameProperty(),
-				failureMessage));
-		}
-    }
+            await service.DeteteAsync(id);
+            return StatusCode(200);
+        }
+	}
 }

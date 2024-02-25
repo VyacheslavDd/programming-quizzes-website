@@ -13,7 +13,7 @@ namespace Business_Layer.Validators.PostModelValidators
     {
         public SubcategoryValidator()
         {
-            RuleFor(sc => sc.LanguageCategoryId).NotNull().NotEmpty().GreaterThan(0).WithMessage("Id категории должен быть больше 0");
+            RuleFor(sc => sc.LanguageCategoryId).NotNull().NotEmpty().WithMessage("Id категории должен быть больше 0");
             RuleFor(sc => sc.Name).NotNull().NotEmpty().
                 MinimumLength(DataRestrictions.SubcategoryNameMinLength).MaximumLength(DataRestrictions.SubcategoryNameMaxLength).
                 WithMessage("Длина названия подкатегории не соответствует норме");

@@ -24,7 +24,7 @@ namespace Data_Layer.Repositories.Implementations
             return await _context.LanguageCategories.AsNoTracking().Include(lc => lc.Subcategories).ToListAsync();
         }
 
-        public override async Task<LanguageCategory?> GetByIdAsync(int id)
+        public override async Task<LanguageCategory?> GetByGuidAsync(Guid id)
         {
             return await _context.LanguageCategories.Include(lc => lc.Subcategories).ThenInclude(lc => lc.Quizzes)
                 .FirstOrDefaultAsync(lc => lc.Id == id);

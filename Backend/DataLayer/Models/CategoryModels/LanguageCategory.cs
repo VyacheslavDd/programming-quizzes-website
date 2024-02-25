@@ -1,6 +1,7 @@
 ﻿using Data_Layer.Models.QuizModels;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,7 @@ namespace Data_Layer.Models.CategoryModels
     [Table("Categories")]
     public class LanguageCategory
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string? Name { get; set; }
         public List<QuizSubcategory> Subcategories { get; set; }
         public List<Quiz?> Quizzes { get; set; }

@@ -15,11 +15,11 @@ namespace Data_Layer.PostModels
     {
         public string? Title { get; set; }
         public string? Description { get; set; }
-        public int LanguageCategoryId { get; set; }
+        public Guid LanguageCategoryId { get; set; }
         [EnumDataType(typeof(QuizDifficulty))]
         [JsonConverter(typeof(StringEnumConverter))]
         public QuizDifficulty Difficulty { get; set; }
-        public List<int> SubcategoriesId { get; set; }
+        public List<Guid> SubcategoriesId { get; set; }
         public IFormFile QuizImage { get; set; }
     }
 }

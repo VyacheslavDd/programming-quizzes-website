@@ -9,10 +9,10 @@ namespace Business_Layer.Services.Interfaces
     public interface IService<T> where T: class
     {
         Task<List<T?>> GetAllAsync();
-        Task<T?> GetByIdAsync(int id);
+        Task<T?> GetByGuidAsync(Guid id);
         bool Add(T? item);
-        Task<bool> AddAsync(T? item);
-        Task<bool> DeteteAsync(int id);
+        Task<Guid> AddAsync(T? item);
+        Task<bool> DeteteAsync(Guid id);
         Task<bool> UpdateAsync(T? item);
     }
 }

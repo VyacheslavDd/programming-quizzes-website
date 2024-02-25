@@ -28,14 +28,14 @@ namespace Business_Layer.Services.Implementations.MainServices
             return true;
         }
 
-        private async Task<bool> DoesQuestionExist(int questionId)
+        private async Task<bool> DoesQuestionExist(Guid questionId)
         {
-            return await _unitOfWork.QuestionRepository.GetByIdAsync(questionId) is not null;
+            return await _unitOfWork.QuestionRepository.GetByGuidAsync(questionId) is not null;
         }
 
-        private async Task<bool> CorrespondingToQuestionRestrictions(int questionId, bool isCorrectAnswer)
+        private async Task<bool> CorrespondingToQuestionRestrictions(Guid questionId, bool isCorrectAnswer)
         {
-            var question = await _unitOfWork.QuestionRepository.GetByIdAsync(questionId);
+            var question = await _unitOfWork.QuestionRepository.GetByGuidAsync(questionId);
             var correctAnswersQuantity = question.Answers.Where(a => a.IsCorrect).Count();
             if (isCorrectAnswer && correctAnswersQuantity > 0 && question.Type == QuestionType.Single) return false;
             if (correctAnswersQuantity + 1 > DataRestrictions.AnswersMaxQuantity) return false;

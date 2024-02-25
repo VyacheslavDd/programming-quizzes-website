@@ -10,6 +10,6 @@ namespace Data_Layer.PostModels
 	{
 		public string? Name { get; set; }
 		public bool IsCorrect { get; set; }
-		public int QuestionId { get; set; }
+		public Guid QuestionId { get; set; }
 	}
 }

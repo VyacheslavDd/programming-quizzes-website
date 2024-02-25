@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ProgQuizWebsite.Migrations
 {
     [DbContext(typeof(QuizAppContext))]
-    [Migration("20240218193748_initial")]
+    [Migration("20240225174413_initial")]
     partial class initial
     {
         /// <inheritdoc />
@@ -27,11 +27,9 @@ namespace ProgQuizWebsite.Migrations
 
             modelBuilder.Entity("Data_Layer.Models.CategoryModels.LanguageCategory", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -43,14 +41,12 @@ namespace ProgQuizWebsite.Migrations
 
             modelBuilder.Entity("Data_Layer.Models.CategoryModels.QuizSubcategory", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
+                        .HasColumnType("uuid");
 
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("LanguageCategoryId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("LanguageCategoryId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -64,11 +60,9 @@ namespace ProgQuizWebsite.Migrations
 
             modelBuilder.Entity("Data_Layer.Models.QuizContentModels.Answer", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<bool>("IsCorrect")
                         .HasColumnType("boolean");
@@ -76,8 +70,8 @@ namespace ProgQuizWebsite.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
-                    b.Property<int>("QuestionId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("QuestionId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
@@ -88,11 +82,9 @@ namespace ProgQuizWebsite.Migrations
 
             modelBuilder.Entity("Data_Layer.Models.QuizContentModels.Question", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Description")
                         .HasColumnType("text");
@@ -103,8 +95,8 @@ namespace ProgQuizWebsite.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
-                    b.Property<int>("QuizId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("QuizId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("SuccessInfo")
                         .HasColumnType("text");
@@ -124,11 +116,9 @@ namespace ProgQuizWebsite.Migrations
 
             modelBuilder.Entity("Data_Layer.Models.QuizModels.Quiz", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("timestamp with time zone");
@@ -142,8 +132,8 @@ namespace ProgQuizWebsite.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
 
-                    b.Property<int>("LanguageCategoryId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("LanguageCategoryId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Title")
                         .HasColumnType("text");
@@ -157,11 +147,11 @@ namespace ProgQuizWebsite.Migrations
 
             modelBuilder.Entity("QuizQuizSubcategory", b =>
                 {
-                    b.Property<int>("QuizzesId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("QuizzesId")
+                        .HasColumnType("uuid");
 
-                    b.Property<int>("SubcategoriesId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("SubcategoriesId")
+                        .HasColumnType("uuid");
 
                     b.HasKey("QuizzesId", "SubcategoriesId");
 

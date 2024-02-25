@@ -10,8 +10,8 @@ namespace Data_Layer.Repositories.Interfaces
     {
         void Add(T entity);
         Task<List<T?>> GetAllAsync();
-        Task<T?> GetByIdAsync(int id);
-        Task AddAsync(T? item);
-        Task DeleteAsync(int id);
+        Task<T?> GetByGuidAsync(Guid id);
+        Task<Guid> AddAsync(T? item);
+        Task DeleteAsync(Guid id);
     }
 }

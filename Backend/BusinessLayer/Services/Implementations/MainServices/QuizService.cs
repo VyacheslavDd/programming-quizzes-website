@@ -20,9 +20,9 @@ namespace Business_Layer.Services.Implementations.MainServices
         {
         }
 
-        public override async Task<bool> AddAsync(Quiz quiz)
+        public override async Task<Guid> AddAsync(Quiz quiz)
         {
-            return true;
+            return new Guid();
         }
 
         public async override Task<bool> ValidateItemData(Quiz? quiz)
@@ -30,31 +30,31 @@ namespace Business_Layer.Services.Implementations.MainServices
             return true;
         }
 
-        public async Task<bool> AddAsync(Quiz quiz, List<int> subcategoriesId)
+        public async Task<Guid> AddAsync(Quiz quiz, List<Guid> subcategoriesId)
         {
             var doesCategoryExist = await DoesCategoryExist(quiz.LanguageCategoryId);
-            if (!doesCategoryExist) return false;
+            if (!doesCategoryExist) return Guid.Empty;
             var matchSubcategories = await MatchSubcategories(quiz, subcategoriesId);
-            if (!matchSubcategories) return false;
+            if (!matchSubcategories) return Guid.Empty;
             var isUnique = await IsUnique(quiz.LanguageCategoryId, quiz.Title.ToLower());
-            if (!isUnique) return false;
+            if (!isUnique) return Guid.Empty;
             return await base.AddAsync(quiz);
         }
 
-        private async Task<bool> DoesCategoryExist(int categoryId)
+        private async Task<bool> DoesCategoryExist(Guid categoryId)
         {
-            return await _unitOfWork.CategoryRepository.GetByIdAsync(categoryId) is not null;
+            return await _unitOfWork.CategoryRepository.GetByGuidAsync(categoryId) is not null;
         }
 
-        public async Task<bool> MatchSubcategories(Quiz quiz, List<int> subcategoriesId)
+        public async Task<bool> MatchSubcategories(Quiz quiz, List<Guid> subcategoriesId)
         {
             if (quiz is null) return false;
             List<QuizSubcategory> subcategories = new List<QuizSubcategory>();
-            var category = await _unitOfWork.CategoryRepository.GetByIdAsync(quiz.LanguageCategoryId);
+            var category = await _unitOfWork.CategoryRepository.GetByGuidAsync(quiz.LanguageCategoryId);
             if (category is null) return false;
             foreach (var subcategoryId in subcategoriesId)
             {
-                var subcategory = await _unitOfWork.SubcategoryRepository.GetByIdAsync(subcategoryId);
+                var subcategory = await _unitOfWork.SubcategoryRepository.GetByGuidAsync(subcategoryId);
                 if (subcategory is null) return false;
                 if (!category.Subcategories.Any(sc => sc.Id == subcategoryId)) return false;
                 subcategories.Add(subcategory);
@@ -67,7 +67,7 @@ namespace Business_Layer.Services.Implementations.MainServices
             return true;
         }
 
-        private async Task<bool> IsUnique(int categoryId, string title)
+        private async Task<bool> IsUnique(Guid categoryId, string title)
         {
             var quizzes = (await _unitOfWork.QuizRepository.GetAllAsync()).Where(qz => qz.LanguageCategoryId == categoryId);
             return !quizzes.Any(qz => qz.Title.ToLower() == title);

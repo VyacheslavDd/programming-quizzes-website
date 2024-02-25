@@ -22,29 +22,9 @@ namespace Data_Layer.Contexts
         {
         }
 
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-            //modelBuilder.Entity<Quiz>()
-            //    .HasOne(q => q.LanguageCategory)
-            //    .WithMany(c => c.Quizzes)
-            //    .HasForeignKey(q => q.LanguageCategoryId);
-
-            //modelBuilder.Entity<Question>()
-            //    .HasOne(q => q.Quiz)
-            //    .WithMany(qz => qz.Questions)
-            //    .HasForeignKey(q => q.QuizId);
-
-            //modelBuilder.Entity<LanguageCategory>()
-            //    .HasMany(c => c.Quizzes)
-            //    .WithOne(q => q.LanguageCategory)
-            //    .HasForeignKey(q => q.LanguageCategoryId);
-
-            //modelBuilder.Entity<Answer>()
-            //    .HasOne(a => a.Question)
-            //    .WithMany(q => q.Answers)
-            //    .HasForeignKey(q => q.QuestionId);
-
-        //    base.OnModelCreating(modelBuilder);
-        //}
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+			base.OnModelCreating(modelBuilder);
+        }
     }
 }

@@ -35,20 +35,18 @@ namespace ProgQuizWebsite.Controllers
 		[Route("all")]
 		public async Task<IActionResult> GetAll()
 		{
-			var questions = await _service.GetAllAsync();
-			return ProcessItems<Question, QuestionViewModel>(questions, _mapper, "База вопросов пуста.");
+			return await GetAllAsync<Question, QuestionViewModel>(_service, _mapper);
 		}
 		/// <summary>
 		/// Метод для получения вопроса. Включает ответы на вопрос
 		/// </summary>
-		/// <param name="id">Id вопроса</param>
+		/// <param name="id">Guid вопроса</param>
 		/// <returns></returns>
 		[HttpGet]
 		[Route("{id}")]
-		public async Task<IActionResult> GetById([FromRoute] int id)
+		public async Task<IActionResult> GetById([FromRoute] Guid id)
 		{
-			var question = await _service.GetByIdAsync(id);
-			return ProcessItem<Question, QuestionViewModel>(question, _mapper, "Вопрос не существует");
+			return await GetByIdAsync<Question, QuestionViewModel>(id, _service, _mapper);
 		}
 		/// <summary>
 		/// Метод для добавления нового вопроса
@@ -63,50 +61,48 @@ namespace ProgQuizWebsite.Controllers
 			var path = _imageService.CreateName(postModel.Image.FileName);
 			var mappedQuestion = _mapper.Map<Question>(postModel);
 			mappedQuestion.ImageUrl = path;
-			var isAdded = await _service.AddAsync(mappedQuestion);
-			if (isAdded) await _imageService.SaveFileAsync(postModel.Image, _environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, path);
-			return ProcessAdding(isAdded, "Вопрос добавлен", "Не удалось добавить вопрос. Проверьте уникальность вопроса и существование викторины");
+			var entityGuid = await _service.AddAsync(mappedQuestion);
+			if (entityGuid != Guid.Empty) await _imageService.SaveFileAsync(postModel.Image, _environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, path);
+			return StatusCode(201, entityGuid);
 		}
 		/// <summary>
 		/// Метод для обновления вопроса
 		/// </summary>
-		/// <param name="id">Id вопроса</param>
+		/// <param name="id">Guid вопроса</param>
 		/// <param name="questionModel">Модель вопроса. Нужно указать: тип, название, описание к заданию, текст при правильном и неправильном ответе, Id существующей викторины, картинку</param>
 		/// <returns></returns>
 		[HttpPut]
 		[Route("{id}/update")]
 		[Consumes("multipart/form-data")]
-		public async Task<IActionResult> Update([FromRoute] int id, [FromForm] QuestionPostModel questionModel)
+		public async Task<IActionResult> Update([FromRoute] Guid id, [FromForm] QuestionPostModel questionModel)
 		{
 			var path = _imageService.CreateName(questionModel.Image.FileName);
-			var entity = await _service.GetByIdAsync(id);
-			if (entity is not null)
-			{
-				entity.Title = questionModel.Title;
-				entity.Description = questionModel.Description;
-				entity.SuccessInfo = questionModel.SuccessInfo;
-				entity.FailureInfo = questionModel.FailureInfo;
-				entity.QuizId = questionModel.QuizId;
-				entity.Type = questionModel.Type;
-				entity.ImageUrl = path;
-			}
-			bool isUpdated = await _service.UpdateAsync(entity);
-			if (isUpdated) await _imageService.SaveFileAsync(questionModel.Image, _environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, path);
-			return ProcessUpdating(isUpdated, "Вопрос обновлен", "Не удалось обновить вопрос. Проверьте уникальность вопроса и существование викторины");
+			var entity = await _service.GetByGuidAsync(id);
+			_imageService.DeleteFile(_environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, entity.ImageUrl);
+			entity.Title = questionModel.Title;
+			entity.Description = questionModel.Description;
+			entity.SuccessInfo = questionModel.SuccessInfo;
+			entity.FailureInfo = questionModel.FailureInfo;
+			entity.QuizId = questionModel.QuizId;
+			entity.Type = questionModel.Type;
+			entity.ImageUrl = path;
+			await _service.UpdateAsync(entity);
+			await _imageService.SaveFileAsync(questionModel.Image, _environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, path);
+			return StatusCode(200);
 		}
 		/// <summary>
 		/// Метод для удаления вопроса
 		/// </summary>
-		/// <param name="id">Id вопроса</param>
+		/// <param name="id">Guid вопроса</param>
 		/// <returns></returns>
 		[HttpDelete]
 		[Route("{id}")]
-		public async Task<IActionResult> Delete([FromRoute] int id)
+		public async Task<IActionResult> Delete([FromRoute] Guid id)
 		{
-			var question = await _service.GetByIdAsync(id);
-			var isDeleted = await _service.DeteteAsync(id);
-			if (isDeleted) _imageService.DeleteFile(_environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, question.ImageUrl);
-			return ProcessDeleting(isDeleted, "Вопрос удалён", "Не удалось удалить данные! Проверьте существование объекта.");
+			var question = await _service.GetByGuidAsync(id);
+			await _service.DeteteAsync(id);
+			_imageService.DeleteFile(_environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, question.ImageUrl);
+			return StatusCode(200);
 		}
 	}
 }
