@@ -9,6 +9,7 @@ using Data_Layer.ResponseObjects;
 using Data_Layer.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProgQuizWebsite.ActionFilters;
 
 namespace ProgQuizWebsite.Controllers
 {
@@ -17,7 +18,8 @@ namespace ProgQuizWebsite.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class CategoriesController : BaseController
+	[ServiceFilter(typeof(QuizElementsExceptionFilter))]
+	public class CategoriesController : BaseController
     {
         private readonly IService<LanguageCategory> _service;
         private readonly IMapper _mapper;

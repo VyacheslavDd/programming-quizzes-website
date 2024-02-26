@@ -5,6 +5,7 @@ using Data_Layer.PostModels;
 using Data_Layer.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProgQuizWebsite.ActionFilters;
 
 namespace ProgQuizWebsite.Controllers
 {
@@ -13,6 +14,7 @@ namespace ProgQuizWebsite.Controllers
 	/// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
+	[ServiceFilter(typeof(QuizElementsExceptionFilter))]
 	public class AnswersController : BaseController
 	{
 		private readonly IService<Answer> _service;

@@ -10,9 +10,8 @@ namespace Business_Layer.Services.Interfaces
     {
         Task<List<T?>> GetAllAsync();
         Task<T?> GetByGuidAsync(Guid id);
-        bool Add(T? item);
         Task<Guid> AddAsync(T? item);
-        Task<bool> DeteteAsync(Guid id);
-        Task<bool> UpdateAsync(T? item);
+        Task DeteteAsync(Guid id);
+        Task UpdateAsync(T? item);
     }
 }

@@ -9,6 +9,7 @@ using Business_Layer.Extensions;
 using Data_Layer.ViewModels;
 using Data_Layer.Models.CategoryModels;
 using Data_Layer.Models.QuizContentModels;
+using ProgQuizWebsite.ActionFilters;
 
 namespace ProgQuizWebsite.Controllers
 {
@@ -17,7 +18,8 @@ namespace ProgQuizWebsite.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class SubcategoriesController : BaseController
+	[ServiceFilter(typeof(QuizElementsExceptionFilter))]
+	public class SubcategoriesController : BaseController
     {
         private readonly IService<QuizSubcategory> _service;
         private readonly IMapper _mapper;

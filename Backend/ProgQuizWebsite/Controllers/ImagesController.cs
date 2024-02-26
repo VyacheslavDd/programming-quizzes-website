@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Data_Layer.Constants;
 using Microsoft.AspNetCore.Mvc;
+using ProgQuizWebsite.ActionFilters;
 
 namespace ProgQuizWebsite.Controllers
 {
@@ -10,6 +11,7 @@ namespace ProgQuizWebsite.Controllers
 	/// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
+	[ServiceFilter(typeof(QuizElementsExceptionFilter))]
 	public class ImagesController : ControllerBase
 	{
 		private readonly IImageService _imageService;

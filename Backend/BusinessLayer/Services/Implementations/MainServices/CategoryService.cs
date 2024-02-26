@@ -14,21 +14,15 @@ namespace Business_Layer.Services.Implementations.MainServices
 {
     public class CategoryService : BaseService<LanguageCategory>
     {
-        public CategoryService(IUnitOfWork unitOfWork) : base(unitOfWork.CategoryRepository, unitOfWork)
+        private readonly IValidationService _validationService;
+        public CategoryService(IUnitOfWork unitOfWork, IValidationService validationService) : base(unitOfWork.CategoryRepository, unitOfWork)
         {
+            _validationService = validationService;
         }
 
-        public async override Task<bool> ValidateItemData(LanguageCategory? category)
+        public async override Task ValidateItemData(LanguageCategory? category)
         {
-            var isUnique = await IsUnique(category.Name.ToLower());
-            if (!isUnique) return false;
-            return true;
-        }
-
-        private async Task<bool> IsUnique(string categoryName)
-        {
-            var categories = await GetAllAsync();
-            return !categories.Any(c => c.Name.ToLower() == categoryName);
+            await _validationService.ValidateCategory(category, _repository);
         }
     }
 }

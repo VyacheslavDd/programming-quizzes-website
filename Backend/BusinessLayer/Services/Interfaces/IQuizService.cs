@@ -12,6 +12,6 @@ namespace Business_Layer.Services.Interfaces
     {
         Task<Guid> AddAsync(Quiz quiz, List<Guid> subcategoriesId);
         Task<List<Quiz?>> GetByPageFilter(GetQuizzesFilter filter);
-        Task<bool> MatchSubcategories(Quiz quiz, List<Guid> subcategoriesId);
+        Task MatchSubcategories(Quiz quiz, List<Guid> subcategoriesId);
     }
 }

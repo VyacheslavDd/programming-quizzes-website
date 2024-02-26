@@ -11,6 +11,7 @@ using Business_Layer.Extensions;
 using Data_Layer.ViewModels;
 using Data_Layer.FilterModels.QuizFilters;
 using Data_Layer.Models.QuizContentModels;
+using ProgQuizWebsite.ActionFilters;
 
 namespace ProgQuizWebsite.Controllers
 {
@@ -19,7 +20,8 @@ namespace ProgQuizWebsite.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class QuizzesController : BaseController
+	[ServiceFilter(typeof(QuizElementsExceptionFilter))]
+	public class QuizzesController : BaseController
     {
         private readonly IWebHostEnvironment _environment;
         private readonly IImageService _imageService;

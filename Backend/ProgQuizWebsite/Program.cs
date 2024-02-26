@@ -21,6 +21,8 @@ using Business_Layer.Services.Implementations.MainServices;
 using Business_Layer.Services.Implementations.AdditionalServices;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
+using ProgQuizWebsite.ActionFilters;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
@@ -52,8 +54,10 @@ builder.Services.AddControllers()
 builder.Services.AddDbContext<QuizAppContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("QuizDB"),
     m => m.MigrationsAssembly("ProgQuizWebsite")), ServiceLifetime.Scoped);
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<QuizElementsExceptionFilter>();
 
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddScoped<IImageService, ImageService>();
 builder.Services.AddScoped<IService<LanguageCategory>, CategoryService>();
 builder.Services.AddScoped<IService<QuizSubcategory>, SubcategoryService>();

@@ -12,29 +12,15 @@ namespace Business_Layer.Services.Implementations.MainServices
 {
     public class QuestionService : BaseService<Question>
     {
-        public QuestionService(IUnitOfWork unitOfWork) : base(unitOfWork.QuestionRepository, unitOfWork)
+        private readonly IValidationService _validationService;
+        public QuestionService(IUnitOfWork unitOfWork, IValidationService validationService) : base(unitOfWork.QuestionRepository, unitOfWork)
         {
+            _validationService = validationService;
         }
 
-        public async override Task<bool> ValidateItemData(Question? question)
+        public async override Task ValidateItemData(Question? question)
         {
-            var doesQuizExist = await DoesQuizExist(question.QuizId);
-            if (!doesQuizExist) return false;
-            var isTypeCorresponding = IsTypeCorresponding(question);
-            if (!isTypeCorresponding) return false;
-            return true;
-        }
-
-        private async Task<bool> DoesQuizExist(Guid quizId)
-        {
-            return await _unitOfWork.QuizRepository.GetByGuidAsync(quizId) is not null;
-        }
-
-        private bool IsTypeCorresponding(Question? question)
-        {
-            if (question.Answers is null) return true;
-            if (question.Type == QuestionType.Single && question.Answers.Where(a => a.IsCorrect).Count() > 1) return false;
-            return true;
+            await _validationService.ValidateQuestion(question, _unitOfWork.QuizRepository);
         }
     }
 }

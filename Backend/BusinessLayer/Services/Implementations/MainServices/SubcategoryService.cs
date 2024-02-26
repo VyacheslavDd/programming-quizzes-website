@@ -12,29 +12,15 @@ namespace Business_Layer.Services.Implementations.MainServices
 {
     public class SubcategoryService : BaseService<QuizSubcategory>
     {
-        public SubcategoryService(IUnitOfWork unitOfWork) : base(unitOfWork.SubcategoryRepository, unitOfWork)
+        private readonly IValidationService _validationService;
+        public SubcategoryService(IUnitOfWork unitOfWork, IValidationService validationService) : base(unitOfWork.SubcategoryRepository, unitOfWork)
         {
+            _validationService = validationService;
         }
 
-        public async override Task<bool> ValidateItemData(QuizSubcategory? quizSubcategory)
+        public async override Task ValidateItemData(QuizSubcategory? quizSubcategory)
         {
-            var doesCategoryExist = await DoesCategoryExist(quizSubcategory.LanguageCategoryId);
-            if (!doesCategoryExist) return false;
-            var isUnique = await IsUnique(quizSubcategory.LanguageCategoryId, quizSubcategory.Name);
-            if (!isUnique) return false;
-            return true;
-        }
-
-        private async Task<bool> DoesCategoryExist(Guid categoryId)
-        {
-            var categories = await _unitOfWork.CategoryRepository.GetAllAsync();
-            return categories.Any(c => c.Id == categoryId);
-        }
-
-        private async Task<bool> IsUnique(Guid categoryId, string subcategoryName)
-        {
-            var entries = (await GetAllAsync()).Where(sc => sc.LanguageCategoryId == categoryId);
-            return !entries.Any(sc => sc.Name.ToLower() == subcategoryName);
+            await _validationService.ValidateSubcategory(quizSubcategory, _unitOfWork.CategoryRepository, _repository);
         }
     }
 }

@@ -19,11 +19,6 @@ namespace Data_Layer.Repositories.Implementations
 			_dbSet = dbSet;
 		}
 
-		public void Add(T entity)
-		{
-			_dbSet.Add(entity);
-		}
-
 		public virtual async Task<Guid> AddAsync(T? item)
 		{
 			var result = await _dbSet.AddAsync(item);

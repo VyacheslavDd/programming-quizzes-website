@@ -9,6 +9,7 @@ using Business_Layer.Services.Implementations.MainServices;
 using ProgQuizWebsite.Controllers;
 using ProgQuizWebsite.Tests.Helper;
 using Data_Layer.Models.CategoryModels;
+using Business_Layer.Services.Implementations.AdditionalServices;
 
 namespace ProgQuizWebsite.Tests.ServicesTests
 {
@@ -18,7 +19,7 @@ namespace ProgQuizWebsite.Tests.ServicesTests
 		private CategoryService GetService()
 		{
 			var unitOfWork = TestsHelper.SetupUnitOfWork();
-			return new CategoryService(unitOfWork);
+			return new CategoryService(unitOfWork, new ValidationService());
 		}
 
 		[Test]
@@ -52,9 +53,8 @@ namespace ProgQuizWebsite.Tests.ServicesTests
 		{
 			var service = GetService();
 			var guid = new Guid("33333333-3333-3333-1111-333333333333");
-			var isDeleted = await service.DeteteAsync(guid);
+			await service.DeteteAsync(guid);
 			var element = await service.GetByGuidAsync(guid);
-			Assert.That(isDeleted, Is.True);
 			Assert.That(element, Is.Null);
 		}
 	}

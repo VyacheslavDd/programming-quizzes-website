@@ -23,35 +23,20 @@ namespace Business_Layer.Services.Implementations.MainServices
             _unitOfWork = unitOfWork;
         }
 
-        public abstract Task<bool> ValidateItemData(T? item);
+        public abstract Task ValidateItemData(T? item);
 
         public async virtual Task<Guid> AddAsync(T? item)
         {
-            if (!await ValidateItemData(item)) return Guid.Empty;
-            try
-            {
-                var guid = await _repository.AddAsync(item);
-                await _unitOfWork.SaveAsync();
-                return guid;
-            }
-            catch
-            {
-                return Guid.Empty;
-            }
+            await ValidateItemData(item);
+            var guid = await _repository.AddAsync(item);
+            await _unitOfWork.SaveAsync();
+            return guid;
         }
 
-        public virtual async Task<bool> DeteteAsync(Guid id)
+        public virtual async Task DeteteAsync(Guid id)
         {
-            try
-            {
-                await _repository.DeleteAsync(id);
-                await _unitOfWork.SaveAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            await _repository.DeleteAsync(id);
+            await _unitOfWork.SaveAsync();
         }
 
         public virtual async Task<List<T?>> GetAllAsync()
@@ -64,35 +49,10 @@ namespace Business_Layer.Services.Implementations.MainServices
             return await _repository.GetByGuidAsync(id);
         }
 
-        public virtual async Task<bool> UpdateAsync(T? item)
+        public virtual async Task UpdateAsync(T? item)
         {
-            if (item is null) return false;
-            if (!await ValidateItemData(item)) return false;
-            try
-            {
-                await _unitOfWork.SaveAsync();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
+            await ValidateItemData(item);
+            await _unitOfWork.SaveAsync();
         }
-
-		public bool Add(T? item)
-		{
-            var isCorrect = ValidateItemData(item).Result;
-            if (!isCorrect) return false;
-            try
-            {
-                _repository.Add(item);
-                _unitOfWork.Save();
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-		}
 	}
 }
