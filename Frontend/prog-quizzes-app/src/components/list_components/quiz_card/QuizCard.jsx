@@ -11,7 +11,7 @@ import SubcategoriesList from '../../subcategories_list/SubcategoriesList'
 import useDifficulty from '../../../hooks/useDifficulty'
 import CategoryDifficulty from '../../category_difficulty/CategoryDifficulty'
 
-export default function QuizCard({quiz}) {
+export default function QuizCard({quiz, imagesInfo, setImagesInfo}) {
 
   const [parseDifficulty, difficulty] = useDifficulty(() => {
     return Helper.getDifficultyProperty(quiz.difficulty);
@@ -19,12 +19,18 @@ export default function QuizCard({quiz}) {
   const [imageBytesRepr, setImageBytesRepr] = useState("");
 
   const [fetchImage, isLoading, isError] = useFetching(async () => {
-    let imageBytes = await ImageAPI.getQuizImage(quiz.imageUrl);
+    let imageBytes = await ImageAPI.getQuizImageAsync(quiz.imageUrl);
+    setImagesInfo(prev => ({...prev, [quiz.imageUrl]: imageBytes}));
     setImageBytesRepr(imageBytes);
   });
   useEffect(() => {
     parseDifficulty();
-    fetchImage();
+    if (imagesInfo[quiz.imageUrl] === undefined) {
+      fetchImage();
+    }
+    else {
+      setImageBytesRepr(imagesInfo[quiz.imageUrl]);
+    }
   }, [])
 
   const router = useNavigate();

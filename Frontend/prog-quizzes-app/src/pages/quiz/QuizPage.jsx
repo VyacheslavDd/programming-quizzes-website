@@ -22,13 +22,14 @@ export default function QuizPage() {
 
     const id = useParams()['id'];
     const [quiz, setQuiz] = useState({});
+    const [imagesInfo, setImagesInfo] = useState({});
     const quizDispatch = useDispatch();
     const questionsCount = useSelector(state => state.questionsCount);
     const currentQuestion = useSelector(state => state.currentQuestion);
     const answeredQuestionsCount = useSelector(state => state.answeredQuestionsCount);
     const answeredQuestions = useSelector(state => state.answeredQuestions);
     const [fetchQuiz, isLoading, isError] = useFetching(async () => {
-      const data = await QuizAPI.getQuiz(id);
+      const data = await QuizAPI.getQuizAsync(id);
       setQuiz(data);
       quizDispatch(setQuestionsCount(data.questions.length));
       quizDispatch(setQuestionAnswersInfo(data.questions));
@@ -53,7 +54,7 @@ export default function QuizPage() {
     : isIntro
       ? <QuizIntro setIsIntro={setIsIntro} quiz={quiz}/>
       : !isFinished ? <>
-        <QuizQuestion question={quiz.questions[currentQuestion]}/>
+        <QuizQuestion imagesInfo={imagesInfo} setImagesInfo={setImagesInfo} question={quiz.questions[currentQuestion]}/>
         <PaginationRow count={questionsCount} currentPage={currentQuestion} onPaginationClick={(pageNumber) => {
           quizDispatch(setCurrentQuestion(pageNumber));
       } } markedPages={answeredQuestions}/>

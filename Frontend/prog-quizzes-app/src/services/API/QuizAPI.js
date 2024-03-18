@@ -6,7 +6,7 @@ export default class QuizAPI {
         return response.data;
     }
 
-    static async getQuiz(id) {
+    static async getQuizAsync(id) {
         const response = await axios.get(`https://localhost:7184/api/quizzes/${id}`);
         return response.data;
     }

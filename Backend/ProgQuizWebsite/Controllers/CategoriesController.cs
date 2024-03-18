@@ -21,10 +21,10 @@ namespace ProgQuizWebsite.Controllers
 	[ServiceFilter(typeof(QuizElementsExceptionFilter))]
 	public class CategoriesController : BaseController
     {
-        private readonly IService<LanguageCategory> _service;
+        private readonly ICategoryService _service;
         private readonly IMapper _mapper;
 
-        public CategoriesController(IService<LanguageCategory> service, IMapper mapper)
+        public CategoriesController(ICategoryService service, IMapper mapper)
         {
             _service = service;
             _mapper = mapper;
@@ -55,6 +55,21 @@ namespace ProgQuizWebsite.Controllers
             mappedResult.Quizzes = quizViewModels;
             return StatusCode(200, mappedResult);
         }
+
+        /// <summary>
+        /// Метод для получения всех подкатегорий указанной категории
+        /// </summary>
+        /// <param name="id">Guid категории</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{id}/subcategories")]
+        public async Task<IActionResult> GetSubcategoriesAsync([FromRoute] Guid id)
+        {
+            var subcategories = await _service.GetConnectedSubcategoriesAsync(id);
+            var mappedSubcategories = _mapper.Map<List<SubcategoryViewModel>>(subcategories);
+            return Ok(mappedSubcategories);
+        }
+
         /// <summary>
         /// Метод для добавления новой категории
         /// </summary>

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Business_Layer.Services.Implementations.MainServices
 {
-    public class CategoryService : BaseService<LanguageCategory>
+    public class CategoryService : BaseService<LanguageCategory>, ICategoryService
     {
         private readonly IValidationService _validationService;
         public CategoryService(IUnitOfWork unitOfWork, IValidationService validationService) : base(unitOfWork.CategoryRepository, unitOfWork)
@@ -20,7 +20,16 @@ namespace Business_Layer.Services.Implementations.MainServices
             _validationService = validationService;
         }
 
-        public async override Task ValidateItemData(LanguageCategory? category)
+		public async Task<List<QuizSubcategory>> GetConnectedSubcategoriesAsync(Guid categoryId)
+		{
+            var category = await _unitOfWork.CategoryRepository.GetByGuidAsync(categoryId);
+            if (category is null) throw new ArgumentNullException("Укажите существующую категорию!");
+            var subcategories = (await _unitOfWork.SubcategoryRepository.GetAllAsync())
+                .Where(s => s.LanguageCategoryId == categoryId).ToList();
+            return subcategories;
+		}
+
+		public async override Task ValidateItemData(LanguageCategory? category)
         {
             await _validationService.ValidateCategory(category, _repository);
         }

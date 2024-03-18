@@ -1,0 +1,28 @@
+.select {
+    margin-bottom: 20px;
+    max-width: 100%;
+    width: 200px;
+    font-size: 20px;
+    text-align: center;
+    padding: 5px;
+    background-color: rgba(0, 0, 0, 0);
+    border: 3px dashed rgb(163, 120, 231);
+    border-radius: 10px;
+}
+.select:focus {
+    outline: 3px dashed  rgb(163, 120, 231);
+    border: 0px;
+}
+.option {
+    background-color: rgb(147, 177, 235);
+}
+.selectionDiv {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.selectLabel {
+    font-size: 20px;
+    font-family: 'Times New Roman', Times, serif;
+    margin-bottom: 20px;
+}

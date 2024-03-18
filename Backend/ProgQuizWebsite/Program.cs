@@ -59,9 +59,9 @@ builder.Services.AddScoped<QuizElementsExceptionFilter>();
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IValidationService, ValidationService>();
 builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IService<LanguageCategory>, CategoryService>();
 builder.Services.AddScoped<IService<QuizSubcategory>, SubcategoryService>();
 builder.Services.AddScoped<IQuizService, QuizService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IService<Question>, QuestionService>();
 builder.Services.AddScoped<IService<Answer>, AnswerService>();
 

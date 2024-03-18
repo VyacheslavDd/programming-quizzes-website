@@ -13,7 +13,7 @@ export default function QuizIntro({setIsIntro, quiz}) {
 
     const [image, setImage] = useState("");
     const [fetchImage, isLoading, isError] = useFetching(async () => {
-        const imageData = await ImageAPI.getQuizImage(quiz.imageUrl);
+        const imageData = await ImageAPI.getQuizImageAsync(quiz.imageUrl);
         setImage(imageData);
   })
     const [parseDifficulty, difficulty] = useDifficulty(() => Helper.getDifficultyProperty(quiz.difficulty));

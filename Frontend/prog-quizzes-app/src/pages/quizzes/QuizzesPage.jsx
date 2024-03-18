@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import QuizCard from '../../components/list_components/quiz_card/QuizCard'
 import styles from "./QuizzesPage.module.css"
 import Category from '../../components/category/Category'
@@ -8,10 +8,18 @@ import QuizAPI from '../../services/API/QuizAPI'
 import useFetching from '../../hooks/useFetching'
 import Loading from '../../components/animations/Loading/Loading'
 import ErrorMessage from '../../components/error_message/ErrorMessage'
+import QuizFiltersBlock from '../../components/quiz_filters_block/QuizFiltersBlock'
+import Helper from '../../services/Helper'
+import { useFilterSorting, useSearchSorting } from '../../hooks/useQuizSorting'
 
 export default function QuizzesPage() {
 
   const [quizzes, setQuizzes] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [difficulty, setDifficulty] = useState(0);
+  const [category, setCategory] = useState("");
+  const [subcategory, setSubcategory] = useState("");
+  const [imagesInfo, setImagesInfo] = useState({});
   const [fetchQuizzes, isLoadingQuizzes, isErrorOnLoadingQuizzes] = useFetching(async () => {
     const data = await QuizAPI.getAllAsync();
     setQuizzes(data);
@@ -21,6 +29,9 @@ export default function QuizzesPage() {
     fetchQuizzes();
   }, [])
 
+  const filteredBySearchQuizzes = useSearchSorting(quizzes, searchQuery);
+  const filteredByFiltersQuizzes = useFilterSorting(filteredBySearchQuizzes, difficulty, category, subcategory);
+
   return (
     <div className={styles.outer}>
       <div className={styles.container}>
@@ -28,7 +39,11 @@ export default function QuizzesPage() {
         ? <Loading/>
         : isErrorOnLoadingQuizzes
         ? <ErrorMessage errorMsg="Не удалось загрузить викторины! Возвращайтесь позже..."/>
-        : <QuizList quizzes={quizzes}/>}
+        : <>
+          <QuizFiltersBlock setSearchQuery={setSearchQuery}
+          setDifficulty={setDifficulty} setCategory={setCategory} setSubcategory={setSubcategory}/>
+          <QuizList imagesInfo={imagesInfo} quizzes={filteredByFiltersQuizzes} setImagesInfo={setImagesInfo}/>
+        </>}
       </div>
     </div>
   )
