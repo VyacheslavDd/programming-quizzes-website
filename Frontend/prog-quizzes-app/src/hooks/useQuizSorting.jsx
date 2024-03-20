@@ -24,6 +24,23 @@ export function useFilterSorting(quizzes, difficulty, category, subcategory) {
   return filteredQuizzes;
 }
 
+export function useSortingByDate(quizzes, dateField) {
+
+  const parseDate = (date) => {
+    var parts = date.split('.');
+    var dateObject = new Date(parts[2], parts[1] - 1, parts[0]);
+    return dateObject.getTime();
+  }
+
+  const sortedQuizzes = useMemo(() => {
+    let isReversed = dateField.includes("-") ? true : false;
+    return [...quizzes].sort((a, b) => isReversed ? parseDate(a.creationDate) - parseDate(b.creationDate)
+    : parseDate(b.creationDate) - parseDate(a.creationDate));
+  }, [quizzes, dateField])
+
+  return sortedQuizzes;
+}
+
 export function useSearchSorting(quizzes, searchQuery) {
   const filteredQuizzes = useMemo(() => {
     let lowerQuery = searchQuery.toLowerCase();

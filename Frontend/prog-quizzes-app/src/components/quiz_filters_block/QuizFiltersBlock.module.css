@@ -17,6 +17,10 @@
     display: flex;
     justify-content: space-evenly;
 }
+.dateSort {
+    display: flex;
+    justify-content: center;
+}
 @media (min-width: 400px) and (max-width: 800px) {
     .filters {
         flex-direction: column;

@@ -10,7 +10,7 @@ import Loading from '../../components/animations/Loading/Loading'
 import ErrorMessage from '../../components/error_message/ErrorMessage'
 import QuizFiltersBlock from '../../components/quiz_filters_block/QuizFiltersBlock'
 import Helper from '../../services/Helper'
-import { useFilterSorting, useSearchSorting } from '../../hooks/useQuizSorting'
+import { useFilterSorting, useSearchSorting, useSortingByDate } from '../../hooks/useQuizSorting'
 
 export default function QuizzesPage() {
 
@@ -19,6 +19,7 @@ export default function QuizzesPage() {
   const [difficulty, setDifficulty] = useState(0);
   const [category, setCategory] = useState("");
   const [subcategory, setSubcategory] = useState("");
+  const [dateParameterSort, setDateParameterSort] = useState("");
   const [imagesInfo, setImagesInfo] = useState({});
   const [fetchQuizzes, isLoadingQuizzes, isErrorOnLoadingQuizzes] = useFetching(async () => {
     const data = await QuizAPI.getAllAsync();
@@ -31,6 +32,7 @@ export default function QuizzesPage() {
 
   const filteredBySearchQuizzes = useSearchSorting(quizzes, searchQuery);
   const filteredByFiltersQuizzes = useFilterSorting(filteredBySearchQuizzes, difficulty, category, subcategory);
+  const sortedQuizzes = useSortingByDate(filteredByFiltersQuizzes, dateParameterSort);
 
   return (
     <div className={styles.outer}>
@@ -41,8 +43,9 @@ export default function QuizzesPage() {
         ? <ErrorMessage errorMsg="Не удалось загрузить викторины! Возвращайтесь позже..."/>
         : <>
           <QuizFiltersBlock setSearchQuery={setSearchQuery}
-          setDifficulty={setDifficulty} setCategory={setCategory} setSubcategory={setSubcategory}/>
-          <QuizList imagesInfo={imagesInfo} quizzes={filteredByFiltersQuizzes} setImagesInfo={setImagesInfo}/>
+          setDifficulty={setDifficulty} setCategory={setCategory} setSubcategory={setSubcategory}
+          setDateParameterSort = {setDateParameterSort}/>
+          <QuizList imagesInfo={imagesInfo} quizzes={sortedQuizzes} setImagesInfo={setImagesInfo}/>
         </>}
       </div>
     </div>
