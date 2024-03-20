@@ -5,8 +5,8 @@ import useSubcategorySelect from "../../hooks/useSubcategorySelect"
 import CategoryAPI from "../../services/API/CategoryAPI"
 import SubcategoryAPI from "../../services/API/SubcategoryAPI"
 import Helper from "../../services/Helper"
-import OptionsSelect from "../options_select/OptionsSelect"
-import SearchInput from "../search_input/SearchInput"
+import OptionsSelect from "../UI/options_select/OptionsSelect"
+import SearchInput from "../UI/search_input/SearchInput"
 import styles from "./QuizFiltersBlock.module.css"
 import React, { useEffect, useRef, useState } from 'react'
 

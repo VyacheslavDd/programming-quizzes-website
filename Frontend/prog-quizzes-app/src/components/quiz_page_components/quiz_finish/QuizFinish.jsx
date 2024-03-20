@@ -3,7 +3,7 @@ import styles from "./QuizFinish.module.css"
 import React, { useEffect, useState } from 'react'
 import { resetState, setQuestionsCount, setQuestionAnswersInfo, setAnsweredQuestionsInfo } from "../../../redux/slices/QuizSlice";
 import Helper from "../../../services/Helper";
-import GenericButton from "../../buttons/generic_button/GenericButton";
+import GenericButton from "../../UI/buttons/generic_button/GenericButton";
 import { useNavigate } from "react-router-dom";
 import QuestionResume from "../question_resume/QuestionResume";
 

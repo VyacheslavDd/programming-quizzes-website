@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux"
-import GenericSelectInput from "../select_input_ui/GenericSelectInput"
+import GenericSelectInput from "../UI/select_input_ui/GenericSelectInput"
 import styles from "./AnswerChoice.module.css"
 import React from 'react'
 import { updateQuestionAnswersInfo, updateAnsweredQuestionsInfo } from "../../redux/slices/QuizSlice"

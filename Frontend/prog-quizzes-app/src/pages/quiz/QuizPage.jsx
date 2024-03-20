@@ -6,7 +6,7 @@ import QuizAPI from '../../services/API/QuizAPI'
 import useFetching from '../../hooks/useFetching'
 import Loading from '../../components/animations/Loading/Loading'
 import ErrorMessage from '../../components/error_message/ErrorMessage'
-import GenericSelectInput from '../../components/select_input_ui/GenericSelectInput'
+import GenericSelectInput from '../../components/UI/select_input_ui/GenericSelectInput'
 import AnswerChoice from '../../components/answer_choice/AnswerChoice'
 import AnswerSelect from '../../components/quiz_page_components/answer_select/AnswerSelect'
 import QuizQuestion from '../../components/quiz_page_components/quiz_question/QuizQuestion'
@@ -15,7 +15,7 @@ import PaginationRow from '../../components/pagination/pagination_row/Pagination
 import ImageAPI from '../../services/API/ImageAPI'
 import { useDispatch, useSelector } from 'react-redux'
 import { setQuestionsCount, setCurrentQuestion, setQuestionAnswersInfo, setAnsweredQuestionsInfo, resetState } from '../../redux/slices/QuizSlice'
-import GenericButton from '../../components/buttons/generic_button/GenericButton'
+import GenericButton from '../../components/UI/buttons/generic_button/GenericButton'
 import QuizFinish from '../../components/quiz_page_components/quiz_finish/QuizFinish'
 
 export default function QuizPage() {

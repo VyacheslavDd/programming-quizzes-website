@@ -3,7 +3,7 @@ import useFetching from "../../../hooks/useFetching"
 import ImageAPI from "../../../services/API/ImageAPI";
 import Helper from "../../../services/Helper";
 import Loading from "../../animations/Loading/Loading";
-import GenericButton from "../../buttons/generic_button/GenericButton"
+import GenericButton from "../../UI/buttons/generic_button/GenericButton";
 import CategoryDifficulty from "../../category_difficulty/CategoryDifficulty";
 import SubcategoriesList from "../../subcategories_list/SubcategoriesList";
 import styles from "./QuizIntro.module.css"
