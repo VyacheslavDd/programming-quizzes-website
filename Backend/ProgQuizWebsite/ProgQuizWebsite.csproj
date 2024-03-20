@@ -36,12 +36,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\BusinessLayer\BusinessLayer.csproj" />
-    <ProjectReference Include="..\DataLayer\DataLayer.csproj" />
+    <Folder Include="Domain\Interfaces\" />
+    <Folder Include="Uploads\QuizImages\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Uploads\QuizImages\" />
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

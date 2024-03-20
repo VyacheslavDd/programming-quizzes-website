@@ -3,13 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Data_Layer.Models;
-using Business_Layer.Mappers;
-using Business_Layer.Services.Implementations.MainServices;
-using ProgQuizWebsite.Controllers;
+using ProgQuizWebsite.Services.Implementations.AdditionalServices;
+using ProgQuizWebsite.Services.Implementations.MainServices;
 using ProgQuizWebsite.Tests.Helper;
-using Data_Layer.Models.CategoryModels;
-using Business_Layer.Services.Implementations.AdditionalServices;
 
 namespace ProgQuizWebsite.Tests.ServicesTests
 {

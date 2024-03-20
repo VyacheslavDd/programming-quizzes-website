@@ -1,9 +1,10 @@
-﻿using Data_Layer.Contexts;
-using Data_Layer.Models.CategoryModels;
-using Data_Layer.UnitOfWork;
+﻿
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.EntityFrameworkCore;
+using ProgQuizWebsite.Domain.CategoryModels;
+using ProgQuizWebsite.Infrastracture.Contexts;
+using ProgQuizWebsite.Infrastracture.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
