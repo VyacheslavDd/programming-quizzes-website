@@ -1,5 +1,6 @@
 
 import { createSlice } from "@reduxjs/toolkit";
+import Helper from "../../services/Helper";
 
 const initialState = {
     questionsCount: 0,
@@ -20,7 +21,7 @@ export const quizSlice = createSlice({
             state.currentQuestion = action.payload;
         },
         setQuestionAnswersInfo: (state, action) => {
-            const questions = action.payload;
+            const questions = Helper.shuffleArray(action.payload);
             let counter = 0;
             for (let question of questions) {
                 state.questionAnswers[counter] = {};

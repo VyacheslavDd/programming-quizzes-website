@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Base.Service.Interfaces;
+using Core.Constants;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ProgQuizWebsite.Api.Controllers
@@ -10,6 +11,7 @@ namespace ProgQuizWebsite.Api.Controllers
         {
             var entities = await service.GetAllAsync();
             var models = mapper.Map<List<V>>(entities);
+            Response.Headers.Add(SpecialConstants.ContentCountHeaderName, models.Count.ToString());
             return StatusCode(200, models);
         }
 

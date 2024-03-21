@@ -12,5 +12,6 @@ namespace Core.Constants
         public static string UploadsDirectoryName { get; } = "Uploads";
         public static string QuizImagesDirectoryName { get; } = "QuizImages";
         public static string QuestionImagesDirectoryName { get; } = "QuestionImages";
+        public static string ContentCountHeaderName { get; } = "Content-Count";
     }
 }

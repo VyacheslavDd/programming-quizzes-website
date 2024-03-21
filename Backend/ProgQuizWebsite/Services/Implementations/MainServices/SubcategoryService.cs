@@ -19,7 +19,7 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
             _validationService = validationService;
         }
 
-        public async override Task ValidateItemData(QuizSubcategory? quizSubcategory)
+        public async override Task ValidateItemDataAsync(QuizSubcategory? quizSubcategory)
         {
             await _validationService.ValidateSubcategory(quizSubcategory, _unitOfWork.CategoryRepository, _repository);
         }

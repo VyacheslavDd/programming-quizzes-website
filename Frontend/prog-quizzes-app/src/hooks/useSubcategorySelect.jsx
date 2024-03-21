@@ -12,7 +12,7 @@ export default function useSubcategorySelect(categoryOptions) {
         await SubcategoryAPI.GetAllAsync();
         let options = [];
         for (let subcategory of subcategories) {
-            options.push({id: subcategory.id, value: subcategory.name, text: subcategory.name})
+            options.push({id: subcategory.id, value: subcategory.id, text: subcategory.name})
         }
         setSubcategoryOptions([{id: 0, value: "", text: "Любая"}, ...options]);
     }

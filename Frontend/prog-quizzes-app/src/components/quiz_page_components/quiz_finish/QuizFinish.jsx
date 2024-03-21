@@ -47,7 +47,7 @@ export default function QuizFinish({questions, setIsFinished}) {
         <>
             <h1 className={styles.finishMessage}>Викторина завершена!</h1>
             <span className={styles.resume} style={{color: Helper.defineQuizResumeColor(correctAnswersCount, questions.length)}}>
-                Количество корректных ответов: {correctAnswersCount} из {questions.length}
+                Количество корректных ответов: {correctAnswersCount} из {questions.length} (x2 из-за react strict mode)
                 </span>
             {!doShowDetails
             ? <button onClick={() => setDoShowDetails(true)} onMouseEnter={() => updateDetailsButton(true)} onMouseLeave={() => updateDetailsButton(false)}

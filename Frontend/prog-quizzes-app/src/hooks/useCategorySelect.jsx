@@ -9,7 +9,7 @@ export default function useCategorySelect() {
         let categories = await CategoryAPI.GetAllAsync();
         let options = [];
         for (let category of categories) {
-            options.push({id: category.id, value: category.name, text: category.name})
+            options.push({id: category.id, value: category.id, text: category.name})
         }
         setCategoryOptions([{id: 0, value: "", text: "Любая"}, ...options]);
     }

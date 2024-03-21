@@ -68,9 +68,9 @@ namespace ProgQuizWebsite.Api.Controllers
         [Route("")]
         public async Task<IActionResult> GetPage([FromQuery] GetQuizzesFilter filter)
         {
-            var results = await _service.GetByPageFilter(filter);
+            var results = await _service.GetByFilterAsync(filter, Response);
             var models = _mapper.Map<List<QuizViewModel>>(results);
-            return StatusCode(200, results);
+            return StatusCode(200, models);
         }
         /// <summary>
         /// Метод для получения викторины. Включает вопросы с ответами
@@ -106,7 +106,7 @@ namespace ProgQuizWebsite.Api.Controllers
             entity.LanguageCategoryId = quizModel.LanguageCategoryId;
             entity.Difficulty = quizModel.Difficulty;
             entity.ImageUrl = path;
-            await _service.MatchSubcategories(entity, quizModel.SubcategoriesId);
+            await _service.MatchSubcategoriesAsync(entity, quizModel.SubcategoriesId);
             await _service.UpdateAsync(entity);
             await _imageService.SaveFileAsync(quizModel.QuizImage, _environment.ContentRootPath, SpecialConstants.QuizImagesDirectoryName, path);
             return StatusCode(200);

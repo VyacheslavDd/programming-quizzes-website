@@ -41,7 +41,7 @@ namespace Core.Base.Service.Implementations
         {
             var path = Path.Combine(root, SpecialConstants.UploadsDirectoryName, directory, fileName);
             if (File.Exists(path)) return await File.ReadAllBytesAsync(path);
-            return new byte[0];
+            return Array.Empty<byte>();
         }
     }
 }

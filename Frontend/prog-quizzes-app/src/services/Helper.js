@@ -25,6 +25,17 @@ export default class Helper {
         return Helper.questionTypes[1];
     }
 
+    static shuffleArray(array) {
+        let currentIndex = array.length, randomIndex;
+        while (currentIndex > 0) {
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+        }
+        return array;
+    }
+
     static shortenQuizDescription(description) {
         if (description.length <= Helper.quizDescriptionLength) {
             return description;

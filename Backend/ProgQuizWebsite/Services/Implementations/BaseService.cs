@@ -22,11 +22,11 @@ namespace ProgQuizWebsite.Services.Implementations
             _unitOfWork = unitOfWork;
         }
 
-        public abstract Task ValidateItemData(T? item);
+        public abstract Task ValidateItemDataAsync(T? item);
 
         public async virtual Task<Guid> AddAsync(T? item)
         {
-            await ValidateItemData(item);
+            await ValidateItemDataAsync(item);
             var guid = await _repository.AddAsync(item);
             await _unitOfWork.SaveAsync();
             return guid;
@@ -50,7 +50,7 @@ namespace ProgQuizWebsite.Services.Implementations
 
         public virtual async Task UpdateAsync(T? item)
         {
-            await ValidateItemData(item);
+            await ValidateItemDataAsync(item);
             await _unitOfWork.SaveAsync();
         }
     }

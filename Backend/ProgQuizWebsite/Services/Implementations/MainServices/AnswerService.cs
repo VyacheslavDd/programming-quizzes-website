@@ -21,7 +21,7 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
             _validationService = validationService;
         }
 
-        public async override Task ValidateItemData(Answer? answer)
+        public async override Task ValidateItemDataAsync(Answer? answer)
         {
             await _validationService.ValidateAnswer(answer, _unitOfWork.QuestionRepository);
         }

@@ -1,38 +1,48 @@
 import useCategorySelect from "../../hooks/useCategorySelect"
 import useDateSortingSelect from "../../hooks/useDateSortingSelect"
 import useDifficultySelect from "../../hooks/useDifficultySelect"
+import useLimitSelect from "../../hooks/useLimitSelect"
 import useSubcategorySelect from "../../hooks/useSubcategorySelect"
 import CategoryAPI from "../../services/API/CategoryAPI"
 import SubcategoryAPI from "../../services/API/SubcategoryAPI"
 import Helper from "../../services/Helper"
+import GenericButton from "../UI/buttons/generic_button/GenericButton"
 import OptionsSelect from "../UI/options_select/OptionsSelect"
 import SearchInput from "../UI/search_input/SearchInput"
 import styles from "./QuizFiltersBlock.module.css"
 import React, { useEffect, useRef, useState } from 'react'
 
-export default function QuizFiltersBlock({setSearchQuery, setDifficulty, setCategory, setSubcategory, setDateParameterSort}) {
+export default function QuizFiltersBlock({setSearchQuery, setDifficulty, setCategory, setSubcategory,
+    setLimit, setDateParameterSort, onAccept}) {
 
     const onSearchInputAction = (query) => {
         setSearchQuery(query);
     }
 
     const onDifficultySelect = (e) => {
-        setDifficulty(Number(e.target.value));
+        let value = Number(e.target.value)
+        setDifficulty(value > 0 ? value : null);
     }
 
     const onCategorySelect = async (e) => {
-        setCategory(e.target.value);
-        setSubcategory("");
+        let value = e.target.value;
+        setCategory(value === "" ? null : value);
+        setSubcategory(null);
         subCategoryRef.current.selectedIndex = 0;
         await setSubcategoryOptions(e.target.selectedIndex);
     }
 
     const onSubcategorySelect = (e) => {
-        setSubcategory(e.target.value);
+        let value = e.target.value;
+        setSubcategory(value === "" ? null : value);
     }
 
     const onDateParameterSortSelect = (e) => {
         setDateParameterSort(e.target.value);
+    }
+
+    const onLimitSelect = (e) => {
+        setLimit(Number(e.target.value));
     }
 
     const subCategoryRef = useRef();
@@ -40,6 +50,7 @@ export default function QuizFiltersBlock({setSearchQuery, setDifficulty, setCate
     const [categoryOptions, setCategoryOptions] = useCategorySelect();
     const [subcategoryOptions, setSubcategoryOptions] = useSubcategorySelect(categoryOptions);
     const [dateSortOptions, setDateSortOptions] = useDateSortingSelect();
+    const [limitOptions, setLimitOptions] = useLimitSelect();
 
 
     useEffect(() => {
@@ -49,6 +60,7 @@ export default function QuizFiltersBlock({setSearchQuery, setDifficulty, setCate
         }
         setDifficultyOptions();
         setDateSortOptions();
+        setLimitOptions();
         asynchronousPreparations();
     }, [])
 
@@ -64,8 +76,11 @@ export default function QuizFiltersBlock({setSearchQuery, setDifficulty, setCate
                 </div>
                 <div>
                     <OptionsSelect label="Сложность:" options={difficultyOptions} onChange={onDifficultySelect}/>
-                    <OptionsSelect label="Лимит на страницу:" options={[{id: 1, value: "xd", text: "what"}, {id: 2, value: "xd", text: "whatt"}]}/>
+                    <OptionsSelect label="Лимит на страницу:" options={limitOptions} onChange={onLimitSelect}/>
                 </div>
+            </div>
+            <div className={styles.acceptFilters}>
+                <GenericButton onClick={() => onAccept()}>Применить</GenericButton>
             </div>
             <div className={styles.dateSort}>
                 <OptionsSelect label="Сортировать по дате:" options={dateSortOptions} onChange={onDateParameterSortSelect}/>

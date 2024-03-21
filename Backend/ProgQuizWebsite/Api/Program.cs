@@ -23,6 +23,7 @@ using ProgQuizWebsite.Domain.CategoryModels;
 using ProgQuizWebsite.Infrastracture.UnitOfWork;
 using ProgQuizWebsite.Services.Implementations.AdditionalServices;
 using ProgQuizWebsite.Infrastracture.Filters;
+using Core.Constants;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
@@ -33,7 +34,8 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy(defaultPolicyName, policy =>
     {
-        policy.WithOrigins("http://localhost:5173").AllowAnyMethod().AllowAnyHeader();
+        policy.WithOrigins("http://localhost:5173").WithExposedHeaders(SpecialConstants.ContentCountHeaderName)
+        .AllowAnyMethod().AllowAnyHeader();
     });
 });
 

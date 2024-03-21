@@ -1,5 +1,7 @@
 ﻿
 using Core.Base.Service.Implementations;
+using Core.Base.Service.Interfaces;
+using Core.Constants;
 using Microsoft.EntityFrameworkCore;
 using ProgQuizWebsite.Domain.CategoryModels;
 using ProgQuizWebsite.Domain.FilterModels;
@@ -27,18 +29,18 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
             return new Guid();
         }
 
-        public async override Task ValidateItemData(Quiz? quiz)
+        public async override Task ValidateItemDataAsync(Quiz? quiz)
         {
         }
 
         public async Task<Guid> AddAsync(Quiz quiz, List<Guid> subcategoriesId)
         {
             await _validationService.ValidateQuiz(quiz, _unitOfWork.CategoryRepository, _repository);
-			await MatchSubcategories(quiz, subcategoriesId);
+            await MatchSubcategoriesAsync(quiz, subcategoriesId);
             return await base.AddAsync(quiz);
         }
 
-        public async Task MatchSubcategories(Quiz quiz, List<Guid> subcategoriesId)
+        public async Task MatchSubcategoriesAsync(Quiz quiz, List<Guid> subcategoriesId)
         {
             if (quiz is null) throw new ArgumentNullException("Викторины не существует!");
             List<QuizSubcategory> subcategories = new List<QuizSubcategory>();
@@ -58,11 +60,16 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
             }
         }
 
-        public async Task<List<Quiz?>> GetByPageFilter(GetQuizzesFilter filter)
+        public async Task<List<Quiz?>> GetByFilterAsync(GetQuizzesFilter filter, HttpResponse response)
         {
-            if (filter is null || filter.Page - 1 < 0) return new List<Quiz?>();
-            return (await GetAllAsync())
-                .Skip((filter.Page - 1) * filter.Limit).Take(filter.Limit).ToList();
+            if (filter is null || filter.Page - 1 < 0 || filter.Limit <= 0) return new List<Quiz?>();
+            var quizzes = (await GetAllAsync())
+                .Where(q => filter.CategoryId == Guid.Empty || q.LanguageCategoryId == filter.CategoryId)
+                .Where(q => filter.SubcategoryId == Guid.Empty || q.Subcategories.Any(s => s.Id == filter.SubcategoryId))
+                .Where(q => filter.Difficulty <= 0 || q.Difficulty == filter.Difficulty)
+                .OrderByDescending(q => q.CreationDate);
+            response.Headers.Add(SpecialConstants.ContentCountHeaderName, quizzes.Count().ToString());
+            return quizzes.Skip((filter.Page - 1) * filter.Limit).Take(filter.Limit).ToList();
         }
     }
 }

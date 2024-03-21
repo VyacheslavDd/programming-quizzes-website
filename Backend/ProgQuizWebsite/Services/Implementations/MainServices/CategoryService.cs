@@ -29,7 +29,7 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
             return subcategories;
 		}
 
-		public async override Task ValidateItemData(LanguageCategory? category)
+		public async override Task ValidateItemDataAsync(LanguageCategory? category)
         {
             await _validationService.ValidateCategory(category, _repository);
         }
