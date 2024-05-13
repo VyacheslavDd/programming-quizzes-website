@@ -2,6 +2,7 @@
 using Core.Base.Service.Implementations;
 using Core.Redis.Interfaces;
 using ProgQuizWebsite.Domain.CategoryModels;
+using ProgQuizWebsite.Infrastracture.Contexts;
 using ProgQuizWebsite.Infrastracture.UnitOfWork;
 using ProgQuizWebsite.Services.Interfaces;
 using System;
@@ -16,8 +17,8 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
     public class CategoryService : BaseService<LanguageCategory>, ICategoryService
     {
         private readonly IValidationService _validationService;
-        public CategoryService(IUnitOfWork unitOfWork, IValidationService validationService, IRedisService redisService)
-            : base(unitOfWork.CategoryRepository, unitOfWork, redisService)
+        public CategoryService(IUnitOfWork unitOfWork, IValidationService validationService, IRedisService redisService, QuizAppContext quizAppContext)
+            : base(unitOfWork.CategoryRepository, unitOfWork, redisService, quizAppContext)
         {
             _validationService = validationService;
         }

@@ -20,12 +20,14 @@ namespace ProgQuizWebsite.Services.Implementations
         protected readonly IUnitOfWork _unitOfWork;
         protected readonly IRepository<T> _repository;
         protected readonly IRedisService _redisService;
+        protected readonly QuizAppContext _quizAppContext;
 
-        public BaseService(IRepository<T> repository, IUnitOfWork unitOfWork, IRedisService redisService)
+        public BaseService(IRepository<T> repository, IUnitOfWork unitOfWork, IRedisService redisService, QuizAppContext quizAppContext)
         {
             _repository = repository;
             _unitOfWork = unitOfWork;
             _redisService = redisService;
+            _quizAppContext = quizAppContext;
         }
 
         public abstract Task ValidateItemDataAsync(T? item);
@@ -57,6 +59,8 @@ namespace ProgQuizWebsite.Services.Implementations
                     await _redisService.Set(name, entries);
                 return entries;
             }
+            foreach (var result in results)
+                _quizAppContext.Set<T>().Attach(result);
             return results;
         }
 

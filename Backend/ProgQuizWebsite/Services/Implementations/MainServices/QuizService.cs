@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using ProgQuizWebsite.Domain.CategoryModels;
 using ProgQuizWebsite.Domain.FilterModels;
 using ProgQuizWebsite.Domain.QuizModels;
+using ProgQuizWebsite.Infrastracture.Contexts;
 using ProgQuizWebsite.Infrastracture.UnitOfWork;
 using ProgQuizWebsite.Services.Interfaces;
 using System;
@@ -20,8 +21,8 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
     public class QuizService : BaseService<Quiz>, IQuizService
     {
         private readonly IValidationService _validationService;
-        public QuizService(IUnitOfWork unitOfWork, IValidationService validationService, IRedisService redisService)
-            : base(unitOfWork.QuizRepository, unitOfWork, redisService)
+        public QuizService(IUnitOfWork unitOfWork, IValidationService validationService, IRedisService redisService, QuizAppContext quizAppContext)
+            : base(unitOfWork.QuizRepository, unitOfWork, redisService, quizAppContext)
         {
             _validationService = validationService;
         }
