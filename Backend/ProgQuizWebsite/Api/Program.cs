@@ -24,6 +24,8 @@ using ProgQuizWebsite.Infrastracture.UnitOfWork;
 using ProgQuizWebsite.Services.Implementations.AdditionalServices;
 using ProgQuizWebsite.Infrastracture.Filters;
 using Core.Constants;
+using ProgQuizWebsite.Infrastracture.Startups;
+using Core.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
@@ -39,10 +41,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
-
 builder.Services.AddControllers()
     .AddNewtonsoftJson(opt =>
     {
@@ -53,19 +51,14 @@ builder.Services.AddControllers()
     })
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-builder.Services.AddDbContext<QuizAppContext>(opt => opt.UseNpgsql(builder.Configuration.GetConnectionString("QuizDB"),
-    m => m.MigrationsAssembly("ProgQuizWebsite")), ServiceLifetime.Scoped);
+builder.Services.AddDomain(builder.Configuration);
+
+builder.Services.AddRedis(builder.Configuration);
 
 builder.Services.AddScoped<QuizElementsExceptionFilter>();
 
-builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddScoped<IValidationService, ValidationService>();
-builder.Services.AddScoped<IImageService, ImageService>();
-builder.Services.AddScoped<IService<QuizSubcategory>, SubcategoryService>();
-builder.Services.AddScoped<IQuizService, QuizService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IService<Question>, QuestionService>();
-builder.Services.AddScoped<IService<Answer>, AnswerService>();
+builder.Services.AddServices();
+
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(QuizMapper)));
 builder.Services.AddFluentValidationAutoValidation();

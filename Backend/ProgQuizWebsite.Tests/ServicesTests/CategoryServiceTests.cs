@@ -15,7 +15,7 @@ namespace ProgQuizWebsite.Tests.ServicesTests
 		private CategoryService GetService()
 		{
 			var unitOfWork = TestsHelper.SetupUnitOfWork();
-			return new CategoryService(unitOfWork, new ValidationService());
+			return new CategoryService(unitOfWork, new ValidationService(), null);
 		}
 
 		[Test]

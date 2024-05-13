@@ -1,5 +1,6 @@
 ﻿
 using Core.Base.Service.Implementations;
+using Core.Redis.Interfaces;
 using ProgQuizWebsite.Domain.QuizContentModels;
 using ProgQuizWebsite.Infrastracture.UnitOfWork;
 using ProgQuizWebsite.Services.Interfaces;
@@ -14,7 +15,8 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
     public class QuestionService : BaseService<Question>
     {
         private readonly IValidationService _validationService;
-        public QuestionService(IUnitOfWork unitOfWork, IValidationService validationService) : base(unitOfWork.QuestionRepository, unitOfWork)
+        public QuestionService(IUnitOfWork unitOfWork, IValidationService validationService, IRedisService redisService)
+            : base(unitOfWork.QuestionRepository, unitOfWork, redisService)
         {
             _validationService = validationService;
         }

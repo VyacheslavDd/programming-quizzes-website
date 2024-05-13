@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Base.Service.Implementations;
+using Core.Redis.Interfaces;
 using ProgQuizWebsite.Domain.CategoryModels;
 using ProgQuizWebsite.Infrastracture.UnitOfWork;
 using ProgQuizWebsite.Services.Interfaces;
@@ -15,7 +16,8 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
     public class CategoryService : BaseService<LanguageCategory>, ICategoryService
     {
         private readonly IValidationService _validationService;
-        public CategoryService(IUnitOfWork unitOfWork, IValidationService validationService) : base(unitOfWork.CategoryRepository, unitOfWork)
+        public CategoryService(IUnitOfWork unitOfWork, IValidationService validationService, IRedisService redisService)
+            : base(unitOfWork.CategoryRepository, unitOfWork, redisService)
         {
             _validationService = validationService;
         }

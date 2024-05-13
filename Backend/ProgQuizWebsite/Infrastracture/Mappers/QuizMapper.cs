@@ -19,12 +19,12 @@ namespace ProgQuizWebsite.Infrastracture.Mappers
         {
             CreateMap<LanguageCategory, CategoryViewModel>()
                 .ForMember(cvm => cvm.Subcategories, m => m.MapFrom(lc =>
-                lc.Subcategories.Select(sc => new SubcategoryViewModel() { Id = sc.Id, Name = sc.Name, CategoryName = sc.LanguageCategory.Name })));
+                lc.Subcategories.Select(sc => new SubcategoryViewModel() { Id = sc.Id, Name = sc.Name })));
 
             CreateMap<CategoryPostModel, LanguageCategory>();
 
-            CreateMap<QuizSubcategory, SubcategoryViewModel>()
-                .ForMember(svm => svm.CategoryName, qz => qz.MapFrom(s => s.LanguageCategory.Name));
+            CreateMap<QuizSubcategory, SubcategoryViewModel>();
+                //.ForMember(svm => svm.CategoryName, qz => qz.MapFrom(s => s.LanguageCategory.Name));
 
             CreateMap<SubcategoryPostModel, QuizSubcategory>();
 

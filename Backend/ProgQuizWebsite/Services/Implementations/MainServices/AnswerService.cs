@@ -9,6 +9,7 @@ using Core.Base.Service.Implementations;
 using ProgQuizWebsite.Domain.QuizContentModels;
 using ProgQuizWebsite.Services.Interfaces;
 using ProgQuizWebsite.Infrastracture.UnitOfWork;
+using Core.Redis.Interfaces;
 
 namespace ProgQuizWebsite.Services.Implementations.MainServices
 {
@@ -16,7 +17,8 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
     {
         private readonly IValidationService _validationService;
 
-        public AnswerService(IUnitOfWork unitOfWork, IValidationService validationService) : base(unitOfWork.AnswerRepository, unitOfWork)
+        public AnswerService(IUnitOfWork unitOfWork, IValidationService validationService, IRedisService redisService)
+            : base(unitOfWork.AnswerRepository, unitOfWork, redisService)
         {
             _validationService = validationService;
         }

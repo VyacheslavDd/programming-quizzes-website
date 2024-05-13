@@ -1,4 +1,5 @@
 ﻿using Core.Base.Service.Implementations;
+using Core.Redis.Interfaces;
 using ProgQuizWebsite.Domain.CategoryModels;
 using ProgQuizWebsite.Infrastracture.UnitOfWork;
 using ProgQuizWebsite.Services.Interfaces;
@@ -14,7 +15,8 @@ namespace ProgQuizWebsite.Services.Implementations.MainServices
     public class SubcategoryService : BaseService<QuizSubcategory>
     {
         private readonly IValidationService _validationService;
-        public SubcategoryService(IUnitOfWork unitOfWork, IValidationService validationService) : base(unitOfWork.SubcategoryRepository, unitOfWork)
+        public SubcategoryService(IUnitOfWork unitOfWork, IValidationService validationService, IRedisService redisService)
+            : base(unitOfWork.SubcategoryRepository, unitOfWork, redisService)
         {
             _validationService = validationService;
         }
