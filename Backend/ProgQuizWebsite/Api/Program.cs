@@ -26,6 +26,8 @@ using ProgQuizWebsite.Infrastracture.Filters;
 using Core.Constants;
 using ProgQuizWebsite.Infrastracture.Startups;
 using Core.Redis;
+using Core.Logging;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
@@ -52,7 +54,7 @@ builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddDomain(builder.Configuration);
-
+builder.Host.AddSerilog();
 builder.Services.AddRedis(builder.Configuration);
 
 builder.Services.AddScoped<QuizElementsExceptionFilter>();
@@ -82,6 +84,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 
 app.UseCors(defaultPolicyName);
