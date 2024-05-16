@@ -8,6 +8,8 @@ using ProgQuizWebsite.Domain.QuizContentModels;
 using ProgQuizWebsite.Api.ViewModels;
 using ProgQuizWebsite.Api.PostModels;
 using ProgQuizWebsite.Infrastracture.Filters;
+using MassTransit;
+using Core.Messaging.Models;
 
 namespace ProgQuizWebsite.Api.Controllers
 {
