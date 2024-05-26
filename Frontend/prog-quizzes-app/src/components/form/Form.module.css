@@ -1,0 +1,21 @@
+
+.formContainer {
+    padding: 50px;
+    border: 3px dashed blueviolet;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+.formTitle {
+    margin-bottom: 25px;
+}
+.form {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}

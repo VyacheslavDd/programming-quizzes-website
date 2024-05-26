@@ -1,0 +1,45 @@
+
+.formField {
+    background-color: transparent;
+    padding: 10px;
+    padding-left: 20px;
+    border: 3px dashed rgb(25, 78, 80);
+    border-radius: 30px;
+    font-size: 21px;
+    font-family: 'Times New Roman', Times, serif;
+    color:rgb(25, 78, 80);
+    width: 90%;
+}
+.formField:focus {
+    outline: none;
+    border: 3px solid rgb(25, 78, 80);
+}
+.label {
+    align-self: flex-start;
+    font-size: 21px;
+    padding-left: 15px;
+    margin-bottom: 5px;
+    font-style: italic;
+    font-weight: 700;
+}
+.fieldContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    width: 20vw;
+}
+.inputHint {
+    color: rgb(226, 84, 84);
+    font-size: 18px;
+    padding-left: 15px;
+    margin-top: 5px;
+    text-align: center;
+}
+.hintContainer {
+    width: 80%;
+    height: auto;
+    display: flex;
+    justify-content: center;
+}

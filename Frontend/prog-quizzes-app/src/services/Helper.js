@@ -10,7 +10,12 @@ export default class Helper {
         1: "radio",
         2: "checkbox"
     }
+    static inputTextType = "text";
+    static inputPasswordType = "password";
     static quizDescriptionLength = 60;
+    static emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    static loginRegex = /^[A-Za-z][A-Za-z_0-9]{7,19}$/;
+    static passwordRegex = /^[A-Za-z@~!%&_]{8,15}$/;
 
     static getDifficultyProperty(difficultyValue) {
         if (typeof difficultyValue === "number" && difficultyValue in Helper.difficulties) {
@@ -54,5 +59,11 @@ export default class Helper {
         else {
             return "#10871a"
         }
+    }
+
+    static updateFieldData(regexObject, input,  hintMessage, setHint, setIsCorrect) {
+        let testPassed = regexObject.test(input);
+        setHint(testPassed ? "" : hintMessage);
+        setIsCorrect(testPassed ? true : false);
     }
 }

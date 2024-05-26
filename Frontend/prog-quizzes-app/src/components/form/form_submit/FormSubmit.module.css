@@ -1,0 +1,18 @@
+
+.submitInput {
+    align-self: flex-end;
+    padding: 10px 15px;
+    background-color: transparent;
+    font-size: 21px;
+    font-family: 'Times New Roman', Times, serif;
+    border: 3px dashed purple;
+    border-radius: 15px;
+    margin-top: 25px;
+}
+.submitInput:hover {
+    cursor: pointer;
+    font-style: italic;
+}
+.submitInput:active {
+    border: 3px solid purple;
+}

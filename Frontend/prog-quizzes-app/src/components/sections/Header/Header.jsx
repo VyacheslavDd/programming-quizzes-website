@@ -18,8 +18,8 @@ export default function Header() {
           </nav>
           <div className={styles.logDiv}>
           <ul className={styles.logLinks}>
-                <li className={styles.logLinksItem}><Link to='#' className={styles.logInButton}>Войти</Link></li>
-                <li className={styles.logLinksItem}><Link to='#' className={styles.regButton}>Регистрация</Link></li>
+                <li className={styles.logLinksItem}><Link to='/login' className={styles.logInButton}>Войти</Link></li>
+                <li className={styles.logLinksItem}><Link to='/register' className={styles.regButton}>Регистрация</Link></li>
             </ul>
           </div>
       </header>
