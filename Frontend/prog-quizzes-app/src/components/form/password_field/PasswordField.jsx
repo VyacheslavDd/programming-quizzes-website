@@ -12,7 +12,7 @@ export default function PasswordField({input, setInput, setIsCorrect}) {
             setIsCorrect(false);
             return;
         }
-        Helper.updateFieldData(Helper.passwordRegex, input, "Пароль должен быть длиной от 8 до 15 символов и содержать латинские буквы, символы @~!%&_",
+        Helper.updateFieldData(Helper.passwordRegex, input, "Пароль должен быть длиной от 8 до 15 символов и содержать латинские буквы, цифры, символы @~!%&_",
             setHint, setIsCorrect)
     }
 

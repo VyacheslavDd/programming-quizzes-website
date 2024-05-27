@@ -1,10 +1,13 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import styles from "./Header.module.css"
 import logo from "../../../assets/quizz-logo.png"
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { AuthContext } from '../../../context/AuthContext'
 
 export default function Header() {
+
+  const { token } = useContext(AuthContext);
 
   return (
     <>
@@ -18,8 +21,17 @@ export default function Header() {
           </nav>
           <div className={styles.logDiv}>
           <ul className={styles.logLinks}>
-                <li className={styles.logLinksItem}><Link to='/login' className={styles.logInButton}>Войти</Link></li>
-                <li className={styles.logLinksItem}><Link to='/register' className={styles.regButton}>Регистрация</Link></li>
+                {token === "xd"
+                ?
+                <>
+                  <li className={styles.logLinksItem}><Link to='/login' className={styles.logInButton}>Войти</Link></li>
+                  <li className={styles.logLinksItem}><Link to='/register' className={styles.regButton}>Регистрация</Link></li>
+                </>
+                :
+                <>
+                  <li className={styles.logLinksItem}><Link to='/cabinet' className={styles.cabinetButton}>Личный кабинет</Link></li>
+                </>
+                }
             </ul>
           </div>
       </header>

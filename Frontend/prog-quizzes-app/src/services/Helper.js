@@ -15,7 +15,7 @@ export default class Helper {
     static quizDescriptionLength = 60;
     static emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     static loginRegex = /^[A-Za-z][A-Za-z_0-9]{7,19}$/;
-    static passwordRegex = /^[A-Za-z@~!%&_]{8,15}$/;
+    static passwordRegex = /^[A-Za-z0-9@~!%&_]{8,15}$/;
 
     static getDifficultyProperty(difficultyValue) {
         if (typeof difficultyValue === "number" && difficultyValue in Helper.difficulties) {

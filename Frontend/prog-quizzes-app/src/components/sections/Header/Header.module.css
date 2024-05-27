@@ -24,6 +24,7 @@ a {
     display: inline-block;
     padding: 7px;
     text-decoration: none;
+    color: black;
 }
 a:hover, a:visited {
     color: black;
@@ -41,7 +42,10 @@ a:hover, a:visited {
 .regButton {
     border: 2px solid rgb(17, 0, 255);
 }
-.logInButton:hover {
+.cabinetButton {
+    border: 2px dashed rgb(68, 161, 238);
+}
+.logInButton:hover, .cabinetButton:hover {
     background-color: rgb(172, 205, 233);
 }
 .regButton:hover {
