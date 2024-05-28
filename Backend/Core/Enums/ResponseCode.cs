@@ -7,13 +7,21 @@ using System.Threading.Tasks;
 
 namespace Core.Enums
 {
-    public enum ResponseType
+    public enum ResponseCode
     {
         [Display(Name = "Success")]
         Success = 200,
+        [Display(Name = "Created")]
+        Created = 201,
         [Display(Name = "No Result")]
         NoResult = 204,
         [Display(Name = "Failure")]
-        Failure = 404
-    }
+        Failure = 404,
+        [Display(Name = "Internal Server Error")]
+        InternalServerError = 500,
+        [Display(Name = "Conflict")]
+        Conflict = 409,
+		[Display(Name = "Unathorized")]
+		Unathorized = 401,
+	}
 }
