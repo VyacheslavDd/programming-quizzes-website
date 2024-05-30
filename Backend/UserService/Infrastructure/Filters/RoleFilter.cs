@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace UserService.Infrastructure.Filters
 {
-	public class AuthFilter : IExceptionFilter
+	public class RoleFilter : IExceptionFilter
 	{
 		public void OnException(ExceptionContext context)
 		{

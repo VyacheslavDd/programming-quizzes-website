@@ -13,8 +13,9 @@ namespace Core.Base.Repository
 		protected readonly DbSet<T> _dbSet;
 		protected readonly DbContext _context;
 
-		public BaseRepository(DbSet<T> dbSet)
+		public BaseRepository(DbContext context, DbSet<T> dbSet)
 		{
+			_context = context;
 			_dbSet = dbSet;
 		}
 
@@ -38,6 +39,11 @@ namespace Core.Base.Repository
 		public virtual async Task<T?> GetByGuidAsync(Guid id)
 		{
 			return await _dbSet.FindAsync(id);
+		}
+
+		public async Task SaveChangesAsync()
+		{
+			await _context.SaveChangesAsync();
 		}
 	}
 }

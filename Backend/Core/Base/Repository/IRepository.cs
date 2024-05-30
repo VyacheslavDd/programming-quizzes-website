@@ -12,5 +12,6 @@ namespace Core.Base.Repository
         Task<T?> GetByGuidAsync(Guid id);
         Task<Guid> AddAsync(T? item);
         Task DeleteAsync(Guid id);
+        Task SaveChangesAsync();
     }
 }

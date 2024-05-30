@@ -8,6 +8,5 @@ namespace UserService.Domain.Interfaces
 	{
 		Task<User?> FindByEmailAsync(string email);
 		Task<User?> FindByLoginAsync(string login);
-		Task SaveChangesAsync();
 	}
 }

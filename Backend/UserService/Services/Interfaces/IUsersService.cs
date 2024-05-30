@@ -10,5 +10,6 @@ namespace UserService.Services.Interfaces
 		Task<User> FindByGuidAsync(Guid id);
 		Task<User> FindByEmailAsync(string email);
 		Task<User> FindByLoginAsync(string login);
+		Task DeleteByGuidAsync(Guid id);
 	}
 }

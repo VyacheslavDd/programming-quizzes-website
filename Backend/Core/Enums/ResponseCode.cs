@@ -15,8 +15,8 @@ namespace Core.Enums
         Created = 201,
         [Display(Name = "No Result")]
         NoResult = 204,
-        [Display(Name = "Failure")]
-        Failure = 404,
+        [Display(Name = "Not Found")]
+        NotFound = 404,
         [Display(Name = "Internal Server Error")]
         InternalServerError = 500,
         [Display(Name = "Conflict")]

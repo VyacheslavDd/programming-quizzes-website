@@ -7,13 +7,19 @@ using Core.Enums;
 
 namespace UserService.Services.Implementations
 {
-	sealed class UsersService : IUsersService
+	internal class UsersService : IUsersService
 	{
 		private readonly IUserRepository _userRepository;
 
 		public UsersService(IUserRepository userRepository)
 		{
 			_userRepository = userRepository;
+		}
+
+		public async Task DeleteByGuidAsync(Guid id)
+		{
+			await _userRepository.DeleteAsync(id);
+			await _userRepository.SaveChangesAsync();
 		}
 
 		public async Task<User> FindByEmailAsync(string email)

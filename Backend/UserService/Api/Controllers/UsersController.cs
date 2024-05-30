@@ -37,5 +37,13 @@ namespace UserService.Api.Controllers
 			var model = _mapper.Map<UserResponse>(user);
 			return Ok(model);
 		}
+
+		[HttpDelete]
+		[Route("delete/{id}")]
+		public async Task<IActionResult> DeleteByGuidAsync([FromRoute] Guid id)
+		{
+			await _usersService.DeleteByGuidAsync(id);
+			return Ok();
+		}
 	}
 }

@@ -7,7 +7,7 @@ using UserService.Services.Interfaces;
 
 namespace UserService.Services.Implementations
 {
-    sealed class AuthService : IAuthService
+    internal class AuthService : IAuthService
 	{
 		private readonly IUserRepository _userRepository;
 		private readonly IUsersService _usersService;

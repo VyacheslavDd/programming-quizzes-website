@@ -1,14 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using UserService.Api.PostModels;
+using UserService.Api.PostModels.Auth;
 using UserService.Domain.Models;
 using UserService.Infrastructure.Filters;
 using UserService.Services.Interfaces;
 
 namespace UserService.Api.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class AuthController : ControllerBase
 	{

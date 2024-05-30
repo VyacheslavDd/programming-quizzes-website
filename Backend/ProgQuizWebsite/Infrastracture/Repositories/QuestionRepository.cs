@@ -14,7 +14,7 @@ namespace ProgQuizWebsite.Infrastracture.Repositories
     {
         private readonly QuizAppContext _context;
 
-        public QuestionRepository(QuizAppContext context) : base(context.Questions)
+        public QuestionRepository(QuizAppContext context) : base(context, context.Questions)
         {
             _context = context;
         }

@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
 using BCrypt.Net;
-using UserService.Api.PostModels;
+using UserService.Api.PostModels.Auth;
+using UserService.Api.PostModels.Roles;
+using UserService.Api.ResponseModels.Roles;
 using UserService.Api.ResponseModels.Users;
 using UserService.Domain.Models;
 
 namespace UserService.Infrastructure.Mappers
 {
-	public class UsersMapper : Profile
+    public class UsersMapper : Profile
 	{
 		public UsersMapper()
 		{
@@ -20,6 +22,9 @@ namespace UserService.Infrastructure.Mappers
 				.ForMember(user => user.Login, opt => opt.MapFrom(model =>
 				model.LoginOrEmail.Contains('@') ? "" : model.LoginOrEmail));
 
+			CreateMap<Role, RoleResponse>();
+			CreateMap<RolePostModel, Role>();
+			CreateMap<RoleUpdateModel, Role>();
 		}
 	}
 }

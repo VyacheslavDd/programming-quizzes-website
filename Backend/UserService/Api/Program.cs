@@ -16,6 +16,7 @@ builder.Services.AddServices();
 builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
 builder.Host.AddSerilog();
 builder.Services.AddScoped<AuthFilter>();
+builder.Services.AddScoped<RoleFilter>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
