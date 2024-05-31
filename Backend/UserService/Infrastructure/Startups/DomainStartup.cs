@@ -14,7 +14,7 @@ namespace UserService.Infrastructure.Startups
 			services.AddDbContext<UserContext>(options => options.UseNpgsql(config.GetConnectionString("PostgresDb")),
 				ServiceLifetime.Scoped);
 			services.AddScoped<IUserRepository, UserRepository>();
-			services.AddScoped<IRepository<Role>, RoleRepository>();
+			services.AddScoped<IRoleRepository, RoleRepository>();
 			return services;
 		}
 	}

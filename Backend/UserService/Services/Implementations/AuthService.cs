@@ -11,11 +11,13 @@ namespace UserService.Services.Implementations
 	{
 		private readonly IUserRepository _userRepository;
 		private readonly IUsersService _usersService;
+		private readonly IRolesService _rolesService;
 
-		public AuthService(IUserRepository userRepository, IUsersService usersService)
+		public AuthService(IUserRepository userRepository, IUsersService usersService, IRolesService rolesService)
 		{
 			_userRepository = userRepository;
 			_usersService = usersService;
+			_rolesService = rolesService;
 		}
 
 		public async Task<RegistrationResponse> RegisterAsync(User user)
@@ -26,6 +28,9 @@ namespace UserService.Services.Implementations
 			var doesUserExistByLogin = (await _usersService.FindByLoginAsync(user.Login)) != null;
 			if (doesUserExistByLogin)
 				return new RegistrationResponse() { ResponseCode = ResponseCode.Conflict, ErrorMessage = "Логин уже занят." };
+			var defaultRole = await _rolesService.GetDefaultRoleAsync();
+			user.Roles = new List<Role>();
+			if (defaultRole != null) user.Roles.Add(defaultRole);
 			await _userRepository.AddAsync(user);
 			await _userRepository.SaveChangesAsync();
 			return new RegistrationResponse() { ResponseCode = ResponseCode.Created };

@@ -9,6 +9,7 @@ namespace UserService.Services.Interfaces
 	{
 		Task<RoleUpdateResponse> UpdateAsync(Role role, Guid roleId);
 		Task<RoleAddResponse> AddAsync(Role role);
-		Task<BaseHttpResponse> CheckRoles(Role role, bool considerId);
+		Task<BaseHttpResponse> CheckRolesAsync(Role role, bool considerId);
+		Task<Role?> GetDefaultRoleAsync();
 	}
 }

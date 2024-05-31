@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UserService.Api.ResponseModels.Roles;
 using UserService.Api.ResponseModels.Users;
 using UserService.Services.Interfaces;
 
@@ -35,6 +36,8 @@ namespace UserService.Api.Controllers
 			var user = await _usersService.FindByGuidAsync(id);
 			if (user == null) return NoContent();
 			var model = _mapper.Map<UserResponse>(user);
+			var roles = _mapper.Map<List<RoleResponse>>(user.Roles);
+			model.Roles = roles;
 			return Ok(model);
 		}
 

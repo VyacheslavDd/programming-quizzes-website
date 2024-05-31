@@ -1,4 +1,6 @@
-﻿namespace UserService.Api.ResponseModels.Users
+﻿using UserService.Api.ResponseModels.Roles;
+
+namespace UserService.Api.ResponseModels.Users
 {
 	public class UserResponse
 	{
@@ -9,5 +11,6 @@
 		public required long PhoneNumber { get; set; }
 		public required string Email { get; set; }
 		public required string Login { get; set; }
+		public required List<RoleResponse> Roles { get; set; }
 	}
 }

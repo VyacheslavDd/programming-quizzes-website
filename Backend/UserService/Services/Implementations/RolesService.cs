@@ -10,9 +10,9 @@ namespace UserService.Services.Implementations
 {
 	internal class RolesService : IRolesService
 	{
-		private readonly IRepository<Role> _rolesRepository;
+		private readonly IRoleRepository _rolesRepository;
 
-		public RolesService(IRepository<Role> rolesRepository)
+		public RolesService(IRoleRepository rolesRepository)
 		{
 			_rolesRepository = rolesRepository;
 		}
@@ -45,12 +45,12 @@ namespace UserService.Services.Implementations
 			ErrorMessage = "Попытка обновить несуществующую роль!" };
 			role.Name = roleNewData.Name;
 			role.IsDefault = roleNewData.IsDefault;
-			var response = await CheckRoles(role, considerId: true);
+			var response = await CheckRolesAsync(role, considerId: true);
 			if (response.ResponseCode != Core.Enums.ResponseCode.Conflict) await _rolesRepository.SaveChangesAsync();
 			return new RoleUpdateResponse() { ResponseCode = response.ResponseCode, ErrorMessage = response.ErrorMessage };
 		}
 
-		public async Task<BaseHttpResponse> CheckRoles(Role role, bool considerId = false)
+		public async Task<BaseHttpResponse> CheckRolesAsync(Role role, bool considerId = false)
 		{
 			var roles = await GetAllAsync();
 			var isUnique = !roles.Any(r => r.Name.ToLower() == role.Name.ToLower() && r.Id != role.Id);
@@ -62,7 +62,7 @@ namespace UserService.Services.Implementations
 
 		public async Task<RoleAddResponse> AddAsync(Role role)
 		{
-			var response = await CheckRoles(role);
+			var response = await CheckRolesAsync(role);
 			if (response.ResponseCode != Core.Enums.ResponseCode.Success) return new RoleAddResponse()
 			{
 				ResponseCode = response.ResponseCode,
@@ -79,6 +79,11 @@ namespace UserService.Services.Implementations
 		Task<Guid> IService<Role>.AddAsync(Role? item)
 		{
 			throw new NotImplementedException();
+		}
+
+		public async Task<Role?> GetDefaultRoleAsync()
+		{
+			return await _rolesRepository.GetDefaultRoleAsync();
 		}
 	}
 }

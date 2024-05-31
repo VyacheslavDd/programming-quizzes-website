@@ -25,5 +25,10 @@ namespace UserService.Infrastructure.Repositories
 		{
 			return await _userContext.Users.FirstOrDefaultAsync(user => user.Login == login);
 		}
+
+		public async override Task<User?> GetByGuidAsync(Guid id)
+		{
+			return await _userContext.Users.Include(u => u.Roles).FirstOrDefaultAsync(u => u.Id == id);
+		}
 	}
 }
