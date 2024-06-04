@@ -67,5 +67,23 @@ namespace UserService.Api.Controllers
 			var response = await _rolesService.UpdateAsync(role, id);
 			return new JsonResult(response);
 		}
+
+		[HttpPost]
+		[Route("{roleId}/assign/{userId}")]
+		[ServiceFilter<RoleFilter>]
+		public async Task<IActionResult> AssignRoleAsync([FromRoute] Guid roleId, [FromRoute] Guid userId)
+		{
+			var response = await _rolesService.AssignRoleAsync(roleId, userId);
+			return new JsonResult(response);
+		}
+
+		[HttpDelete]
+		[Route("{roleId}/revoke/{userId}")]
+		[ServiceFilter<RoleFilter>]
+		public async Task<IActionResult> RevokeRoleAsync([FromRoute] Guid roleId, [FromRoute] Guid userId)
+		{
+			var response = await _rolesService.RevokeRoleAsync(roleId, userId);
+			return new JsonResult(response);
+		}
 	}
 }

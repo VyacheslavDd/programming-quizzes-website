@@ -57,7 +57,7 @@ builder.Services.AddControllers()
 builder.Services.AddDomain(builder.Configuration);
 builder.Host.AddSerilog();
 builder.Services.AddRedis(builder.Configuration);
-builder.Services.AddMasstransitNotifications(builder.Configuration);
+//builder.Services.AddMasstransitNotifications(builder.Configuration);
 builder.Services.AddScoped<QuizElementsExceptionFilter>();
 
 builder.Services.AddServices();

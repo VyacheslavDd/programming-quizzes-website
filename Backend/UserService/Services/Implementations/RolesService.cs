@@ -11,10 +11,12 @@ namespace UserService.Services.Implementations
 	internal class RolesService : IRolesService
 	{
 		private readonly IRoleRepository _rolesRepository;
+		private readonly IUsersService _usersService;
 
-		public RolesService(IRoleRepository rolesRepository)
+		public RolesService(IRoleRepository rolesRepository, IUsersService usersService)
 		{
 			_rolesRepository = rolesRepository;
+			_usersService = usersService;
 		}
 
 		public async Task DeteteAsync(Guid id)
@@ -60,17 +62,17 @@ namespace UserService.Services.Implementations
 				ErrorMessage = "Роль не уникальна или уже имеется роль по умолчанию." };
 		}
 
-		public async Task<RoleAddResponse> AddAsync(Role role)
+		public async Task<RoleСreateResponse> AddAsync(Role role)
 		{
 			var response = await CheckRolesAsync(role);
-			if (response.ResponseCode != Core.Enums.ResponseCode.Success) return new RoleAddResponse()
+			if (response.ResponseCode != Core.Enums.ResponseCode.Success) return new RoleСreateResponse()
 			{
 				ResponseCode = response.ResponseCode,
 				ErrorMessage = response.ErrorMessage
 			};
 			await _rolesRepository.AddAsync(role);
 			await _rolesRepository.SaveChangesAsync();
-			return new RoleAddResponse()
+			return new RoleСreateResponse()
 			{
 				ResponseCode = Core.Enums.ResponseCode.Created
 			};
@@ -84,6 +86,36 @@ namespace UserService.Services.Implementations
 		public async Task<Role?> GetDefaultRoleAsync()
 		{
 			return await _rolesRepository.GetDefaultRoleAsync();
+		}
+
+		public async Task<RoleAssignResponse> AssignRoleAsync(Guid roleId, Guid userId)
+		{
+			var role = await _rolesRepository.GetByGuidAsync(roleId);
+			if (role == null) return new RoleAssignResponse() { ResponseCode = Core.Enums.ResponseCode.NotFound,
+				ErrorMessage = "Указана несуществующая роль" };
+			var user = await _usersService.FindByGuidAsync(userId);
+			if (user == null) return new RoleAssignResponse() { ResponseCode = Core.Enums.ResponseCode.NotFound,
+				ErrorMessage = "Указан несуществующий пользователь" };
+			if (_usersService.IsRoleAssigned(user, role)) return new RoleAssignResponse() { ResponseCode = Core.Enums.ResponseCode.Conflict,
+				ErrorMessage = "Попытка присвоить уже добавленную роль"};
+			user.Roles.Add(role);
+			await _rolesRepository.SaveChangesAsync();
+			return new RoleAssignResponse() { ResponseCode = Core.Enums.ResponseCode.Success };
+		}
+
+		public async Task<RoleRevokeResponse> RevokeRoleAsync(Guid roleId, Guid userId)
+		{
+			var role = await _rolesRepository.GetByGuidAsync(roleId);
+			if (role == null) return new RoleRevokeResponse() { ResponseCode = Core.Enums.ResponseCode.NotFound,
+				ErrorMessage = "Указана несуществующая роль" };
+			var user = await _usersService.FindByGuidAsync(userId);
+			if (user == null) return new RoleRevokeResponse() { ResponseCode = Core.Enums.ResponseCode.NotFound,
+				ErrorMessage = "Указан несуществующий пользователь" };
+			if (!_usersService.IsRoleAssigned(user, role)) return new RoleRevokeResponse() { ResponseCode = Core.Enums.ResponseCode.Conflict,
+				ErrorMessage = "Попытка удалить не добавленную пользователю роль"};
+			user.Roles.Remove(role);
+			await _rolesRepository.SaveChangesAsync();
+			return new RoleRevokeResponse() { ResponseCode = Core.Enums.ResponseCode.Success };
 		}
 	}
 }

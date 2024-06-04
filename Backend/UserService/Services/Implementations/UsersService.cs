@@ -41,5 +41,14 @@ namespace UserService.Services.Implementations
 		{
 			return await _userRepository.GetAllAsync();
 		}
+
+		public bool IsRoleAssigned(User user, Role role)
+		{
+			foreach (var r in user.Roles)
+			{
+				if (r.Name == role.Name) return true;
+			}
+			return false;
+		}
 	}
 }
