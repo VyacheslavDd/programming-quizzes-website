@@ -9,26 +9,59 @@ import LoginField from '../../components/form/login_field/LoginField'
 import LoginEmailField from '../../components/form/email_or_login_field/LoginEmailField'
 import RepeatPasswordField from '../../components/form/repeat_password_field/RepeatPasswordField'
 import FormSubmit from '../../components/form/form_submit/FormSubmit'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
+import useFormSubmit from '../../hooks/useFormSubmit'
+import UserAPI from '../../services/API/UserAPI'
+import FormErrorMessage from '../../components/form/error_message/FormErrorMessage'
+import SuccessContainer from '../../components/success_container/SuccessContainer'
 
 export default function LoginPage() {
 
   const [loginMail, setLoginMail] = useState("");
+  const [showSuccess, setShowSuccess] = useState(true);
   const [password, setPassword] = useState("");
   const [isLoginMailCorrect, setIsLoginMailCorrect] = useState(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
+  const [submitValue, isPending, isSuccess, message, doSubmit] = useFormSubmit("Войти", "Выполняется вход...", async () => {
+    return await UserAPI.authenticate(loginMail, password);
+  }) 
 
   const router = useNavigate();
+  const { state } = useLocation();
   const { token, setToken } = useContext(AuthContext);
+
+  const authenticate = async () => {
+    let result = await doSubmit();
+  }
+
+  useEffect(() => {
+    if (isSuccess) {
+      setToken("md");
+      router("/");
+    }
+  }, [isSuccess])
+
+  useEffect(() => {
+    let timeout;
+    if (state !== null) {
+      timeout = setTimeout(() => {
+        setShowSuccess(false);
+      }, 5000)
+    }
+
+    return () => clearTimeout(timeout);
+  }, [state])
 
   return (
     <div className={styles.mainContainer}>
-        <Form title="Авторизация" onSubmit={() => setToken("md")}>
+        {state && showSuccess &&  <SuccessContainer message={state.msg}/>}
+        <Form title="Авторизация" onSubmit={() => authenticate()}>
           <LoginEmailField input={loginMail} setInput={setLoginMail} setIsCorrect={setIsLoginMailCorrect}/>
           <PasswordField input={password} setInput={setPassword} setIsCorrect={setIsPasswordCorrect}/>
-          <FormSubmit isActive={isLoginMailCorrect && isPasswordCorrect} value="Войти"/>
+          <FormSubmit isActive={isLoginMailCorrect && isPasswordCorrect && !isPending} value={submitValue}/>
         </Form>
+        <FormErrorMessage message={message}/>
     </div>
   )
 }

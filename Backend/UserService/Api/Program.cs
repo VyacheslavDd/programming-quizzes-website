@@ -6,9 +6,10 @@ using FluentValidation;
 using FluentValidation.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+var frontPolicy = "FrontPolicy";
 
 // Add services to the container.
-
+builder.Services.AddFrontCors(frontPolicy);
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -29,7 +30,7 @@ if (app.Environment.IsDevelopment())
 	app.UseSwagger();
 	app.UseSwaggerUI();
 }
-
+app.UseCors(frontPolicy);
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
