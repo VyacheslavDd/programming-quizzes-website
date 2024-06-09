@@ -7,6 +7,7 @@ namespace UserService.Infrastructure.Startups
 	{
 		public static IServiceCollection AddServices(this IServiceCollection services)
 		{
+			services.AddScoped<ITokenService, TokenService>();
 			services.AddScoped<IUsersService, UsersService>();
 			services.AddScoped<IAuthService, AuthService>();
 			services.AddScoped<IRolesService, RolesService>();

@@ -23,5 +23,7 @@ namespace Core.Enums
         Conflict = 409,
 		[Display(Name = "Unathorized")]
 		Unathorized = 401,
+		[Display(Name = "Bad Request")]
+		BadRequest = 400,
 	}
 }

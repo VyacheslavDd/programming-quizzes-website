@@ -23,21 +23,24 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [isLoginMailCorrect, setIsLoginMailCorrect] = useState(false);
   const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
+  const [loginResult, setLoginResult] = useState(null);
   const [submitValue, isPending, isSuccess, message, doSubmit] = useFormSubmit("Войти", "Выполняется вход...", async () => {
     return await UserAPI.authenticate(loginMail, password);
   }) 
 
   const router = useNavigate();
   const { state } = useLocation();
-  const { token, setToken } = useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
 
   const authenticate = async () => {
     let result = await doSubmit();
+    setLoginResult(result);
   }
 
   useEffect(() => {
     if (isSuccess) {
-      setToken("md");
+      localStorage.setItem(Helper.tokenStorageKey, loginResult.token);
+      setToken(loginResult.token);
       router("/");
     }
   }, [isSuccess])

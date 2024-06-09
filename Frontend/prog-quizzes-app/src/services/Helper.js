@@ -12,6 +12,7 @@ export default class Helper {
     }
     static inputTextType = "text";
     static inputPasswordType = "password";
+    static tokenStorageKey = "token";
     static quizDescriptionLength = 60;
     static emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     static loginRegex = /^[A-Za-z][A-Za-z_0-9]{7,19}$/;
@@ -65,5 +66,10 @@ export default class Helper {
         let testPassed = regexObject.test(input);
         setHint(testPassed ? "" : hintMessage);
         setIsCorrect(testPassed ? true : false);
+    }
+
+    static isTokenExpired(token) {
+        let expirationTime = token['exp'] * 1000;
+        return Date.now() > expirationTime;
     }
 }

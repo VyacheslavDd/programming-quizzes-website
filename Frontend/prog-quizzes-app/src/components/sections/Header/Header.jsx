@@ -21,7 +21,7 @@ export default function Header() {
           </nav>
           <div className={styles.logDiv}>
           <ul className={styles.logLinks}>
-                {token === "xd"
+                {token === ""
                 ?
                 <>
                   <li className={styles.logLinksItem}><Link to='/login' className={styles.logInButton}>Войти</Link></li>

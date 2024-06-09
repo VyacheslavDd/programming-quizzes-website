@@ -14,5 +14,7 @@ namespace Core.Constants
         public static string QuestionImagesDirectoryName { get; } = "QuestionImages";
         public static string ContentCountHeaderName { get; } = "Content-Count";
         public static string NotificationsQueueName { get; } = "NotificationsQueue";
-    }
+        public static string JwtTokenKeyPath { get; } = "AppSettings:JwtTokenKey";
+
+	}
 }
