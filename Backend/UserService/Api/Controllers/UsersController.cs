@@ -2,8 +2,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UserService.Api.PostModels.Users;
 using UserService.Api.ResponseModels.Roles;
 using UserService.Api.ResponseModels.Users;
+using UserService.Domain.Models;
 using UserService.Services.Interfaces;
 
 namespace UserService.Api.Controllers
@@ -48,6 +50,23 @@ namespace UserService.Api.Controllers
 		{
 			await _usersService.DeleteByGuidAsync(id);
 			return Ok();
+		}
+
+		[HttpPut]
+		[Route("update/{id}")]
+		public async Task<IActionResult> UpdateByGuidAsync([FromRoute] Guid id, [FromBody] UpdateUserModel updateUserModel)
+		{
+			var userModel = _mapper.Map<User>(updateUserModel);
+			var response = await _usersService.UpdateAsync(id, userModel);
+			return new JsonResult(response);
+		}
+
+		[HttpPatch]
+		[Route("update/{id}/password")]
+		public async Task<IActionResult> UpdatePasswordAsync([FromRoute] Guid id, [FromBody] UpdatePasswordModel updatePasswordModel)
+		{
+			var response = await _usersService.UpdatePasswordAsync(id, updatePasswordModel);
+			return new JsonResult(response);
 		}
 	}
 }

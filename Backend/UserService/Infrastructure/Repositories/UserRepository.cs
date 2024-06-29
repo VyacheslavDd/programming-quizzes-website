@@ -18,12 +18,18 @@ namespace UserService.Infrastructure.Repositories
 
 		public async Task<User?> FindByEmailAsync(string email)
 		{
-			return await _userContext.Users.Include(u => u.Roles).FirstOrDefaultAsync(user => user.Email.ToLower() == email.ToLower());
+			return await _userContext.Users.Include(u => u.Roles).AsNoTracking().
+				FirstOrDefaultAsync(user => user.Email.ToLower() == email.ToLower());
 		}
 
 		public async Task<User?> FindByLoginAsync(string login)
 		{
-			return await _userContext.Users.Include(u => u.Roles).FirstOrDefaultAsync(user => user.Login == login);
+			return await _userContext.Users.Include(u => u.Roles).AsNoTracking().FirstOrDefaultAsync(user => user.Login == login);
+		}
+
+		public async Task<User?> FindByPhoneAsync(long phone)
+		{
+			return await _userContext.Users.Include(u => u.Roles).AsNoTracking().FirstOrDefaultAsync(user => user.PhoneNumber == phone);
 		}
 
 		public async override Task<User?> GetByGuidAsync(Guid id)
