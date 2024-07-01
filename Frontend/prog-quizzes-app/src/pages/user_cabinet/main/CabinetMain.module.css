@@ -1,0 +1,9 @@
+
+.mainBlock {
+    width: 70%;
+    height: fit-content;
+    padding: 10px;
+    border: 3px dashed blueviolet;
+    border-radius: 20px;
+    box-sizing: border-box;
+}

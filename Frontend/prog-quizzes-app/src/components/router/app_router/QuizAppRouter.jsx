@@ -19,9 +19,9 @@ export default function QuizAppRouter() {
               {token === ""
               ? 
                 defaultRoutes.map(route => 
-                    <Route key={route.path} path={route.path} element={<route.element/>} exact={route.exact}/>)
+                    <Route key={route.path} path={route.path} element={<route.element/>}/>)
               : authorizedRoutes.map(route => 
-                <Route key={route.path} path={route.path} element={<route.element/>} exact={route.exact}/>)
+                <Route key={route.path} path={route.path} element={<route.element/>}/>)
               }
             </Routes>
             <Footer/>

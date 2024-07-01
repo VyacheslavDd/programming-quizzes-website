@@ -17,6 +17,7 @@ export default function useFormSubmit(initialValue, pendingValue, callback) {
             let responseCode = submissionResult.responseCode; 
             if (responseCode >= 200 && responseCode <= 299) {
                 setIsSuccess(true);
+                setMessage("");
             }
             else {
                 setIsSuccess(false);

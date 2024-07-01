@@ -29,7 +29,7 @@ namespace UserService.Services.Implementations
 			var symmetricKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration
 				.GetSection(SpecialConstants.JwtTokenKeyPath).Value));
 			var credentials = new SigningCredentials(symmetricKey, SecurityAlgorithms.HmacSha256);
-			var securityToken = new JwtSecurityToken(claims: userClaims, expires: DateTime.Now.AddSeconds(10), signingCredentials: credentials);
+			var securityToken = new JwtSecurityToken(claims: userClaims, expires: DateTime.Now.AddMinutes(15), signingCredentials: credentials);
 			var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
 			return token;
 		}

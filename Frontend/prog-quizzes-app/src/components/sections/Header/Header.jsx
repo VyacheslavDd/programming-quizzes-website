@@ -9,6 +9,7 @@ export default function Header() {
 
   const { token } = useContext(AuthContext);
 
+
   return (
     <>
       <header className={styles.header}>
