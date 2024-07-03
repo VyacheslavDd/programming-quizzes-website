@@ -13,8 +13,7 @@ import useSuccessTimeout from '../../../hooks/useSuccessTimeout';
 
 export default function CabinetPasswordControl({user}) {
   const [passwordData, setPasswordData] = useState({oldPassword: "", newPassword: "", repeatPassword: ""});
-  const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
-  const [isRepeatCorrect, setIsRepeatCorrect] = useState(false);
+  const [corrects, setCorrects] = useState({isPasswordCorrect: false, isRepeatCorrect: false});
   const [isShowingSuccess, setIsShowingSuccess, doTimeout] = useSuccessTimeout(3000);
   const [submitValue, isPending, isSuccess, message, submit] = useFormSubmit("Сменить пароль", "Смена пароля...", async () => {
     return await UserAPI.updatePassword(user.id, passwordData);
@@ -37,13 +36,13 @@ export default function CabinetPasswordControl({user}) {
 
   return (
       <form className={styles.form} action='post' onSubmit={(e) => updatePassword(e)}>
-        <FormField type={Helper.inputPasswordType} label="Старый пароль" placeholder="Введите пароль..."
-        setInput={(value) => setPasswordData({...passwordData, oldPassword: value})}/>
-        <PasswordField input={passwordData.newPassword} setInput={(value) => setPasswordData({...passwordData, newPassword: value})} setIsCorrect={setIsPasswordCorrect}/>
-        <RepeatPasswordField originalPassword={passwordData.newPassword} input={passwordData.repeatPassword} setIsCorrect={setIsRepeatCorrect}
-          setInput={(value) => setPasswordData({...passwordData, repeatPassword: value})}/>
+        <FormField propertyName="oldPassword" type={Helper.inputPasswordType} label="Старый пароль" placeholder="Введите пароль..." setInput={setPasswordData}/>
+        <PasswordField propertyName="newPassword" correctPropertyName="isPasswordCorrect" input={passwordData.newPassword} setInput={setPasswordData}
+        setIsCorrect={setCorrects}/>
+        <RepeatPasswordField propertyName="repeatPassword" correctPropertyName="isRepeatCorrect" originalPassword={passwordData.newPassword}
+        input={passwordData.repeatPassword} setIsCorrect={setCorrects} setInput={setPasswordData}/>
         <div className={styles.submit}>
-          <FormSubmit isActive={isPasswordCorrect && isRepeatCorrect && passwordData.oldPassword.length > 0 && !isPending} value={submitValue}/>
+          <FormSubmit isActive={corrects.isPasswordCorrect && corrects.isRepeatCorrect && passwordData.oldPassword.length > 0 && !isPending} value={submitValue}/>
         </div>
         {!isSuccess ? <FormErrorMessage message={message}/> : <></>}
         {isShowingSuccess && <span className={styles.updateSuccess}>Пароль успешно изменён</span>}

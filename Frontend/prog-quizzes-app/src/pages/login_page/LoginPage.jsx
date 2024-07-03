@@ -18,14 +18,12 @@ import SuccessContainer from '../../components/success_container/SuccessContaine
 
 export default function LoginPage() {
 
-  const [loginMail, setLoginMail] = useState("");
+  const [loginData, setLoginData] = useState({loginMail: "", password: ""});
+  const [corrects, setCorrects] = useState({isLoginMailCorrect: false, isPasswordCorrect: false});
   const [showSuccess, setShowSuccess] = useState(true);
-  const [password, setPassword] = useState("");
-  const [isLoginMailCorrect, setIsLoginMailCorrect] = useState(false);
-  const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
   const [loginResult, setLoginResult] = useState(null);
   const [submitValue, isPending, isSuccess, message, doSubmit] = useFormSubmit("Войти", "Выполняется вход...", async () => {
-    return await UserAPI.authenticate(loginMail, password);
+    return await UserAPI.authenticate(loginData.loginMail, loginData.password);
   }) 
 
   const router = useNavigate();
@@ -60,9 +58,9 @@ export default function LoginPage() {
     <div className={styles.mainContainer}>
         {state && showSuccess &&  <SuccessContainer message={state.msg}/>}
         <Form title="Авторизация" onSubmit={() => authenticate()}>
-          <LoginEmailField input={loginMail} setInput={setLoginMail} setIsCorrect={setIsLoginMailCorrect}/>
-          <PasswordField input={password} setInput={setPassword} setIsCorrect={setIsPasswordCorrect}/>
-          <FormSubmit isActive={isLoginMailCorrect && isPasswordCorrect && !isPending} value={submitValue}/>
+          <LoginEmailField propertyName="loginMail" correctPropertyName="isLoginMailCorrect" input={loginData.loginMail} setInput={setLoginData} setIsCorrect={setCorrects}/>
+          <PasswordField propertyName="password" correctPropertyName="isPasswordCorrect" input={loginData.password} setInput={setLoginData} setIsCorrect={setCorrects}/>
+          <FormSubmit isActive={corrects.isLoginMailCorrect && corrects.isPasswordCorrect && !isPending} value={submitValue}/>
         </Form>
         <FormErrorMessage message={message}/>
     </div>

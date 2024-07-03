@@ -13,23 +13,19 @@ import UserAPI from '../../services/API/UserAPI'
 import FormErrorMessage from '../../components/form/error_message/FormErrorMessage'
 
 export default function RegistrationPage() {
-
-    const [login, setLogin] = useState("");
-    const [isLoginCorrect, setIsLoginCorrect] = useState(false);
-    const [email, setEmail] = useState("");
-    const [isEmailCorrect, setIsEmailCorrect] = useState(false);
-    const [password, setPassword] = useState("");
-    const [isPasswordCorrect, setIsPasswordCorrect] = useState(false);
-    const [repeatPassword, setRepeatPassword] = useState("");
-    const [isPasswordCorresponding, setIsPasswordCorresponding] = useState(false);
+    const [registerData, setRegisterData] = useState({login: "", email: "", password: "", repeatPassword: ""});
+    const [corrects, setCorrects] = useState({isLoginCorrect: false, isEmailCorrect: false, isPasswordCorrect: false, isPasswordCorresponding: false});
     const [submitValue, isPending, isSuccess, message, doSubmit] = useFormSubmit("Зарегистрироваться", "Регистрируем...", async () => {
-      return await UserAPI.register(email, login, password);
+      return await UserAPI.register(registerData.email, registerData.login, registerData.password);
     }) 
     
     const router = useNavigate();
 
     const canSubmit = () => {
-        return isLoginCorrect && isEmailCorrect && isPasswordCorrect && isPasswordCorresponding && !isPending;
+        for (let value of Object.values(corrects)) {
+          if (!value) return false;
+        }
+        return !isPending;
     }
 
     const register = async () => {
@@ -45,11 +41,13 @@ export default function RegistrationPage() {
   return (
     <div className={styles.mainContainer}>
         <Form title="Регистрация" onSubmit={() => register()}>
-            <EmailField input={email} setInput={setEmail} setIsCorrect={setIsEmailCorrect}/>
-            <LoginField input={login} setInput={setLogin} setIsCorrect={setIsLoginCorrect}/>
-            <PasswordField input={password} setInput={setPassword} setIsCorrect={setIsPasswordCorrect}/>
-            <RepeatPasswordField input={repeatPassword} setInput={setRepeatPassword} setIsCorrect={setIsPasswordCorresponding}
-            originalPassword={password}/>
+            <EmailField propertyName="email" correctPropertyName="isEmailCorrect" input={registerData.email} setInput={setRegisterData} setIsCorrect={setCorrects}/>
+            <LoginField propertyName="login" correctPropertyName="isLoginCorrect" input={registerData.login} setInput={setRegisterData} setIsCorrect={setCorrects}/>
+            <PasswordField propertyName="password" correctPropertyName="isPasswordCorrect" input={registerData.password} setInput={setRegisterData}
+            setIsCorrect={setCorrects}/>
+            <RepeatPasswordField propertyName="repeatPassword" correctPropertyName="isPasswordCorresponding" input={registerData.repeatPassword}
+            setInput={setRegisterData} setIsCorrect={setCorrects}
+            originalPassword={registerData.password}/>
             <FormSubmit value={submitValue} isActive={canSubmit()}/>
         </Form>
         <FormErrorMessage message={message}/>

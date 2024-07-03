@@ -2,23 +2,23 @@ import React, { useEffect, useState } from 'react'
 import FormField from '../form_field/FormField'
 import Helper from '../../../services/Helper'
 
-export default function RepeatPasswordField({input, originalPassword, setInput, setIsCorrect}) {
+export default function RepeatPasswordField({input, propertyName, originalPassword, setInput, correctPropertyName, setIsCorrect}) {
 
     const [hint, setHint] = useState("");
     
     const validatePassword = () => {
         if (input === "") {
             setHint("");
-            setIsCorrect(false);
+            setIsCorrect((prev) => ({...prev, [correctPropertyName]: false}));
             return;
         }
         if (originalPassword === input) {
             setHint("");
-            setIsCorrect(true);
+            setIsCorrect((prev) => ({...prev, [correctPropertyName]: true}));
         }
         else {
             setHint("Пароли не совпадают");
-            setIsCorrect(false);
+            setIsCorrect((prev) => ({...prev, [correctPropertyName]: false}));
         }
     }
 
@@ -27,6 +27,6 @@ export default function RepeatPasswordField({input, originalPassword, setInput, 
     }, [input])
 
   return (
-    <FormField type={Helper.inputPasswordType} placeholder="Повторите пароль..." label="Подтверждение пароля" hint={hint} setInput={setInput}/>
+    <FormField propertyName={propertyName} type={Helper.inputPasswordType} placeholder="Повторите пароль..." label="Подтверждение пароля" hint={hint} setInput={setInput}/>
   )
 }

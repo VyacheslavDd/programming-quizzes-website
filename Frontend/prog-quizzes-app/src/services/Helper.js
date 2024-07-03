@@ -62,10 +62,10 @@ export default class Helper {
         }
     }
 
-    static updateFieldData(regexObject, input,  hintMessage, setHint, setIsCorrect) {
+    static updateFieldData(regexObject, input,  hintMessage, setHint, correctPropertyName, setIsCorrect) {
         let testPassed = regexObject.test(input);
         setHint(testPassed ? "" : hintMessage);
-        setIsCorrect(testPassed ? true : false);
+        setIsCorrect((prev) => ({...prev, [correctPropertyName]: testPassed ? true : false}));
     }
 
     static isTokenExpired(token) {
