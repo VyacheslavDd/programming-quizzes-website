@@ -10,6 +10,7 @@ import useFormSubmit from '../../../hooks/useFormSubmit';
 import UserAPI from '../../../services/API/UserAPI';
 import FormErrorMessage from '../../../components/form/error_message/FormErrorMessage';
 import useSuccessTimeout from '../../../hooks/useSuccessTimeout';
+import SuccessContainer from '../../../components/success_container/SuccessContainer';
 
 export default function CabinetPasswordControl({user}) {
   const [passwordData, setPasswordData] = useState({oldPassword: "", newPassword: "", repeatPassword: ""});
@@ -45,7 +46,7 @@ export default function CabinetPasswordControl({user}) {
           <FormSubmit isActive={corrects.isPasswordCorrect && corrects.isRepeatCorrect && passwordData.oldPassword.length > 0 && !isPending} value={submitValue}/>
         </div>
         {!isSuccess ? <FormErrorMessage message={message}/> : <></>}
-        {isShowingSuccess && <span className={styles.updateSuccess}>Пароль успешно изменён</span>}
+        {isShowingSuccess && <SuccessContainer message="Пароль успешно изменён"/>}
       </form>
   )
 }

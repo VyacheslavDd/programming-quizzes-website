@@ -9,6 +9,7 @@ export default function useFormSubmit(initialValue, pendingValue, callback) {
     const [message, setMessage] = useState("");
 
     const submit = async () => {
+        setIsSuccess(false);
         setSubmitValue(pendingValue);
         setIsPending(true);
         let submissionResult;

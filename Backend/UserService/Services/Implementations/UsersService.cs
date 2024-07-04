@@ -73,7 +73,7 @@ namespace UserService.Services.Implementations
 			user.Email = userModel.Email;
 			user.Login = userModel.Login;
 			user.PhoneNumber = userModel.PhoneNumber;
-			user.BirthDate = userModel.BirthDate.ToUniversalTime();
+			user.BirthDate = userModel.BirthDate.AddDays(1).ToUniversalTime();
 			await _userRepository.SaveChangesAsync();
 			return new UpdateUserResponse() { ResponseCode = ResponseCode.Success };
 		}

@@ -10,6 +10,11 @@
     color:rgb(25, 78, 80);
     width: 90%;
 }
+.formField::-webkit-outer-spin-button,
+.formField::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 .formField:focus {
     outline: none;
     border: 3px solid rgb(25, 78, 80);

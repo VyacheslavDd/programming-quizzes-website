@@ -12,11 +12,17 @@ export default class Helper {
     }
     static inputTextType = "text";
     static inputPasswordType = "password";
+    static inputNumberType = "number";
+    static inputDateType = "date";
     static tokenStorageKey = "token";
     static quizDescriptionLength = 60;
     static emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     static loginRegex = /^[A-Za-z][A-Za-z_0-9]{7,19}$/;
+    static phoneRegex = /^8[0-9]{10}$/
     static passwordRegex = /^[A-Za-z0-9@~!%&_]{8,15}$/;
+    static nameRegex = /^[a-zA-Zа-яА-Я]{2,15}$/;
+    static surnameRegex = /^[a-zA-Zа-яА-Я]{2,20}$/;
+    static dateRegex = /^[0-9]{4}-[0-9]{2}-[0-9]{2}/;
 
     static getDifficultyProperty(difficultyValue) {
         if (typeof difficultyValue === "number" && difficultyValue in Helper.difficulties) {

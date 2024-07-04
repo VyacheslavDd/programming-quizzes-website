@@ -33,4 +33,16 @@ export default class UserAPI {
     static async getUserData(guid) {
         return await axios.get(`https://localhost:7063/api/users/${guid}`);
     }
+
+    static async updateUser(user) {
+        let result = await axios.put(`https://localhost:7063/api/users/update/${user.id}`, {
+            name: user.name,
+            surname: user.surname,
+            birthDate: user.birthDate,
+            phoneNumber: user.phoneNumber,
+            email: user.email,
+            login: user.login
+        });
+        return result.data;
+    }
 }
