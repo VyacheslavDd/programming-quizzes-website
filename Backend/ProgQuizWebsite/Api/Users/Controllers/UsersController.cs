@@ -23,6 +23,10 @@ namespace UserService.Api.Controllers
 			_mapper = mapper;
 		}
 
+		/// <summary>
+		/// Получить всех пользователей
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[Route("all")]
 		public async Task<IActionResult> GetAllAsync()
@@ -32,6 +36,11 @@ namespace UserService.Api.Controllers
 			return Ok(models);
 		}
 
+		/// <summary>
+		/// Получить пользователя по Guid
+		/// </summary>
+		/// <param name="id">Guid пользователя</param>
+		/// <returns></returns>
 		[HttpGet]
 		[Route("{id}")]
 		public async Task<IActionResult> GetByGuidAsync([FromRoute] Guid id)
@@ -44,6 +53,11 @@ namespace UserService.Api.Controllers
 			return Ok(model);
 		}
 
+		/// <summary>
+		/// Удалить пользователя по Guid
+		/// </summary>
+		/// <param name="id">Guid пользователя</param>
+		/// <returns></returns>
 		[HttpDelete]
 		[Route("delete/{id}")]
 		public async Task<IActionResult> DeleteByGuidAsync([FromRoute] Guid id)
@@ -52,6 +66,12 @@ namespace UserService.Api.Controllers
 			return Ok();
 		}
 
+		/// <summary>
+		/// Обновить данные пользователя по Guid
+		/// </summary>
+		/// <param name="id">Guid пользователя</param>
+		/// <param name="updateUserModel">Новые данные</param>
+		/// <returns></returns>
 		[HttpPut]
 		[Route("update/{id}")]
 		public async Task<IActionResult> UpdateByGuidAsync([FromRoute] Guid id, [FromBody] UpdateUserModel updateUserModel)
@@ -61,6 +81,12 @@ namespace UserService.Api.Controllers
 			return new JsonResult(response);
 		}
 
+		/// <summary>
+		/// Обновить пароль пользователя по Guid
+		/// </summary>
+		/// <param name="id">Guid пользователя</param>
+		/// <param name="updatePasswordModel">Старый и новый пароли</param>
+		/// <returns></returns>
 		[HttpPatch]
 		[Route("update/{id}/password")]
 		public async Task<IActionResult> UpdatePasswordAsync([FromRoute] Guid id, [FromBody] UpdatePasswordModel updatePasswordModel)

@@ -22,6 +22,10 @@ namespace UserService.Api.Controllers
 			_rolesService = rolesService;
 		}
 
+		/// <summary>
+		/// Получить все роли на сайте
+		/// </summary>
+		/// <returns></returns>
 		[HttpGet]
 		[Route("all")]
 		public async Task<IActionResult> GetAllAsync()
@@ -30,7 +34,11 @@ namespace UserService.Api.Controllers
 			var models = _mapper.Map<List<RoleResponse>>(roles);
 			return Ok(models);
 		}
-
+		/// <summary>
+		/// Получить роль по Guid
+		/// </summary>
+		/// <param name="id">Guid роли</param>
+		/// <returns></returns>
 		[HttpGet]
 		[Route("{id}")]
 		public async Task<IActionResult> GetByIdAsync([FromRoute] Guid id)
@@ -39,7 +47,11 @@ namespace UserService.Api.Controllers
 			var model = _mapper.Map<RoleResponse>(role);
 			return Ok(model);
 		}
-
+		/// <summary>
+		/// Удалить роль по Guid
+		/// </summary>
+		/// <param name="id">Guid роли</param>
+		/// <returns></returns>
 		[HttpDelete]
 		[Route("delete/{id}")]
 		public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id)
@@ -48,6 +60,11 @@ namespace UserService.Api.Controllers
 			return Ok();
 		}
 
+		/// <summary>
+		/// Создать роль
+		/// </summary>
+		/// <param name="model">Данные роли</param>
+		/// <returns></returns>
 		[HttpPost]
 		[Route("create")]
 		[ServiceFilter(typeof(RoleFilter))]
@@ -58,6 +75,12 @@ namespace UserService.Api.Controllers
 			return new JsonResult(response);
 		}
 
+		/// <summary>
+		/// Обновить роль по Guid
+		/// </summary>
+		/// <param name="model">Новые данные</param>
+		/// <param name="id">Guid роли</param>
+		/// <returns></returns>
 		[HttpPut]
 		[Route("update/{id}")]
 		[ServiceFilter(typeof(RoleFilter))]
@@ -68,6 +91,12 @@ namespace UserService.Api.Controllers
 			return new JsonResult(response);
 		}
 
+		/// <summary>
+		/// Назначить роль пользователю
+		/// </summary>
+		/// <param name="roleId">Guid роли</param>
+		/// <param name="userId">Guid пользователя</param>
+		/// <returns></returns>
 		[HttpPost]
 		[Route("{roleId}/assign/{userId}")]
 		[ServiceFilter(typeof(RoleFilter))]
@@ -77,6 +106,12 @@ namespace UserService.Api.Controllers
 			return new JsonResult(response);
 		}
 
+		/// <summary>
+		/// Отозвать роль у пользователя
+		/// </summary>
+		/// <param name="roleId">Guid роли</param>
+		/// <param name="userId">Guid пользователя</param>
+		/// <returns></returns>
 		[HttpDelete]
 		[Route("{roleId}/revoke/{userId}")]
 		[ServiceFilter(typeof(RoleFilter))]
