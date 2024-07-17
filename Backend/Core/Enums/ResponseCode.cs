@@ -1,12 +1,16 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using Core.Converters.Enums;
 
 namespace Core.Enums
 {
+    [JsonConverter(typeof(IntEnumConverter<ResponseCode>))]
     public enum ResponseCode
     {
         [Display(Name = "Success")]

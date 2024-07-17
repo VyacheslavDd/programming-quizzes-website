@@ -32,7 +32,7 @@ export default function LoginPage() {
 
   const authenticate = async () => {
     let result = await doSubmit();
-    setLoginResult(result);
+    setLoginResult(prev => result);
   }
 
   useEffect(() => {

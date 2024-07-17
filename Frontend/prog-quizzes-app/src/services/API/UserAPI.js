@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default class UserAPI {
     static async authenticate(loginOrEmail, password) {
-        let result = await axios.post("https://localhost:7063/api/auth/authenticate",
+        let result = await axios.post("https://localhost:7184/api/auth/authenticate",
             {
                 loginOrEmail,
                 password
@@ -12,7 +12,7 @@ export default class UserAPI {
     }
 
     static async register(email, login, password) {
-        let result = await axios.post("https://localhost:7063/api/auth/register",
+        let result = await axios.post("https://localhost:7184/api/auth/register",
             {
                 email,
                 login,
@@ -23,7 +23,7 @@ export default class UserAPI {
     }
 
     static async updatePassword(guid, passwordData) {
-        let result = await axios.patch(`https://localhost:7063/api/users/update/${guid}/password`, {
+        let result = await axios.patch(`https://localhost:7184/api/users/update/${guid}/password`, {
             previousPassword: passwordData.oldPassword,
             newPassword: passwordData.newPassword
         });
@@ -31,11 +31,11 @@ export default class UserAPI {
     }
 
     static async getUserData(guid) {
-        return await axios.get(`https://localhost:7063/api/users/${guid}`);
+        return await axios.get(`https://localhost:7184/api/users/${guid}`);
     }
 
     static async updateUser(user) {
-        let result = await axios.put(`https://localhost:7063/api/users/update/${user.id}`, {
+        let result = await axios.put(`https://localhost:7184/api/users/update/${user.id}`, {
             name: user.name,
             surname: user.surname,
             birthDate: user.birthDate,
