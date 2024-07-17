@@ -11,24 +11,26 @@ using System.Text.Json.Serialization;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using Microsoft.AspNetCore.Mvc.Filters;
-using ProgQuizWebsite.Services.Interfaces;
-using ProgQuizWebsite.Infrastracture.Contexts;
+using ProgQuizWebsite.Services.Quizzes.Interfaces;
 using Core.Base.Service.Interfaces;
 using Core.Base.Service.Implementations;
-using ProgQuizWebsite.Services.Implementations.MainServices;
-using ProgQuizWebsite.Infrastracture.Mappers;
-using ProgQuizWebsite.Infrastracture.Validators.PostModelValidators;
-using ProgQuizWebsite.Domain.QuizContentModels;
-using ProgQuizWebsite.Domain.CategoryModels;
-using ProgQuizWebsite.Infrastracture.UnitOfWork;
-using ProgQuizWebsite.Services.Implementations.AdditionalServices;
-using ProgQuizWebsite.Infrastracture.Filters;
+using ProgQuizWebsite.Services.Quizzes.Implementations.MainServices;
+using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
+using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
+using ProgQuizWebsite.Infrastracture.Quizzes.UnitOfWork;
+using ProgQuizWebsite.Services.Quizzes.Implementations.AdditionalServices;
 using Core.Constants;
-using ProgQuizWebsite.Infrastracture.Startups;
 using Core.Redis;
 using Core.Logging;
 using Serilog;
 using Core.Messaging;
+using ProgQuizWebsite.Infrastracture.Quizzes.Startups;
+using ProgQuizWebsite.Infrastracture.Quizzes.Filters;
+using ProgQuizWebsite.Infrastracture.Quizzes.Validators.PostModelValidators;
+using ProgQuizWebsite.Infrastracture.Contexts;
+using ProgQuizWebsite.Infrastracture.Mappers;
+using UserService.Infrastructure.Filters;
+using UserService.Infrastructure.Startups;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
@@ -54,16 +56,16 @@ builder.Services.AddControllers()
     })
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
-builder.Services.AddDomain(builder.Configuration);
+builder.Services.AddJwtAuthentication(builder.Configuration);
+builder.Services.AddQuizDomain(builder.Configuration);
+builder.Services.AddUserDomain(builder.Configuration);
 builder.Host.AddSerilog();
 builder.Services.AddRedis(builder.Configuration);
-//builder.Services.AddMasstransitNotifications(builder.Configuration);
-builder.Services.AddScoped<QuizElementsExceptionFilter>();
-
-builder.Services.AddServices();
+builder.Services.AddQuizServices();
+builder.Services.AddUserServices();
 
 
-builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(QuizMapper)));
+builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(QuizAppMapper)));
 builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining(typeof(CategoryValidator));
 
@@ -93,10 +95,5 @@ app.UseCors(defaultPolicyName);
 app.UseAuthorization();
 
 app.MapControllers();
-
-using (var scope =
-  app.Services.CreateScope())
-using (var context = scope.ServiceProvider.GetService<QuizAppContext>())
-	context.Database.Migrate();
 
 app.Run();

@@ -22,7 +22,7 @@ namespace ProgQuizWebsite.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Data_Layer.Models.CategoryModels.LanguageCategory", b =>
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels.LanguageCategory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -36,7 +36,7 @@ namespace ProgQuizWebsite.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.CategoryModels.QuizSubcategory", b =>
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels.QuizSubcategory", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,7 +55,7 @@ namespace ProgQuizWebsite.Migrations
                     b.ToTable("Subcategories");
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.QuizContentModels.Answer", b =>
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels.Answer", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,7 +77,7 @@ namespace ProgQuizWebsite.Migrations
                     b.ToTable("Answers");
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.QuizContentModels.Question", b =>
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels.Question", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -111,7 +111,7 @@ namespace ProgQuizWebsite.Migrations
                     b.ToTable("Questions");
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.QuizModels.Quiz", b =>
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.QuizModels.Quiz", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -157,9 +157,77 @@ namespace ProgQuizWebsite.Migrations
                     b.ToTable("QuizQuizSubcategory");
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.CategoryModels.QuizSubcategory", b =>
+            modelBuilder.Entity("RoleUser", b =>
                 {
-                    b.HasOne("Data_Layer.Models.CategoryModels.LanguageCategory", "LanguageCategory")
+                    b.Property<Guid>("RolesId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("RolesId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("RoleUser");
+                });
+
+            modelBuilder.Entity("UserService.Domain.Models.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("UserService.Domain.Models.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Login")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PasswordHash")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("PhoneNumber")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Surname")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels.QuizSubcategory", b =>
+                {
+                    b.HasOne("ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels.LanguageCategory", "LanguageCategory")
                         .WithMany("Subcategories")
                         .HasForeignKey("LanguageCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -168,9 +236,9 @@ namespace ProgQuizWebsite.Migrations
                     b.Navigation("LanguageCategory");
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.QuizContentModels.Answer", b =>
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels.Answer", b =>
                 {
-                    b.HasOne("Data_Layer.Models.QuizContentModels.Question", "Question")
+                    b.HasOne("ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels.Question", "Question")
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -179,9 +247,9 @@ namespace ProgQuizWebsite.Migrations
                     b.Navigation("Question");
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.QuizContentModels.Question", b =>
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels.Question", b =>
                 {
-                    b.HasOne("Data_Layer.Models.QuizModels.Quiz", "Quiz")
+                    b.HasOne("ProgQuizWebsite.Domain.Quizzes.Models.QuizModels.Quiz", "Quiz")
                         .WithMany("Questions")
                         .HasForeignKey("QuizId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -190,9 +258,9 @@ namespace ProgQuizWebsite.Migrations
                     b.Navigation("Quiz");
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.QuizModels.Quiz", b =>
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.QuizModels.Quiz", b =>
                 {
-                    b.HasOne("Data_Layer.Models.CategoryModels.LanguageCategory", "LanguageCategory")
+                    b.HasOne("ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels.LanguageCategory", "LanguageCategory")
                         .WithMany("Quizzes")
                         .HasForeignKey("LanguageCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -203,32 +271,47 @@ namespace ProgQuizWebsite.Migrations
 
             modelBuilder.Entity("QuizQuizSubcategory", b =>
                 {
-                    b.HasOne("Data_Layer.Models.QuizModels.Quiz", null)
+                    b.HasOne("ProgQuizWebsite.Domain.Quizzes.Models.QuizModels.Quiz", null)
                         .WithMany()
                         .HasForeignKey("QuizzesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Data_Layer.Models.CategoryModels.QuizSubcategory", null)
+                    b.HasOne("ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels.QuizSubcategory", null)
                         .WithMany()
                         .HasForeignKey("SubcategoriesId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.CategoryModels.LanguageCategory", b =>
+            modelBuilder.Entity("RoleUser", b =>
+                {
+                    b.HasOne("UserService.Domain.Models.Role", null)
+                        .WithMany()
+                        .HasForeignKey("RolesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("UserService.Domain.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels.LanguageCategory", b =>
                 {
                     b.Navigation("Quizzes");
 
                     b.Navigation("Subcategories");
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.QuizContentModels.Question", b =>
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels.Question", b =>
                 {
                     b.Navigation("Answers");
                 });
 
-            modelBuilder.Entity("Data_Layer.Models.QuizModels.Quiz", b =>
+            modelBuilder.Entity("ProgQuizWebsite.Domain.Quizzes.Models.QuizModels.Quiz", b =>
                 {
                     b.Navigation("Questions");
                 });

@@ -1,13 +1,14 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
-using ProgQuizWebsite.Domain.CategoryModels;
-using ProgQuizWebsite.Domain.QuizContentModels;
-using ProgQuizWebsite.Domain.QuizModels;
+using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
+using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
+using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UserService.Domain.Models;
 
 namespace ProgQuizWebsite.Infrastracture.Contexts
 {
@@ -18,14 +19,17 @@ namespace ProgQuizWebsite.Infrastracture.Contexts
         public virtual DbSet<QuizSubcategory?> Subcategories { get; set; }
         public virtual DbSet<Question?> Questions { get; set; }
         public virtual DbSet<Answer?> Answers { get; set; }
+		public virtual DbSet<User?> Users { get; set; }
+		public virtual DbSet<Role?> Roles { get; set; }
 
-        public QuizAppContext(DbContextOptions<QuizAppContext> options) : base(options)
+		public QuizAppContext(DbContextOptions<QuizAppContext> options) : base(options)
         {
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-			base.OnModelCreating(modelBuilder);
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

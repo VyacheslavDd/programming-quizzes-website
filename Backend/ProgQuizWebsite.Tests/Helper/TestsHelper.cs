@@ -2,9 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using Moq.EntityFrameworkCore;
-using ProgQuizWebsite.Domain.CategoryModels;
+using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
 using ProgQuizWebsite.Infrastracture.Contexts;
-using ProgQuizWebsite.Infrastracture.UnitOfWork;
+using ProgQuizWebsite.Infrastracture.Quizzes.UnitOfWork;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ProgQuizWebsite.Tests.Helper
 {
-	public static class TestsHelper
+    public static class TestsHelper
 	{
 		public static IUnitOfWork SetupUnitOfWork()
 		{

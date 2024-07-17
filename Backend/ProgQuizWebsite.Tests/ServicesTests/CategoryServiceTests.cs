@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ProgQuizWebsite.Services.Implementations.AdditionalServices;
-using ProgQuizWebsite.Services.Implementations.MainServices;
+using ProgQuizWebsite.Services.Quizzes.Implementations.AdditionalServices;
+using ProgQuizWebsite.Services.Quizzes.Implementations.MainServices;
 using ProgQuizWebsite.Tests.Helper;
 
 namespace ProgQuizWebsite.Tests.ServicesTests
 {
-	[TestFixture]
+    [TestFixture]
 	public class CategoryServiceTests
 	{
 		private CategoryService GetService()
