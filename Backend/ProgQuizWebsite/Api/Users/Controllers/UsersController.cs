@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProgQuizWebsite.Api.Users.PostModels.Users;
 using UserService.Api.PostModels.Users;
 using UserService.Api.ResponseModels.Roles;
 using UserService.Api.ResponseModels.Users;
@@ -92,6 +93,21 @@ namespace UserService.Api.Controllers
 		public async Task<IActionResult> UpdatePasswordAsync([FromRoute] Guid id, [FromBody] UpdatePasswordModel updatePasswordModel)
 		{
 			var response = await _usersService.UpdatePasswordAsync(id, updatePasswordModel);
+			return new JsonResult(response);
+		}
+
+		/// <summary>
+		/// Обновлении опции получения уведомлений
+		/// </summary>
+		/// <param name="id">Guid пользователя</param>
+		/// <param name="updateNotificationsModel">Новое значение опции</param>
+		/// <returns></returns>
+		[HttpPatch]
+		[Route("update/{id}/notifications")]
+		public async Task<IActionResult> UpdateNotificationsOptionAsync([FromRoute] Guid id,
+			[FromBody] UpdateNotificationsModel updateNotificationsModel)
+		{
+			var response = await _usersService.UpdateUserNotificationsAsync(id, updateNotificationsModel);
 			return new JsonResult(response);
 		}
 	}

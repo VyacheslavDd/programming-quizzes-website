@@ -7,6 +7,8 @@ using Core.Enums;
 using UserService.Api.ResponseModels.Users;
 using UserService.Api.PostModels.Users;
 using BCrypt.Net;
+using ProgQuizWebsite.Api.Users.ResponseModels.Users;
+using ProgQuizWebsite.Api.Users.PostModels.Users;
 
 namespace UserService.Services.Implementations
 {
@@ -50,6 +52,11 @@ namespace UserService.Services.Implementations
 			return await _userRepository.GetAllAsync();
 		}
 
+		public async Task<List<User>> GetNotificationSubscribers()
+		{
+			return await _userRepository.GetAllNotificationsSubscribers();
+		}
+
 		public bool IsRoleAssigned(User user, Role role)
 		{
 			foreach (var r in user.Roles)
@@ -89,6 +96,19 @@ namespace UserService.Services.Implementations
 			user.PasswordHash = newPasswordHash;
 			await _userRepository.SaveChangesAsync();
 			return new UpdateUserPasswordResponse() { ResponseCode = ResponseCode.Success };
+		}
+
+		public async Task<UpdateUserNotificationsResponse> UpdateUserNotificationsAsync(Guid id, UpdateNotificationsModel notificationsModel)
+		{
+			var user = await FindByGuidAsync(id);
+			if (user == null) return new UpdateUserNotificationsResponse()
+			{
+				ResponseCode = ResponseCode.NotFound,
+				ErrorMessage = "Пользователь не найден"
+			};
+			user.ReceiveNotifications = notificationsModel.ReceiveNotifications;
+			await _userRepository.SaveChangesAsync();
+			return new UpdateUserNotificationsResponse() { ResponseCode = ResponseCode.Success };
 		}
 	}
 }

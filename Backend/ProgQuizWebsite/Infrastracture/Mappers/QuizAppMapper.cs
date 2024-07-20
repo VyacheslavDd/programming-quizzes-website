@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using ProgQuizWebsite.Api.Notifications.PostModels;
+using ProgQuizWebsite.Api.Notifications.ResponseModels;
 using ProgQuizWebsite.Api.Quizzes.PostModels;
 using ProgQuizWebsite.Api.Quizzes.ViewModels;
+using ProgQuizWebsite.Domain.Notifications.Models;
 using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
@@ -24,6 +27,7 @@ namespace ProgQuizWebsite.Infrastracture.Mappers
         {
 			MapQuizzes();
 			MapUsers();
+			MapNotifications();
         }
 
         public void MapQuizzes()
@@ -79,6 +83,12 @@ namespace ProgQuizWebsite.Infrastracture.Mappers
 			CreateMap<Role, RoleResponse>();
 			CreateMap<RolePostModel, Role>();
 			CreateMap<RoleUpdateModel, Role>();
+		}
+
+		public void MapNotifications()
+		{
+			CreateMap<NotificationPostModel, Notification>();
+			CreateMap<Notification, NotificationResponseModel>();
 		}
     }
 }

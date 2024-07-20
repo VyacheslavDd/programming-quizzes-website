@@ -1,5 +1,6 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
+using ProgQuizWebsite.Domain.Notifications.Models;
 using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
@@ -21,6 +22,7 @@ namespace ProgQuizWebsite.Infrastracture.Contexts
         public virtual DbSet<Answer?> Answers { get; set; }
 		public virtual DbSet<User?> Users { get; set; }
 		public virtual DbSet<Role?> Roles { get; set; }
+        public virtual DbSet<Notification?> Notifications { get; set; }
 
 		public QuizAppContext(DbContextOptions<QuizAppContext> options) : base(options)
         {

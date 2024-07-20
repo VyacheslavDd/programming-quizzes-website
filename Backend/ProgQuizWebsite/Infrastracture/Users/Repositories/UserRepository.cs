@@ -32,9 +32,14 @@ namespace UserService.Infrastructure.Repositories
 			return await _quizAppContext.Users.Include(u => u.Roles).AsNoTracking().FirstOrDefaultAsync(user => user.PhoneNumber == phone);
 		}
 
+		public async Task<List<User?>> GetAllNotificationsSubscribers()
+		{
+			return await _quizAppContext.Users.Where(u => u.ReceiveNotifications).ToListAsync();
+		}
+
 		public async override Task<User?> GetByGuidAsync(Guid id)
 		{
-			return await _quizAppContext.Users.Include(u => u.Roles).FirstOrDefaultAsync(u => u.Id == id);
+			return await _quizAppContext.Users.Include(u => u.Roles).Include(u => u.Notifications).FirstOrDefaultAsync(u => u.Id == id);
 		}
 	}
 }

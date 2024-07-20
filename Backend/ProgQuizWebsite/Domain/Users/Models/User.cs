@@ -1,4 +1,6 @@
-﻿namespace UserService.Domain.Models
+﻿using ProgQuizWebsite.Domain.Notifications.Models;
+
+namespace UserService.Domain.Models
 {
 	public class User
 	{
@@ -10,6 +12,8 @@
 		public required string Email { get; set; }
 		public required string Login { get; set; }
 		public required string PasswordHash { get; set; }
+		public bool ReceiveNotifications { get; set; }
 		public List<Role> Roles { get; set; }
+		public List<Notification> Notifications { get; set; }
 	}
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ProgQuizWebsite.Infrastracture.Contexts;
@@ -11,9 +12,11 @@ using ProgQuizWebsite.Infrastracture.Contexts;
 namespace ProgQuizWebsite.Migrations
 {
     [DbContext(typeof(QuizAppContext))]
-    partial class QuizAppContextModelSnapshot : ModelSnapshot
+    [Migration("20240720151140_notification model")]
+    partial class notificationmodel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -246,9 +249,6 @@ namespace ProgQuizWebsite.Migrations
 
                     b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");
-
-                    b.Property<bool>("ReceiveNotifications")
-                        .HasColumnType("boolean");
 
                     b.Property<string>("Surname")
                         .HasColumnType("text");

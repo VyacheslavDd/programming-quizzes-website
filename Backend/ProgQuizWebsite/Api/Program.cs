@@ -31,6 +31,7 @@ using ProgQuizWebsite.Infrastracture.Contexts;
 using ProgQuizWebsite.Infrastracture.Mappers;
 using UserService.Infrastructure.Filters;
 using UserService.Infrastructure.Startups;
+using ProgQuizWebsite.Infrastracture.Notifications.Startups;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
@@ -59,10 +60,14 @@ builder.Services.AddControllers()
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddQuizDomain(builder.Configuration);
 builder.Services.AddUserDomain(builder.Configuration);
+builder.Services.AddNotificationsDomain();
+
 builder.Host.AddSerilog();
 builder.Services.AddRedis(builder.Configuration);
+
 builder.Services.AddQuizServices();
 builder.Services.AddUserServices();
+builder.Services.AddNotificationsServices();
 
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(QuizAppMapper)));

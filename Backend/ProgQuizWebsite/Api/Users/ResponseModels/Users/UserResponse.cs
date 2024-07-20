@@ -11,6 +11,7 @@ namespace UserService.Api.ResponseModels.Users
 		public required long PhoneNumber { get; set; }
 		public required string Email { get; set; }
 		public required string Login { get; set; }
+		public required bool ReceiveNotifications { get; set; }
 		public required List<RoleResponse> Roles { get; set; }
 	}
 }

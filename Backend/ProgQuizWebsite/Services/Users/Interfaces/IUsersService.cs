@@ -1,4 +1,6 @@
 ﻿using Core.Base.Service.Interfaces;
+using ProgQuizWebsite.Api.Users.PostModels.Users;
+using ProgQuizWebsite.Api.Users.ResponseModels.Users;
 using UserService.Api.PostModels.Users;
 using UserService.Api.ResponseModels;
 using UserService.Api.ResponseModels.Users;
@@ -9,6 +11,7 @@ namespace UserService.Services.Interfaces
 	public interface IUsersService
 	{
 		Task<List<User>> GetAllAsync();
+		Task<List<User>> GetNotificationSubscribers();
 		Task<User> FindByGuidAsync(Guid id);
 		Task<User> FindByEmailAsync(string email);
 		Task<User> FindByLoginAsync(string login);
@@ -17,5 +20,6 @@ namespace UserService.Services.Interfaces
 		bool IsRoleAssigned(User user, Role role);
 		Task<UpdateUserResponse> UpdateAsync(Guid id, User userModel);
 		Task<UpdateUserPasswordResponse> UpdatePasswordAsync(Guid id, UpdatePasswordModel passwordModel);
+		Task<UpdateUserNotificationsResponse> UpdateUserNotificationsAsync(Guid id, UpdateNotificationsModel notificationsModel);
 	}
 }
