@@ -81,5 +81,32 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 			var response = await _notificationsService.NotifyUserAsync(notification, userId);
 			return Ok(response);
 		}
+
+		/// <summary>
+		/// Удалить все уведомления пользователя
+		/// </summary>
+		/// <param name="userId">Guid пользователя</param>
+		/// <returns></returns>
+		[HttpDelete]
+		[Route("clear/{userId}")]
+		public async Task<IActionResult> ClearUserNotificationsAsync([FromRoute] Guid userId)
+		{
+			var response = await _notificationsService.ClearUserNotificationsAsync(userId);
+			return new JsonResult(response);
+		}
+
+		/// <summary>
+		/// Удалить конкретное уведомление у пользователя
+		/// </summary>
+		/// <param name="notificationId">Guid уведомления</param>
+		/// <param name="userId">Guid пользователя</param>
+		/// <returns></returns>
+		[HttpDelete]
+		[Route("{notificationId}/remove/{userId}")]
+		public async Task<IActionResult> RemoveUserNotificationAsync([FromRoute] Guid notificationId, [FromRoute] Guid userId)
+		{
+			var response = await _notificationsService.RemoveUserNotificationAsync(notificationId, userId);
+			return new JsonResult(response);
+		}
 	}
 }

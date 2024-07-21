@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Core.Base.Service.Interfaces;
 using MassTransit;
-using Core.Messaging.Models;
 using ProgQuizWebsite.Api.Quizzes.PostModels;
 using ProgQuizWebsite.Api.Quizzes.ViewModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;

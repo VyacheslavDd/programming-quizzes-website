@@ -23,7 +23,6 @@ using Core.Constants;
 using Core.Redis;
 using Core.Logging;
 using Serilog;
-using Core.Messaging;
 using ProgQuizWebsite.Infrastracture.Quizzes.Startups;
 using ProgQuizWebsite.Infrastracture.Quizzes.Filters;
 using ProgQuizWebsite.Infrastracture.Quizzes.Validators.PostModelValidators;
@@ -32,6 +31,7 @@ using ProgQuizWebsite.Infrastracture.Mappers;
 using UserService.Infrastructure.Filters;
 using UserService.Infrastructure.Startups;
 using ProgQuizWebsite.Infrastracture.Notifications.Startups;
+using ProgQuizWebsite.Infrastracture.Messaging;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
@@ -69,6 +69,7 @@ builder.Services.AddQuizServices();
 builder.Services.AddUserServices();
 builder.Services.AddNotificationsServices();
 
+builder.Services.AddMassTransitMessaging(builder.Configuration);
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(QuizAppMapper)));
 builder.Services.AddFluentValidationAutoValidation();

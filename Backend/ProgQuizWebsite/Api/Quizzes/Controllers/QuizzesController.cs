@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using Core.Base.Service.Interfaces;
 using Core.Constants;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProgQuizWebsite.Api.Notifications.PostModels;
 using ProgQuizWebsite.Api.Quizzes.PostModels;
 using ProgQuizWebsite.Api.Quizzes.ViewModels;
 using ProgQuizWebsite.Domain.Quizzes.FilterModels;
@@ -24,13 +26,16 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         private readonly IImageService _imageService;
         private readonly IQuizService _service;
         private readonly IMapper _mapper;
+        private readonly IBus _messagingBus;
 
-        public QuizzesController(IQuizService service, IMapper mapper, IWebHostEnvironment environment, IImageService imageService)
+        public QuizzesController(IQuizService service, IMapper mapper, IWebHostEnvironment environment, IImageService imageService,
+            IBus messagingBus)
         {
             _service = service;
             _mapper = mapper;
             _environment = environment;
             _imageService = imageService;
+            _messagingBus = messagingBus;
         }
         /// <summary>
         /// Метод для добавления викторины
@@ -47,6 +52,8 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
             mappedModel.ImageUrl = path;
             var entityGuid = await _service.AddAsync(mappedModel, model.SubcategoriesId);
             if (entityGuid != Guid.Empty) await _imageService.SaveFileAsync(model.QuizImage, _environment.ContentRootPath, SpecialConstants.QuizImagesDirectoryName, path);
+            var message = new NotificationPostModel() { Content = $"На сайте появилась новая викторина {model.Title}!" };
+            await _messagingBus.Publish(message);
             return StatusCode(201, entityGuid);
         }
         /// <summary>

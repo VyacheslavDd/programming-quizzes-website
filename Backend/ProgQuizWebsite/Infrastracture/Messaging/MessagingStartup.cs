@@ -1,21 +1,15 @@
 ﻿using Core.Constants;
-using Core.Messaging.Consumers;
 using MassTransit;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using ProgQuizWebsite.Infrastracture.Messaging.Consumers;
 
-namespace Core.Messaging
+namespace ProgQuizWebsite.Infrastracture.Messaging
 {
-	public static class NotificationsStartup
+	public static class MessagingStartup
 	{
-		public static IServiceCollection AddMasstransitNotifications(this IServiceCollection services, IConfiguration configuration)
+		public static IServiceCollection AddMassTransitMessaging(this IServiceCollection services, IConfiguration config)
 		{
-			var rabbitMqConfiguration = configuration.GetRequiredSection("RabbitMq");
+			var rabbitMqConfiguration = config.GetRequiredSection("RabbitMq");
 			services.AddMassTransit(config =>
 			{
 				config.SetKebabCaseEndpointNameFormatter();

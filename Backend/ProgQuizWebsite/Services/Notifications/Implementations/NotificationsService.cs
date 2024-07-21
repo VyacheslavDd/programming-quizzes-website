@@ -60,5 +60,42 @@ namespace ProgQuizWebsite.Services.Notifications.Implementations
 				notification.Users.Add(user);
 			return await _notificationsRepository.AddAsync(notification);
 		}
+
+		public async Task<UserNotificationsRemoveResponse> ClearUserNotificationsAsync(Guid userId)
+		{
+			var user = await _usersService.FindByGuidAsync(userId);
+			if (user == null) return new UserNotificationsRemoveResponse()
+			{
+				ResponseCode = Core.Enums.ResponseCode.NotFound,
+				ErrorMessage = "Указан несуществующий пользователь"
+			};
+			user.Notifications.Clear();
+			await _notificationsRepository.SaveChangesAsync();
+			return new UserNotificationsRemoveResponse() { ResponseCode = Core.Enums.ResponseCode.Success };
+		}
+
+		public async Task<UserNotificationRemoveResponse> RemoveUserNotificationAsync(Guid notificationId, Guid userId)
+		{
+			var user = await _usersService.FindByGuidAsync(userId);
+			if (user == null) return new UserNotificationRemoveResponse()
+			{
+				ResponseCode = Core.Enums.ResponseCode.NotFound,
+				ErrorMessage = "Указан несуществующий пользователь"
+			};
+			var notification = await GetByGuidAsync(notificationId);
+			if (notification == null) return new UserNotificationRemoveResponse()
+			{
+				ResponseCode = Core.Enums.ResponseCode.NotFound,
+				ErrorMessage = "Попытка удалить несуществующее уведомление"
+			};
+			user.Notifications.Remove(notification);
+			await _notificationsRepository.SaveChangesAsync();
+			return new UserNotificationRemoveResponse() { ResponseCode = Core.Enums.ResponseCode.Success };
+		}
+
+		public async Task<Notification> GetByGuidAsync(Guid id)
+		{
+			return await _notificationsRepository.GetByGuidAsync(id);
+		}
 	}
 }

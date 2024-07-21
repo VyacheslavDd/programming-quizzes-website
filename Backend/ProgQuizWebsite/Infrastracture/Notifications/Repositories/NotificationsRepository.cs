@@ -25,6 +25,11 @@ namespace ProgQuizWebsite.Infrastracture.Notifications.Repositories
 			return await _context.Notifications.AsNoTracking().ToListAsync();
 		}
 
+		public async Task<Notification> GetByGuidAsync(Guid id)
+		{
+			return await _context.Notifications.FindAsync(id);
+		}
+
 		public async Task SaveChangesAsync()
 		{
 			await _context.SaveChangesAsync();
