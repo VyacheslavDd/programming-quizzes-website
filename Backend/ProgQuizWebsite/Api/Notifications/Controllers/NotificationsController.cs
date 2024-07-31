@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProgQuizWebsite.Api.Notifications.PostModels;
 using ProgQuizWebsite.Api.Notifications.ResponseModels;
+using ProgQuizWebsite.Domain.Notifications.FilterModels;
 using ProgQuizWebsite.Domain.Notifications.Models;
 using ProgQuizWebsite.Services.Notifications.Interfaces;
 
@@ -35,15 +36,16 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 		}
 
 		/// <summary>
-		/// Получить все уведомления пользователя
+		/// Получить уведомления пользователя
 		/// </summary>
 		/// <param name="userId">Guid пользователя</param>
+		/// <param name="filter">Фильтр получения уведомлений. Page - текущая страница, 10 записей на страницу</param>
 		/// <returns></returns>
 		[HttpGet]
-		[Route("{userId}/all")]
-		public async Task<IActionResult> GetUserNotificationsAsync([FromRoute] Guid userId)
+		[Route("{userId}")]
+		public async Task<IActionResult> GetAllUserNotificationsAsync([FromRoute] Guid userId, [FromQuery] NotificationsFilter filter)
 		{
-			var notificationsResponse = await _notificationsService.GetUserNotificationsAsync(userId);
+			var notificationsResponse = await _notificationsService.GetUserNotificationsAsync(userId, filter, Response);
 			var mappedNotifications = _mapper.Map<List<NotificationResponseModel>>(notificationsResponse.Notifications);
 			return Ok(new
 			{

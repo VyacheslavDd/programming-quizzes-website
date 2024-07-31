@@ -45,4 +45,11 @@ export default class UserAPI {
         });
         return result.data;
     }
+
+    static async updateReceiveNotificationsOption(user, value) {
+        let result = await axios.patch(`https://localhost:7184/api/users/update/${user.id}/notifications`, {
+            receiveNotifications: value
+        });
+        return result.data;
+    }
 }

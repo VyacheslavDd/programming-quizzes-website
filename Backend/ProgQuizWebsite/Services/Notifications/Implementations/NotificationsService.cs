@@ -1,4 +1,6 @@
-﻿using ProgQuizWebsite.Api.Notifications.ResponseModels;
+﻿using Core.Constants;
+using ProgQuizWebsite.Api.Notifications.ResponseModels;
+using ProgQuizWebsite.Domain.Notifications.FilterModels;
 using ProgQuizWebsite.Domain.Notifications.Interfaces;
 using ProgQuizWebsite.Domain.Notifications.Models;
 using ProgQuizWebsite.Services.Notifications.Interfaces;
@@ -20,18 +22,24 @@ namespace ProgQuizWebsite.Services.Notifications.Implementations
 
 		public async Task<List<Notification>> GetAllAsync()
 		{
-			return await _notificationsRepository.GetAllAsync();
+			return (await _notificationsRepository.GetAllAsync()).OrderByDescending(n => n.Date).ToList();
 		}
 
-		public async Task<UserNotificationsResponse> GetUserNotificationsAsync(Guid userId)
+		public async Task<UserNotificationsResponse> GetUserNotificationsAsync(Guid userId, NotificationsFilter notificationsFilter,
+			HttpResponse httpResponse)
 		{
+			if (notificationsFilter is null || notificationsFilter.Page < 1) 
+				return new UserNotificationsResponse() { ResponseCode = Core.Enums.ResponseCode.NoResult, Notifications = new List<Notification>() };
 			var user = await _usersService.FindByGuidAsync(userId);
 			if (user == null) return new UserNotificationsResponse()
 			{
 				ResponseCode = Core.Enums.ResponseCode.NotFound,
 				ErrorMessage = "Указан несуществующий пользователь"
 			};
-			return new UserNotificationsResponse() { ResponseCode = Core.Enums.ResponseCode.Success, Notifications = user.Notifications };
+			var notifications = user.Notifications.OrderByDescending(n => n.Date).Skip(DataRestrictions.NotificationsPerPageQuantity * (notificationsFilter.Page - 1))
+				.Take(DataRestrictions.NotificationsPerPageQuantity).ToList();
+			httpResponse.Headers.Add(SpecialConstants.ContentCountHeaderName, user.Notifications.Count.ToString());
+			return new UserNotificationsResponse() { ResponseCode = Core.Enums.ResponseCode.Success, Notifications = notifications };
 		}
 
 		public async Task<NotifyUserResponse> NotifyUserAsync(Notification notification, Guid userId)

@@ -12,6 +12,7 @@ import CabinetMain from './main/CabinetMain'
 import GenericButton from '../../components/UI/buttons/generic_button/GenericButton'
 import CabinetMainInfo from './main_data/CabinetMainInfo'
 import CabinetPasswordControl from './password/CabinetPasswordControl'
+import CabinetNotifications from './notifications/CabinetNotifications'
 
 export default function CabinetPage() {
     const [user, setUser] = useState(null);
@@ -45,6 +46,7 @@ export default function CabinetPage() {
              <CabinetMain>
                 {currentComponent === "main" && <CabinetMainInfo user={user} setUser={setUser}/>}
                 {currentComponent === "password" && <CabinetPasswordControl user={user}/>}
+                {currentComponent === "notifications" && <CabinetNotifications user={user} setUser={setUser}/>}
              </CabinetMain>
         </div>}
     </>

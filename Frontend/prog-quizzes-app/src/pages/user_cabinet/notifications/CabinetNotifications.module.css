@@ -1,0 +1,25 @@
+.notificationsOption {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+.optionDescription {
+    font-size: 20px;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+.managementPanel {
+    display: flex;
+    justify-content: center;
+}
+.notifications {
+    margin-top: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 15px;
+}
+.noNotificationsSpan {
+    font-size: 25px;
+}

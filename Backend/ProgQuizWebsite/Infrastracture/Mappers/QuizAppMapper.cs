@@ -87,7 +87,8 @@ namespace ProgQuizWebsite.Infrastracture.Mappers
 
 		public void MapNotifications()
 		{
-			CreateMap<NotificationPostModel, Notification>();
+			CreateMap<NotificationPostModel, Notification>()
+				.ForMember(n => n.Date, opt => opt.MapFrom(model => DateTime.UtcNow));
 			CreateMap<Notification, NotificationResponseModel>();
 		}
     }

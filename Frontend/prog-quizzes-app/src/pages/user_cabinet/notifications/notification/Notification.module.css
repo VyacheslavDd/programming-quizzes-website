@@ -1,0 +1,30 @@
+
+.notificationCard {
+    padding: 15px;
+    border: 2px dashed rgb(41, 125, 235);
+    border-radius: 10px;
+    width: 50%;
+    vertical-align: middle;
+    display: grid;
+    grid-template-areas: "notificationContent notificationContent"
+                         "timestamp delete";
+}
+.content {
+    grid-area: notificationContent;
+    padding: 10px;
+    padding-left: 0;
+    font-size: 25px;
+}
+.timestamp {
+    font-size: 20px;
+    grid-area: timestamp;
+}
+.deleteNotificationBtn {
+    grid-area: delete;
+    color: red;
+    font-weight: 600;
+    background-color: transparent;
+    border: 0;
+    text-align: end;
+    font-size: 30px;
+}

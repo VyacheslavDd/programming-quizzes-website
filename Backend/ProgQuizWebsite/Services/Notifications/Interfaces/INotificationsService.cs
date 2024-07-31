@@ -1,4 +1,5 @@
 ﻿using ProgQuizWebsite.Api.Notifications.ResponseModels;
+using ProgQuizWebsite.Domain.Notifications.FilterModels;
 using ProgQuizWebsite.Domain.Notifications.Models;
 
 namespace ProgQuizWebsite.Services.Notifications.Interfaces
@@ -7,7 +8,7 @@ namespace ProgQuizWebsite.Services.Notifications.Interfaces
 	{
 		Task<List<Notification>> GetAllAsync();
 		Task<Notification> GetByGuidAsync(Guid id);
-		Task<UserNotificationsResponse> GetUserNotificationsAsync(Guid userId);
+		Task<UserNotificationsResponse> GetUserNotificationsAsync(Guid userId, NotificationsFilter notificationsFilter, HttpResponse httpResponse);
 		Task<Guid> NotifyUsersAsync(Notification notification);
 		Task<NotifyUserResponse> NotifyUserAsync(Notification notification, Guid userId);
 		Task<UserNotificationsRemoveResponse> ClearUserNotificationsAsync(Guid userId);
