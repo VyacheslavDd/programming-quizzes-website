@@ -15,6 +15,11 @@ namespace ProgQuizWebsite.Api.Users.Controllers
 			_tokenService = tokenService;
 		}
 
+		/// <summary>
+		/// Обновить токены пользователя, не выполняя повторную аутентификацию
+		/// </summary>
+		/// <param name="userId">Guid пользователя</param>
+		/// <returns></returns>
 		[HttpGet]
 		[Route("refresh/{userId}")]
 		public async Task<IActionResult> RefreshTokensAsync([FromRoute] Guid userId)

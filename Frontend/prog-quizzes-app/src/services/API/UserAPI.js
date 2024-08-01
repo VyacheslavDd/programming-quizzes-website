@@ -52,4 +52,8 @@ export default class UserAPI {
         });
         return result.data;
     }
+
+    static async clearNewNotificationsCount(user) {
+        await axios.patch(`https://localhost:7184/api/users/clear/${user.id}/notifications-count`);
+    }
 }

@@ -26,6 +26,7 @@ export default function CabinetNotifications({user, setUser}) {
     const [notifications, setNotifications] = useState(null);
     const [page, setPage] = useState(1);
     const [pagesCount, setPagesCount] = useState(0);
+    const newNotificationsCount = useRef(user.newNotificationsCount);
     const [fetchNotifications, isLoading, isError] = useFetching(async () => {
         let result = await NotificationsAPI.getUserNotifications(user, page);
         setPagesCount(Math.ceil(result.headers['content-count'] / 10));
@@ -50,8 +51,14 @@ export default function CabinetNotifications({user, setUser}) {
         setNotifications(notifications.filter((notification) => notification.id !== notificationId));
     }
 
+    const clearNotificationsCount = async () => {
+        await UserAPI.clearNewNotificationsCount(user);
+        setUser(prev => ({...prev, newNotificationsCount: 0}))
+    }
+
     useEffect(() => {
         fetchNotifications();
+        clearNotificationsCount();
     }, [])
 
   return (
@@ -71,13 +78,10 @@ export default function CabinetNotifications({user, setUser}) {
             ? <ErrorMessage errorMsg="Не удалось загрузить уведомления"/>
             : notifications.length > 0
             ? notifications.map((notification, index) =>
-                { if (index + 1 === notifications.length) {
-                    return <Notification key={notification.id} content={notification.content} timestamp={notification.date} ref={lastNotification}
-                    removeNotification={() => removeNotification(notification.id)}/>
-                }
-                return <Notification key={notification.id} content={notification.content} timestamp={notification.date}
-              removeNotification={() => removeNotification(notification.id)}/>
-            })
+                <Notification key={notification.id} content={notification.content} timestamp={notification.date}
+                ref={index + 1 === notifications.length ? lastNotification : null}
+              removeNotification={() => removeNotification(notification.id)} isNew={index + 1 <= newNotificationsCount.current}/>
+            )
             : <span className={styles.noNotificationsSpan}>Пока уведомления отсутствуют</span>}
         </div>
     </>

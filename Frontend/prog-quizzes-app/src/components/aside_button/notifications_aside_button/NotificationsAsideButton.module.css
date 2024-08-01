@@ -1,0 +1,16 @@
+
+.notificationsAsideContainer {
+    width: 105%;
+    display: flex;
+    position: relative;
+}
+.notificationsCount {
+    position: absolute;
+    right: 0;
+    top: 10%;
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 100%;
+    background-color: rgb(238, 96, 96);
+    font-size: 25px;
+}

@@ -42,7 +42,7 @@ export default function CabinetPage() {
         : isError
         ? <ErrorMessage errorMsg="Не удалось получить данные. Попробуйте позже"/>
         : <div className={styles.main}>
-             <CabinetAside currentComponent={currentComponent} setComponent={setCurrentComponent}/>
+             <CabinetAside user={user} currentComponent={currentComponent} setComponent={setCurrentComponent}/>
              <CabinetMain>
                 {currentComponent === "main" && <CabinetMainInfo user={user} setUser={setUser}/>}
                 {currentComponent === "password" && <CabinetPasswordControl user={user}/>}

@@ -110,5 +110,18 @@ namespace UserService.Api.Controllers
 			var response = await _usersService.UpdateUserNotificationsAsync(id, updateNotificationsModel);
 			return new JsonResult(response);
 		}
+
+		/// <summary>
+		/// Обнулить количество непрочитанных уведомлений пользователя
+		/// </summary>
+		/// <param name="id">Guid пользователя</param>
+		/// <returns></returns>
+		[HttpPatch]
+		[Route("clear/{id}/notifications-count")]
+		public async Task<IActionResult> ClearNewNotificationsCountFieldAsync([FromRoute] Guid id)
+		{
+			await _usersService.ClearNewNotificationsCountFieldAsync(id);
+			return Ok();
+		}
 	}
 }

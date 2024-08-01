@@ -17,6 +17,7 @@ namespace UserService.Services.Interfaces
 		Task<User> FindByLoginAsync(string login);
 		Task<User> FindByPhoneAsync(long phone);
 		Task DeleteByGuidAsync(Guid id);
+		Task ClearNewNotificationsCountFieldAsync(Guid id);
 		bool IsRoleAssigned(User user, Role role);
 		Task<UpdateUserResponse> UpdateAsync(Guid id, User userModel);
 		Task<UpdateUserPasswordResponse> UpdatePasswordAsync(Guid id, UpdatePasswordModel passwordModel);

@@ -56,6 +56,7 @@ namespace ProgQuizWebsite.Services.Notifications.Implementations
 				ErrorMessage = "Пользователь не принимает уведомления"
 			};
 			notification.Users = new List<User>{ user };
+			user.NewNotificationsCount++;
 			var id = await _notificationsRepository.AddAsync(notification);
 			return new NotifyUserResponse() { ResponseCode = Core.Enums.ResponseCode.Success, Id = id };
 		}
@@ -65,7 +66,10 @@ namespace ProgQuizWebsite.Services.Notifications.Implementations
 			var users = await _usersService.GetNotificationSubscribers();
 			notification.Users = new List<User>();
 			foreach (var user in users)
+			{
 				notification.Users.Add(user);
+				user.NewNotificationsCount++;
+			}
 			return await _notificationsRepository.AddAsync(notification);
 		}
 
@@ -78,6 +82,7 @@ namespace ProgQuizWebsite.Services.Notifications.Implementations
 				ErrorMessage = "Указан несуществующий пользователь"
 			};
 			user.Notifications.Clear();
+			user.NewNotificationsCount = 0;
 			await _notificationsRepository.SaveChangesAsync();
 			return new UserNotificationsRemoveResponse() { ResponseCode = Core.Enums.ResponseCode.Success };
 		}

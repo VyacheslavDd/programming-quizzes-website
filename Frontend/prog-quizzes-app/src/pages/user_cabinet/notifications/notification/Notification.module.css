@@ -9,6 +9,9 @@
     grid-template-areas: "notificationContent notificationContent"
                          "timestamp delete";
 }
+.newNotificationCard {
+    background-color: rgb(225, 233, 182);
+}
 .content {
     grid-area: notificationContent;
     padding: 10px;

@@ -21,6 +21,14 @@ namespace UserService.Services.Implementations
 			_userRepository = userRepository;
 		}
 
+		public async Task ClearNewNotificationsCountFieldAsync(Guid id)
+		{
+			var user = await FindByGuidAsync(id);
+			if (user == null) return;
+			user.NewNotificationsCount = 0;
+			await _userRepository.SaveChangesAsync();
+		}
+
 		public async Task DeleteByGuidAsync(Guid id)
 		{
 			await _userRepository.DeleteAsync(id);
