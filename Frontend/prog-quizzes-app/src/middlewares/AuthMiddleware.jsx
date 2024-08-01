@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom'
 import { AuthContext } from '../context/AuthContext';
 import { jwtDecode } from 'jwt-decode';
 import Helper from '../services/Helper';
+import TokensAPI from '../services/API/TokensAPI';
 
 export default function AuthMiddleware({children}) {
     
@@ -13,13 +14,24 @@ export default function AuthMiddleware({children}) {
  
 
     useEffect(() => {
-        if (authToken !== null) {
-            if (Helper.isTokenExpired(authToken)) {
-                setToken("");
-                localStorage.removeItem(Helper.tokenStorageKey);
-                setAuthToken(null);
+        async function checkTokenForNewOne() {
+            if (authToken !== null) {
+                if (Helper.isTokenExpired(authToken)) {
+                    try {
+                        let result = await TokensAPI.refreshTokens(authToken['Id']);
+                        if (result.accessToken === "") throw new Error();
+                        setToken(result.accessToken);
+                        setAuthToken(jwtDecode(result.accessToken));
+                    }
+                    catch {
+                        setToken("");
+                        localStorage.removeItem(Helper.tokenStorageKey);
+                        setAuthToken(null);
+                    }
+                }
             }
         }
+        checkTokenForNewOne();
     }, [location])
 
     useEffect(() => {

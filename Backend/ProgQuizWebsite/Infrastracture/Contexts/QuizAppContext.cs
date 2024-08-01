@@ -4,6 +4,7 @@ using ProgQuizWebsite.Domain.Notifications.Models;
 using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
+using ProgQuizWebsite.Domain.Users.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,7 @@ namespace ProgQuizWebsite.Infrastracture.Contexts
         public virtual DbSet<Question?> Questions { get; set; }
         public virtual DbSet<Answer?> Answers { get; set; }
 		public virtual DbSet<User?> Users { get; set; }
+        public virtual DbSet<RefreshToken?> RefreshTokens { get; set; }
 		public virtual DbSet<Role?> Roles { get; set; }
         public virtual DbSet<Notification?> Notifications { get; set; }
 

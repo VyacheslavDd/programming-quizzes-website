@@ -1,4 +1,5 @@
 ﻿using ProgQuizWebsite.Domain.Notifications.Models;
+using ProgQuizWebsite.Domain.Users.Models;
 
 namespace UserService.Domain.Models
 {
@@ -15,5 +16,6 @@ namespace UserService.Domain.Models
 		public bool ReceiveNotifications { get; set; }
 		public List<Role> Roles { get; set; }
 		public List<Notification> Notifications { get; set; }
+		public RefreshToken? RefreshToken { get; set; }
 	}
 }

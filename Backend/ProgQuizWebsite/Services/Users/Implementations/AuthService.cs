@@ -1,5 +1,6 @@
 ﻿using BCrypt.Net;
 using Core.Enums;
+using ProgQuizWebsite.Domain.Users.Interfaces;
 using UserService.Api.ResponseModels.Auth;
 using UserService.Domain.Interfaces;
 using UserService.Domain.Models;
@@ -14,7 +15,8 @@ namespace UserService.Services.Implementations
 		private readonly IRolesService _rolesService;
 		private readonly ITokenService _tokenService;
 
-		public AuthService(IUserRepository userRepository, IUsersService usersService, IRolesService rolesService, ITokenService tokenService)
+		public AuthService(IUserRepository userRepository, IUsersService usersService, IRolesService rolesService,
+			ITokenService tokenService)
 		{
 			_userRepository = userRepository;
 			_usersService = usersService;
@@ -44,8 +46,8 @@ namespace UserService.Services.Implementations
 			var hashEquals = foundUser != null && BCrypt.Net.BCrypt.Verify(inputPassword, foundUser.PasswordHash);
 			if (hashEquals)
 			{
-				var token = _tokenService.CreateToken(foundUser);
-				return new AuthenticationResponse() { ResponseCode = ResponseCode.Success, Token = token };
+				var tokenResponse = await _tokenService.AddOrUpdateTokensAsync(foundUser);
+				return new AuthenticationResponse() { ResponseCode = ResponseCode.Success, Token = tokenResponse.AccessToken };
 			}
 			return new AuthenticationResponse() { ResponseCode = ResponseCode.BadRequest, ErrorMessage = "Введённые данные некорректны." };
 		}

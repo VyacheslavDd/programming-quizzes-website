@@ -1,0 +1,27 @@
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using UserService.Services.Interfaces;
+
+namespace ProgQuizWebsite.Api.Users.Controllers
+{
+	[Route("api/[controller]")]
+	[ApiController]
+	public class TokensController : ControllerBase
+	{
+		private readonly ITokenService _tokenService;
+
+		public TokensController(ITokenService tokenService)
+		{
+			_tokenService = tokenService;
+		}
+
+		[HttpGet]
+		[Route("refresh/{userId}")]
+		public async Task<IActionResult> RefreshTokensAsync([FromRoute] Guid userId)
+		{
+			var response = await _tokenService.RefreshTokensAsync(userId);
+			return new JsonResult(response);
+		}
+
+	}
+}

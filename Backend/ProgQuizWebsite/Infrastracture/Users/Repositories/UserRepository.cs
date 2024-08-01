@@ -18,13 +18,13 @@ namespace UserService.Infrastructure.Repositories
 
 		public async Task<User?> FindByEmailAsync(string email)
 		{
-			return await _quizAppContext.Users.Include(u => u.Roles).AsNoTracking().
+			return await _quizAppContext.Users.Include(u => u.Roles).
 				FirstOrDefaultAsync(user => user.Email.ToLower() == email.ToLower());
 		}
 
 		public async Task<User?> FindByLoginAsync(string login)
 		{
-			return await _quizAppContext.Users.Include(u => u.Roles).AsNoTracking().FirstOrDefaultAsync(user => user.Login == login);
+			return await _quizAppContext.Users.Include(u => u.Roles).FirstOrDefaultAsync(user => user.Login == login);
 		}
 
 		public async Task<User?> FindByPhoneAsync(long phone)
