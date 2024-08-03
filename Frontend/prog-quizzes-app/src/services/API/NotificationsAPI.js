@@ -1,16 +1,16 @@
 import axios from "axios";
 
 export default class NotificationsAPI { 
-    static async getUserNotifications(user, page) {
-        let result = await axios.get(`https://localhost:7184/api/notifications/${user.id}?page=${page}`);
+    static async getUserNotifications(userId, page) {
+        let result = await axios.get(`https://localhost:7184/api/notifications/${userId}?page=${page}`);
         return result;
     }
 
-    static async removeAllNotifications(user) {
-        await axios.delete(`https://localhost:7184/api/notifications/clear/${user.id}`);
+    static async removeAllNotifications(userId) {
+        await axios.delete(`https://localhost:7184/api/notifications/clear/${userId}`);
     }
 
-    static async removeNotification(user, notificationId) {
-        await axios.delete(`https://localhost:7184/api/notifications/${notificationId}/remove/${user.id}`);
+    static async removeNotification(userId, notificationId) {
+        await axios.delete(`https://localhost:7184/api/notifications/${notificationId}/remove/${userId}`);
     }
 }

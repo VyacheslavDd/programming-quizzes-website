@@ -11,11 +11,11 @@ import ErrorMessage from "../../../components/error_message/ErrorMessage"
 import Notification from "./notification/Notification"
 import useObserver from "../../../hooks/useObserver"
 
-export default function CabinetNotifications({user, setUser}) {
+export default function CabinetNotifications({user, setUser, userId}) {
 
     const lastNotificationInSight = async (entries) => {
         if (entries[0].isIntersecting && page <= pagesCount) {
-            let result = await NotificationsAPI.getUserNotifications(user, page);
+            let result = await NotificationsAPI.getUserNotifications(userId, page);
             setPage(page + 1);
             setNotifications(prev => ([...prev, ...result.data.notifications]));
         }
@@ -28,32 +28,32 @@ export default function CabinetNotifications({user, setUser}) {
     const [pagesCount, setPagesCount] = useState(0);
     const newNotificationsCount = useRef(user.newNotificationsCount);
     const [fetchNotifications, isLoading, isError] = useFetching(async () => {
-        let result = await NotificationsAPI.getUserNotifications(user, page);
+        let result = await NotificationsAPI.getUserNotifications(userId, page);
         setPagesCount(Math.ceil(result.headers['content-count'] / 10));
         setPage(page + 1);
         setNotifications(result.data.notifications);
     }, true);
 
     const updateReceiveNotificationsOption = async (e) => {
-        let result = await UserAPI.updateReceiveNotificationsOption(user, !user.receiveNotifications);
+        let result = await UserAPI.updateReceiveNotificationsOption(userId, !user.receiveNotifications);
         if (result.responseCode === 200) {
-            setUser(prev => ({...prev, receiveNotifications: !user.receiveNotifications}));
+            setUser(prev => ({...prev, userNotificationsInfo: {...prev.userNotificationsInfo, receiveNotifications: !user.receiveNotifications}}));
         }
     }
 
     const removeAllNotifications = async () => {
-        await NotificationsAPI.removeAllNotifications(user);
+        await NotificationsAPI.removeAllNotifications(userId);
         setNotifications({});
     }
 
     const removeNotification = async (notificationId) => {
-        await NotificationsAPI.removeNotification(user, notificationId);
+        await NotificationsAPI.removeNotification(userId, notificationId);
         setNotifications(notifications.filter((notification) => notification.id !== notificationId));
     }
 
     const clearNotificationsCount = async () => {
-        await UserAPI.clearNewNotificationsCount(user);
-        setUser(prev => ({...prev, newNotificationsCount: 0}))
+        await UserAPI.clearNewNotificationsCount(userId);
+        setUser(prev => ({...prev, userNotificationsInfo: {...prev.userNotificationsInfo, newNotificationsCount: 0}}));
     }
 
     useEffect(() => {

@@ -1,5 +1,5 @@
-﻿using UserService.Api.ResponseModels.Auth;
-using UserService.Domain.Models;
+﻿using ProgQuizWebsite.Domain.Users.Models.UserModel;
+using UserService.Api.ResponseModels.Auth;
 
 namespace UserService.Services.Interfaces
 {

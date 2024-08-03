@@ -24,6 +24,10 @@ export default function CabinetPasswordControl({user}) {
     await submit();
   }
 
+  const setPasswordInfo = (propertyName, value) => {
+    setPasswordData(prev => ({...prev, [propertyName]: value}))
+  }
+
   useEffect(() => {
     let timeout;
     if (isSuccess) {
@@ -37,11 +41,11 @@ export default function CabinetPasswordControl({user}) {
 
   return (
       <form className={styles.form} action='post' onSubmit={(e) => updatePassword(e)}>
-        <FormField propertyName="oldPassword" type={Helper.inputPasswordType} label="Старый пароль" placeholder="Введите пароль..." setInput={setPasswordData}/>
-        <PasswordField propertyName="newPassword" correctPropertyName="isPasswordCorrect" input={passwordData.newPassword} setInput={setPasswordData}
+        <FormField propertyName="oldPassword" type={Helper.inputPasswordType} label="Старый пароль" placeholder="Введите пароль..." setInput={setPasswordInfo}/>
+        <PasswordField propertyName="newPassword" correctPropertyName="isPasswordCorrect" input={passwordData.newPassword} setInput={setPasswordInfo}
         setIsCorrect={setCorrects}/>
         <RepeatPasswordField propertyName="repeatPassword" correctPropertyName="isRepeatCorrect" originalPassword={passwordData.newPassword}
-        input={passwordData.repeatPassword} setIsCorrect={setCorrects} setInput={setPasswordData}/>
+        input={passwordData.repeatPassword} setIsCorrect={setCorrects} setInput={setPasswordInfo}/>
         <div className={styles.submit}>
           <FormSubmit isActive={corrects.isPasswordCorrect && corrects.isRepeatCorrect && passwordData.oldPassword.length > 0 && !isPending} value={submitValue}/>
         </div>

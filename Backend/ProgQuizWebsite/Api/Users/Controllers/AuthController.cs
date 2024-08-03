@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using UserService.Api.PostModels.Auth;
-using UserService.Domain.Models;
 using UserService.Infrastructure.Filters;
 using UserService.Services.Interfaces;
 

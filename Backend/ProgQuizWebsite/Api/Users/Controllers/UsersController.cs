@@ -3,15 +3,15 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProgQuizWebsite.Api.Users.PostModels.Users;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using UserService.Api.PostModels.Users;
 using UserService.Api.ResponseModels.Roles;
 using UserService.Api.ResponseModels.Users;
-using UserService.Domain.Models;
 using UserService.Services.Interfaces;
 
 namespace UserService.Api.Controllers
 {
-	[Route("api/[controller]")]
+    [Route("api/[controller]")]
 	[ApiController]
 	public class UsersController : ControllerBase
 	{

@@ -35,6 +35,10 @@ export default function LoginPage() {
     setLoginResult(prev => result);
   }
 
+  const setLoginInfo = (propertyName, value) => {
+    setLoginData(prev => ({...prev, [propertyName]: value}))
+  }
+
   useEffect(() => {
     if (isSuccess) {
       localStorage.setItem(Helper.tokenStorageKey, loginResult.token);
@@ -58,8 +62,8 @@ export default function LoginPage() {
     <div className={styles.mainContainer}>
         {state && showSuccess &&  <SuccessContainer message={state.msg}/>}
         <Form title="Авторизация" onSubmit={() => authenticate()}>
-          <LoginEmailField propertyName="loginMail" correctPropertyName="isLoginMailCorrect" input={loginData.loginMail} setInput={setLoginData} setIsCorrect={setCorrects}/>
-          <PasswordField propertyName="password" correctPropertyName="isPasswordCorrect" input={loginData.password} setInput={setLoginData} setIsCorrect={setCorrects}/>
+          <LoginEmailField propertyName="loginMail" correctPropertyName="isLoginMailCorrect" input={loginData.loginMail} setInput={setLoginInfo} setIsCorrect={setCorrects}/>
+          <PasswordField propertyName="password" correctPropertyName="isPasswordCorrect" input={loginData.password} setInput={setLoginInfo} setIsCorrect={setCorrects}/>
           <FormSubmit isActive={corrects.isLoginMailCorrect && corrects.isPasswordCorrect && !isPending} value={submitValue}/>
         </Form>
         <FormErrorMessage message={message}/>

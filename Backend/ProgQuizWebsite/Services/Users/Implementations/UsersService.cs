@@ -9,10 +9,11 @@ using UserService.Api.PostModels.Users;
 using BCrypt.Net;
 using ProgQuizWebsite.Api.Users.ResponseModels.Users;
 using ProgQuizWebsite.Api.Users.PostModels.Users;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 
 namespace UserService.Services.Implementations
 {
-	internal class UsersService : IUsersService
+    internal class UsersService : IUsersService
 	{
 		private readonly IUserRepository _userRepository;
 
@@ -25,7 +26,7 @@ namespace UserService.Services.Implementations
 		{
 			var user = await FindByGuidAsync(id);
 			if (user == null) return;
-			user.NewNotificationsCount = 0;
+			user.UserNotificationsInfo.NewNotificationsCount = 0;
 			await _userRepository.SaveChangesAsync();
 		}
 
@@ -79,16 +80,17 @@ namespace UserService.Services.Implementations
 			var user = await FindByGuidAsync(id);
 			if (user == null) return new UpdateUserResponse() { ResponseCode = ResponseCode.NotFound,
 				ErrorMessage = "Пользователь не найден" };
-			var conflictingUser = (await GetAllAsync()).Where(u => (u.Email == userModel.Email || u.Login == userModel.Login ||
-			u.PhoneNumber == userModel.PhoneNumber) && u.Id != id).FirstOrDefault();
+			var conflictingUser = (await GetAllAsync()).Where(u => (u.UserInfo.Email == userModel.UserInfo.Email ||
+			u.UserInfo.Login == userModel.UserInfo.Login ||
+			u.UserInfo.PhoneNumber == userModel.UserInfo.PhoneNumber) && u.Id != id).FirstOrDefault();
 			if (conflictingUser != null) return new UpdateUserResponse() { ResponseCode = ResponseCode.BadRequest,
 				ErrorMessage = "Неуникальный адрес почты, логин или телефон" };
-			user.Name = userModel.Name;
-			user.Surname = userModel.Surname;
-			user.Email = userModel.Email;
-			user.Login = userModel.Login;
-			user.PhoneNumber = userModel.PhoneNumber;
-			user.BirthDate = userModel.BirthDate.AddDays(1).ToUniversalTime();
+			user.UserInfo.Name = userModel.UserInfo.Name;
+			user.UserInfo.Surname = userModel.UserInfo.Surname;
+			user.UserInfo.Email = userModel.UserInfo.Email;
+			user.UserInfo.Login = userModel.UserInfo.Login;
+			user.UserInfo.PhoneNumber = userModel.UserInfo.PhoneNumber;
+			user.UserInfo.BirthDate = userModel.UserInfo.BirthDate.AddDays(1).ToUniversalTime();
 			await _userRepository.SaveChangesAsync();
 			return new UpdateUserResponse() { ResponseCode = ResponseCode.Success };
 		}
@@ -114,7 +116,7 @@ namespace UserService.Services.Implementations
 				ResponseCode = ResponseCode.NotFound,
 				ErrorMessage = "Пользователь не найден"
 			};
-			user.ReceiveNotifications = notificationsModel.ReceiveNotifications;
+			user.UserNotificationsInfo.ReceiveNotifications = notificationsModel.ReceiveNotifications;
 			await _userRepository.SaveChangesAsync();
 			return new UpdateUserNotificationsResponse() { ResponseCode = ResponseCode.Success };
 		}

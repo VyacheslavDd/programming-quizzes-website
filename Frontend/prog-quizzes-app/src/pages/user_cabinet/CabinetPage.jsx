@@ -24,6 +24,10 @@ export default function CabinetPage() {
         setUser(user.data);
     }, true)
 
+    const updateUserInfo = (propertyName, value) => {
+        setUser(prev => ({...prev, userInfo: ({...prev.userInfo, [propertyName]: value})}));
+    }
+
     useEffect(() => {
         async function getUser() {
             await fetchUser();
@@ -44,9 +48,9 @@ export default function CabinetPage() {
         : <div className={styles.main}>
              <CabinetAside user={user} currentComponent={currentComponent} setComponent={setCurrentComponent}/>
              <CabinetMain>
-                {currentComponent === "main" && <CabinetMainInfo user={user} setUser={setUser}/>}
+                {currentComponent === "main" && <CabinetMainInfo user={user.userInfo} setUser={updateUserInfo} userId={user.id}/>}
                 {currentComponent === "password" && <CabinetPasswordControl user={user}/>}
-                {currentComponent === "notifications" && <CabinetNotifications user={user} setUser={setUser}/>}
+                {currentComponent === "notifications" && <CabinetNotifications user={user.userNotificationsInfo} setUser={setUser} userId={user.id}/>}
              </CabinetMain>
         </div>}
     </>

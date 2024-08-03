@@ -1,6 +1,7 @@
 ﻿using Core.Base.Service.Interfaces;
 using ProgQuizWebsite.Api.Users.PostModels.Users;
 using ProgQuizWebsite.Api.Users.ResponseModels.Users;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using UserService.Api.PostModels.Users;
 using UserService.Api.ResponseModels;
 using UserService.Api.ResponseModels.Users;
@@ -8,7 +9,7 @@ using UserService.Domain.Models;
 
 namespace UserService.Services.Interfaces
 {
-	public interface IUsersService
+    public interface IUsersService
 	{
 		Task<List<User>> GetAllAsync();
 		Task<List<User>> GetNotificationSubscribers();

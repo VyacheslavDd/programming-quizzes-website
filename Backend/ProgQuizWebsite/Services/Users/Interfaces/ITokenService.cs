@@ -1,10 +1,10 @@
 ﻿using ProgQuizWebsite.Api.Users.ResponseModels.RefreshTokens;
 using ProgQuizWebsite.Domain.Users.Models;
-using UserService.Domain.Models;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 
 namespace UserService.Services.Interfaces
 {
-	public interface ITokenService
+    public interface ITokenService
 	{
 		string CreateToken(User user, DateTime expirationDate);
 		Task<RefreshToken?> GetRefreshTokenByUserGuidAsync(Guid? userId);

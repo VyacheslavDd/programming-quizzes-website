@@ -3,15 +3,15 @@ using Microsoft.IdentityModel.Tokens;
 using ProgQuizWebsite.Api.Users.ResponseModels.RefreshTokens;
 using ProgQuizWebsite.Domain.Users.Interfaces;
 using ProgQuizWebsite.Domain.Users.Models;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using UserService.Domain.Models;
 using UserService.Services.Interfaces;
 
 namespace UserService.Services.Implementations
 {
-	internal class TokenService : ITokenService
+    internal class TokenService : ITokenService
 	{
 		private readonly IConfiguration _configuration;
 		private readonly IRefreshTokenRepository _refreshTokenRepository;
@@ -52,7 +52,7 @@ namespace UserService.Services.Implementations
 		{
 			var userClaims = new List<Claim>()
 			{
-				new Claim(ClaimTypes.Name, user.Login),
+				new Claim(ClaimTypes.Name, user.UserInfo.Login),
 				new Claim("Id", user.Id.ToString())
 			};
 			foreach (var role in user.Roles)

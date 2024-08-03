@@ -7,6 +7,7 @@ using ProgQuizWebsite.Domain.Notifications.Models;
 using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -73,11 +74,13 @@ namespace ProgQuizWebsite.Infrastracture.Mappers
 			CreateMap<User, UserResponse>();
 			CreateMap<RegistrationModel, User>()
 				.ForMember(user => user.PasswordHash, opt => opt.MapFrom(model =>
-				BCrypt.Net.BCrypt.HashPassword(model.Password)));
+				BCrypt.Net.BCrypt.HashPassword(model.Password)))
+				.ForPath(user => user.UserInfo.Email, opt => opt.MapFrom(model => model.Email))
+				.ForPath(user => user.UserInfo.Login, opt => opt.MapFrom(model => model.Login));
 			CreateMap<AuthenticationModel, User>()
-				.ForMember(user => user.Email, opt => opt.MapFrom(model =>
+				.ForPath(user => user.UserInfo.Email, opt => opt.MapFrom(model =>
 				model.LoginOrEmail.Contains('@') ? model.LoginOrEmail : ""))
-				.ForMember(user => user.Login, opt => opt.MapFrom(model =>
+				.ForPath(user => user.UserInfo.Login, opt => opt.MapFrom(model =>
 				model.LoginOrEmail.Contains('@') ? "" : model.LoginOrEmail));
 			CreateMap<UpdateUserModel, User>();
 			CreateMap<Role, RoleResponse>();

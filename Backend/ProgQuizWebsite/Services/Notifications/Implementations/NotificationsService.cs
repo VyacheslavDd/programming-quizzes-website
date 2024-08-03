@@ -3,13 +3,13 @@ using ProgQuizWebsite.Api.Notifications.ResponseModels;
 using ProgQuizWebsite.Domain.Notifications.FilterModels;
 using ProgQuizWebsite.Domain.Notifications.Interfaces;
 using ProgQuizWebsite.Domain.Notifications.Models;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using ProgQuizWebsite.Services.Notifications.Interfaces;
-using UserService.Domain.Models;
 using UserService.Services.Interfaces;
 
 namespace ProgQuizWebsite.Services.Notifications.Implementations
 {
-	internal class NotificationsService : INotificationsService
+    internal class NotificationsService : INotificationsService
 	{
 		private readonly INotificationsRepository _notificationsRepository;
 		private readonly IUsersService _usersService;
@@ -50,13 +50,13 @@ namespace ProgQuizWebsite.Services.Notifications.Implementations
 				ResponseCode = Core.Enums.ResponseCode.NotFound,
 				ErrorMessage = "Указан несуществующий пользователь"
 			};
-			if (!user.ReceiveNotifications) return new NotifyUserResponse()
+			if (!user.UserNotificationsInfo.ReceiveNotifications) return new NotifyUserResponse()
 			{
 				ResponseCode = Core.Enums.ResponseCode.BadRequest,
 				ErrorMessage = "Пользователь не принимает уведомления"
 			};
 			notification.Users = new List<User>{ user };
-			user.NewNotificationsCount++;
+			user.UserNotificationsInfo.NewNotificationsCount++;
 			var id = await _notificationsRepository.AddAsync(notification);
 			return new NotifyUserResponse() { ResponseCode = Core.Enums.ResponseCode.Success, Id = id };
 		}
@@ -68,7 +68,7 @@ namespace ProgQuizWebsite.Services.Notifications.Implementations
 			foreach (var user in users)
 			{
 				notification.Users.Add(user);
-				user.NewNotificationsCount++;
+				user.UserNotificationsInfo.NewNotificationsCount++;
 			}
 			return await _notificationsRepository.AddAsync(notification);
 		}
@@ -82,7 +82,7 @@ namespace ProgQuizWebsite.Services.Notifications.Implementations
 				ErrorMessage = "Указан несуществующий пользователь"
 			};
 			user.Notifications.Clear();
-			user.NewNotificationsCount = 0;
+			user.UserNotificationsInfo.NewNotificationsCount = 0;
 			await _notificationsRepository.SaveChangesAsync();
 			return new UserNotificationsRemoveResponse() { ResponseCode = Core.Enums.ResponseCode.Success };
 		}

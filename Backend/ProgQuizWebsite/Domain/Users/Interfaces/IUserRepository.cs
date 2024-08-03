@@ -1,10 +1,10 @@
 ﻿using Core.Base.Repository;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using UserService.Api.ResponseModels;
-using UserService.Domain.Models;
 
 namespace UserService.Domain.Interfaces
 {
-	public interface IUserRepository : IRepository<User>
+    public interface IUserRepository : IRepository<User>
 	{
 		Task<User?> FindByEmailAsync(string email);
 		Task<User?> FindByLoginAsync(string login);

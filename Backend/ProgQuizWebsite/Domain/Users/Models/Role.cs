@@ -1,6 +1,8 @@
-﻿namespace UserService.Domain.Models
+﻿using ProgQuizWebsite.Domain.Users.Models.UserModel;
+
+namespace UserService.Domain.Models
 {
-	public class Role
+    public class Role
 	{
 		public required Guid Id { get; set; }
 		public required string Name { get; set; }

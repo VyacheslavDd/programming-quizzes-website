@@ -20,7 +20,7 @@ export default function CabinetAside({user, currentComponent, setComponent}) {
         <AsideButton title="Основная информация" isActive={currentComponent === "main"} value="main" setValue={setComponent}/>
         <AsideButton title="Смена пароля" value="password" isActive={currentComponent === "password"} setValue={setComponent}/>
         <NotificationsAsideButton title="Уведомления" value="notifications" isActive={currentComponent === "notifications"} setValue={setComponent}
-        newNotificationsCount={user.newNotificationsCount}/>
+        newNotificationsCount={user.userNotificationsInfo.newNotificationsCount}/>
         <div className={styles.exit}>
           <GenericButton onClick={logout}>Выйти из аккаунта</GenericButton>
         </div>

@@ -1,8 +1,8 @@
-﻿using UserService.Domain.Models;
+﻿using ProgQuizWebsite.Domain.Users.Models.UserModel;
 
 namespace ProgQuizWebsite.Domain.Users.Models
 {
-	public class RefreshToken
+    public class RefreshToken
 	{
 		public required Guid Id { get; set; }
 		public required string Token { get; set; }

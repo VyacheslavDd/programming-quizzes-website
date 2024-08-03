@@ -16,13 +16,13 @@ import useSuccessTimeout from '../../../hooks/useSuccessTimeout'
 import FormErrorMessage from '../../../components/form/error_message/FormErrorMessage'
 import SuccessContainer from '../../../components/success_container/SuccessContainer'
 
-export default function CabinetMainInfo({user, setUser}) {
+export default function CabinetMainInfo({user, setUser, userId}) {
 
     const [avatar, setAvatar] = useState(null);
     const [corrects, setCorrects] = useState({isNameCorrect: false, isSurnameCorrect: false, isBirthDateCorrect: false, isPhoneCorrect: false,
     isEmailCorrect: false, isLoginCorrect: false});
     const [submitValue, isPending, isSuccess, message, submit] = useFormSubmit("Сохранить", "Сохраняем данные...", async () => {
-      return await UserAPI.updateUser(user);
+      return await UserAPI.updateUser(user, userId);
     });
     const [isShowingSuccess, setIsShowingSuccess, doTimeout] = useSuccessTimeout(3000);
 

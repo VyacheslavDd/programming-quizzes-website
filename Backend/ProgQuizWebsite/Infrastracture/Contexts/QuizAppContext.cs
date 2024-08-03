@@ -5,6 +5,7 @@ using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
 using ProgQuizWebsite.Domain.Users.Models;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,7 +34,11 @@ namespace ProgQuizWebsite.Infrastracture.Contexts
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>(userBuild =>
+            {
+                userBuild.OwnsOne(u => u.UserInfo);
+                userBuild.OwnsOne(u => u.UserNotificationsInfo);
+            });
         }
     }
 }

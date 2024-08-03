@@ -5,7 +5,7 @@ export default function FormField({type, placeholder, label, propertyName, setIn
   return (
     <div className={styles.fieldContainer}>
         <label className={styles.label}>{label}</label>
-        <input defaultValue={defaultValue} onChange={(e) => setInput((prev) => ({...prev, [propertyName]: e.target.value}))} className={styles.formField}
+        <input defaultValue={defaultValue} onChange={(e) => setInput(propertyName, e.target.value)} className={styles.formField}
         type={type} placeholder={placeholder} {...props}/>
         <div className={styles.hintContainer}>
         <span className={styles.inputHint}>{hint}</span>

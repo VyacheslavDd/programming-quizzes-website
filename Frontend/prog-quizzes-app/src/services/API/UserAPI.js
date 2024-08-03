@@ -19,6 +19,7 @@ export default class UserAPI {
                 password
             }
         );
+        console.log(email, login, password);
         return result.data;
     }
 
@@ -34,26 +35,29 @@ export default class UserAPI {
         return await axios.get(`https://localhost:7184/api/users/${guid}`);
     }
 
-    static async updateUser(user) {
-        let result = await axios.put(`https://localhost:7184/api/users/update/${user.id}`, {
-            name: user.name,
-            surname: user.surname,
-            birthDate: user.birthDate,
-            phoneNumber: user.phoneNumber,
-            email: user.email,
-            login: user.login
+    static async updateUser(user, userId) {
+        console.log(user, userId);
+        let result = await axios.put(`https://localhost:7184/api/users/update/${userId}`, {
+            userInfo: {
+                name: user.name,
+                surname: user.surname,
+                birthDate: user.birthDate,
+                phoneNumber: user.phoneNumber,
+                email: user.email,
+                login: user.login
+            }
         });
         return result.data;
     }
 
-    static async updateReceiveNotificationsOption(user, value) {
-        let result = await axios.patch(`https://localhost:7184/api/users/update/${user.id}/notifications`, {
+    static async updateReceiveNotificationsOption(userId, value) {
+        let result = await axios.patch(`https://localhost:7184/api/users/update/${userId}/notifications`, {
             receiveNotifications: value
         });
         return result.data;
     }
 
-    static async clearNewNotificationsCount(user) {
-        await axios.patch(`https://localhost:7184/api/users/clear/${user.id}/notifications-count`);
+    static async clearNewNotificationsCount(userId) {
+        await axios.patch(`https://localhost:7184/api/users/clear/${userId}/notifications-count`);
     }
 }

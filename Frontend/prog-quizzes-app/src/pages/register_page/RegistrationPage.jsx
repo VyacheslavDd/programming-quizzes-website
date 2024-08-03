@@ -28,6 +28,10 @@ export default function RegistrationPage() {
         return !isPending;
     }
 
+    const setRegisterInfo = (propertyName, value) => {
+      setRegisterData(prev => ({...prev, [propertyName]: value}))
+    }
+
     const register = async () => {
       let result = await doSubmit();
     }
@@ -41,12 +45,12 @@ export default function RegistrationPage() {
   return (
     <div className={styles.mainContainer}>
         <Form title="Регистрация" onSubmit={() => register()}>
-            <EmailField propertyName="email" correctPropertyName="isEmailCorrect" input={registerData.email} setInput={setRegisterData} setIsCorrect={setCorrects}/>
-            <LoginField propertyName="login" correctPropertyName="isLoginCorrect" input={registerData.login} setInput={setRegisterData} setIsCorrect={setCorrects}/>
-            <PasswordField propertyName="password" correctPropertyName="isPasswordCorrect" input={registerData.password} setInput={setRegisterData}
+            <EmailField propertyName="email" correctPropertyName="isEmailCorrect" input={registerData.email} setInput={setRegisterInfo} setIsCorrect={setCorrects}/>
+            <LoginField propertyName="login" correctPropertyName="isLoginCorrect" input={registerData.login} setInput={setRegisterInfo} setIsCorrect={setCorrects}/>
+            <PasswordField propertyName="password" correctPropertyName="isPasswordCorrect" input={registerData.password} setInput={setRegisterInfo}
             setIsCorrect={setCorrects}/>
             <RepeatPasswordField propertyName="repeatPassword" correctPropertyName="isPasswordCorresponding" input={registerData.repeatPassword}
-            setInput={setRegisterData} setIsCorrect={setCorrects}
+            setInput={setRegisterInfo} setIsCorrect={setCorrects}
             originalPassword={registerData.password}/>
             <FormSubmit value={submitValue} isActive={canSubmit()}/>
         </Form>

@@ -1,8 +1,8 @@
-﻿using UserService.Domain.Models;
+﻿using ProgQuizWebsite.Domain.Users.Models.UserModel;
 
 namespace ProgQuizWebsite.Domain.Notifications.Models
 {
-	public class Notification
+    public class Notification
 	{
 		public required Guid Id { get; set; }
 		public required string Content { get; set; }

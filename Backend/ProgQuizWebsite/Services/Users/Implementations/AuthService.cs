@@ -1,6 +1,7 @@
 ﻿using BCrypt.Net;
 using Core.Enums;
 using ProgQuizWebsite.Domain.Users.Interfaces;
+using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using UserService.Api.ResponseModels.Auth;
 using UserService.Domain.Interfaces;
 using UserService.Domain.Models;
@@ -26,10 +27,10 @@ namespace UserService.Services.Implementations
 
 		public async Task<RegistrationResponse> RegisterAsync(User user)
 		{
-			var doesUserExistByEmail = (await _usersService.FindByEmailAsync(user.Email)) != null;
+			var doesUserExistByEmail = (await _usersService.FindByEmailAsync(user.UserInfo.Email)) != null;
 			if (doesUserExistByEmail)
 				return new RegistrationResponse() { ResponseCode = ResponseCode.BadRequest, ErrorMessage = "На указанный e-mail уже зарегистрирован аккаунт." };
-			var doesUserExistByLogin = (await _usersService.FindByLoginAsync(user.Login)) != null;
+			var doesUserExistByLogin = (await _usersService.FindByLoginAsync(user.UserInfo.Login)) != null;
 			if (doesUserExistByLogin)
 				return new RegistrationResponse() { ResponseCode = ResponseCode.BadRequest, ErrorMessage = "Логин уже занят." };
 			var defaultRole = await _rolesService.GetDefaultRoleAsync();
@@ -42,7 +43,7 @@ namespace UserService.Services.Implementations
 
 		public async Task<AuthenticationResponse> AuthenticateAsync(User user, string inputPassword)
 		{
-			var foundUser = (await _usersService.FindByEmailAsync(user.Email)) ?? (await _usersService.FindByLoginAsync(user.Login));
+			var foundUser = (await _usersService.FindByEmailAsync(user.UserInfo.Email)) ?? (await _usersService.FindByLoginAsync(user.UserInfo.Login));
 			var hashEquals = foundUser != null && BCrypt.Net.BCrypt.Verify(inputPassword, foundUser.PasswordHash);
 			if (hashEquals)
 			{
