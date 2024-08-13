@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,6 +16,7 @@ namespace ProgQuizWebsite.Api.Quizzes.ViewModels
         public int Difficulty { get; set; }
         public string? CreationDate { get; set; }
         public string? CategoryName { get; set; }
+        public QuizRatingsInfo QuizRatingsInfo { get; set; }
         public List<SubcategoryViewModel?> Subcategories { get; set; }
         public List<QuestionViewModel> Questions { get; set; }
     }

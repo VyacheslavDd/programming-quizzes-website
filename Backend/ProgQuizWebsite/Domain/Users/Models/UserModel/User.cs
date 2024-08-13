@@ -1,4 +1,5 @@
 ﻿using ProgQuizWebsite.Domain.Notifications.Models;
+using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
 using ProgQuizWebsite.Domain.Users.Models;
 using UserService.Domain.Models;
 
@@ -12,6 +13,7 @@ namespace ProgQuizWebsite.Domain.Users.Models.UserModel
         public required string PasswordHash { get; set; }
         public List<Role> Roles { get; set; }
         public List<Notification> Notifications { get; set; }
+        public List<QuizRating> QuizRatings { get; set; } = new List<QuizRating>();
         public RefreshToken? RefreshToken { get; set; }
     }
 }

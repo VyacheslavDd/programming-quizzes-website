@@ -1,5 +1,6 @@
 ﻿
 using Core.Base.Repository;
+using ProgQuizWebsite.Domain.Quizzes.Interfaces;
 using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
@@ -18,6 +19,7 @@ namespace ProgQuizWebsite.Infrastracture.Quizzes.UnitOfWork
         IRepository<Quiz> QuizRepository { get; }
         IRepository<Question> QuestionRepository { get; }
         IRepository<Answer> AnswerRepository { get; }
+        IQuizRatingRepository QuizRatingRepository { get; }
         Task SaveAsync();
         void Save();
     }

@@ -2,6 +2,7 @@
 using ProgQuizWebsite.Api.Notifications.PostModels;
 using ProgQuizWebsite.Api.Notifications.ResponseModels;
 using ProgQuizWebsite.Api.Quizzes.PostModels;
+using ProgQuizWebsite.Api.Quizzes.PostModels.QuizRatings;
 using ProgQuizWebsite.Api.Quizzes.ViewModels;
 using ProgQuizWebsite.Domain.Notifications.Models;
 using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
@@ -67,6 +68,10 @@ namespace ProgQuizWebsite.Infrastracture.Mappers
 			CreateMap<Answer, AnswerViewModel>()
 				.ForMember(avm => avm.QuestionTitle, m => m.MapFrom(a => a.Question.Title));
 			CreateMap<AnswerPostModel, Answer>();
+
+			CreateMap<QuizRating, QuizRatingViewModel>();
+			CreateMap<QuizRatingPostModel, QuizRating>();
+			CreateMap<QuizRatingUpdateModel, QuizRating>();
 		}
 
         public void MapUsers()

@@ -21,9 +21,11 @@ namespace ProgQuizWebsite.Domain.Quizzes.Models.QuizModels
         public QuizDifficulty Difficulty { get; set; }
         public DateTime CreationDate { get; set; }
         public Guid LanguageCategoryId { get; set; }
+        public QuizRatingsInfo QuizRatingsInfo { get; set; }
         public LanguageCategory? LanguageCategory { get; set; }
         public List<QuizSubcategory?> Subcategories { get; set; }
         public List<Question?> Questions { get; set; }
+        public List<QuizRating> QuizRatings { get; set; } = new List<QuizRating>();
 
     }
 }

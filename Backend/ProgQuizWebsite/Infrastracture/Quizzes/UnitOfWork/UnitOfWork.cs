@@ -1,5 +1,6 @@
 ﻿
 using Core.Base.Repository;
+using ProgQuizWebsite.Domain.Quizzes.Interfaces;
 using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
@@ -27,6 +28,7 @@ namespace ProgQuizWebsite.Infrastracture.Quizzes.UnitOfWork
         public IRepository<Quiz> QuizRepository => new QuizRepository(_context);
         public IRepository<Question> QuestionRepository => new QuestionRepository(_context);
         public IRepository<Answer> AnswerRepository => new AnswerRepository(_context);
+        public IQuizRatingRepository QuizRatingRepository => new QuizRatingRepository(_context);
 
         public async Task SaveAsync()
         {

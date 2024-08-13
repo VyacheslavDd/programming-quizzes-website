@@ -21,6 +21,7 @@ namespace ProgQuizWebsite.Infrastracture.Quizzes.Startups
             services.AddScoped<IService<QuizSubcategory>, SubcategoryService>();
             services.AddScoped<IQuizService, QuizService>();
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IQuizRatingService, QuizRatingService>();
             services.AddScoped<IService<Question>, QuestionService>();
             services.AddScoped<IService<Answer>, AnswerService>();
 			services.AddScoped<QuizElementsExceptionFilter>();

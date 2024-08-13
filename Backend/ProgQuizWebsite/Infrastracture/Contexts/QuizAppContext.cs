@@ -18,6 +18,7 @@ namespace ProgQuizWebsite.Infrastracture.Contexts
     public class QuizAppContext : DbContext
     {
         public virtual DbSet<Quiz?> Quizzes { get; set; }
+        public virtual DbSet<QuizRating?> QuizRatings { get; set; }
         public virtual DbSet<LanguageCategory?> LanguageCategories { get; set; }
         public virtual DbSet<QuizSubcategory?> Subcategories { get; set; }
         public virtual DbSet<Question?> Questions { get; set; }
@@ -38,6 +39,11 @@ namespace ProgQuizWebsite.Infrastracture.Contexts
             {
                 userBuild.OwnsOne(u => u.UserInfo);
                 userBuild.OwnsOne(u => u.UserNotificationsInfo);
+            });
+
+            modelBuilder.Entity<Quiz>(quizBuild =>
+            {
+                quizBuild.OwnsOne(q => q.QuizRatingsInfo);
             });
         }
     }

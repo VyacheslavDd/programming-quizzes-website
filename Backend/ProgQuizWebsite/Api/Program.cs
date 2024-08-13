@@ -58,15 +58,15 @@ builder.Services.AddControllers()
     .AddJsonOptions(x => x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
 
 builder.Services.AddJwtAuthentication(builder.Configuration);
-builder.Services.AddQuizDomain(builder.Configuration);
 builder.Services.AddUserDomain(builder.Configuration);
+builder.Services.AddQuizDomain(builder.Configuration);
 builder.Services.AddNotificationsDomain();
 
 builder.Host.AddSerilog();
 builder.Services.AddRedis(builder.Configuration);
 
-builder.Services.AddQuizServices();
 builder.Services.AddUserServices();
+builder.Services.AddQuizServices();
 builder.Services.AddNotificationsServices();
 
 builder.Services.AddMassTransitMessaging(builder.Configuration);
