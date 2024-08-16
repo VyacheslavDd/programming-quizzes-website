@@ -19,7 +19,6 @@ export default class UserAPI {
                 password
             }
         );
-        console.log(email, login, password);
         return result.data;
     }
 
@@ -36,7 +35,6 @@ export default class UserAPI {
     }
 
     static async updateUser(user, userId) {
-        console.log(user, userId);
         let result = await axios.put(`https://localhost:7184/api/users/update/${userId}`, {
             userInfo: {
                 name: user.name,

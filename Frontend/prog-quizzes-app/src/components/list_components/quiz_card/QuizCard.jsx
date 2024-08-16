@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom'
 import SubcategoriesList from '../../subcategories_list/SubcategoriesList'
 import useDifficulty from '../../../hooks/useDifficulty'
 import CategoryDifficulty from '../../category_difficulty/CategoryDifficulty'
+import QuizRating from '../../quiz_rating/QuizRating'
 
 export default function QuizCard({quiz, imagesInfo, setImagesInfo}) {
 
@@ -44,6 +45,7 @@ export default function QuizCard({quiz, imagesInfo, setImagesInfo}) {
             <h2>{quiz.title}</h2>
             <p className={styles.description}>{Helper.shortenQuizDescription(quiz.description)}</p>
             <CategoryDifficulty difficulty={difficulty} categoryName={quiz.categoryName}/>
+            <QuizRating value={quiz.quizRatingsInfo.ratedByCount === 0 ? "Без оценки" : (quiz.quizRatingsInfo.ratingSum / quiz.quizRatingsInfo.ratedByCount).toFixed(2)}/>
             <SubcategoriesList subcategories={quiz.subcategories}/>
         </div>
     </div>

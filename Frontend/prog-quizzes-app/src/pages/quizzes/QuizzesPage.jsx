@@ -10,7 +10,7 @@ import Loading from '../../components/animations/Loading/Loading'
 import ErrorMessage from '../../components/error_message/ErrorMessage'
 import QuizFiltersBlock from '../../components/quiz_filters_block/QuizFiltersBlock'
 import Helper from '../../services/Helper'
-import { useFilterSorting, useSearchSorting, useSortingByDate } from '../../hooks/useQuizSorting'
+import { useFilterSorting, useSearchSorting, useSortingByParameter } from '../../hooks/useQuizSorting'
 import PaginationRow from '../../components/pagination/pagination_row/PaginationRow'
 
 
@@ -27,7 +27,7 @@ export default function QuizzesPage() {
   const [curPageLimit, setCurPageLimit] = useState(5);
   const [totalCount, setTotalCount] = useState(0);
 
-  const [dateParameterSort, setDateParameterSort] = useState("");
+  const [parameterSort, setParameterSort] = useState("");
 
   const [imagesInfo, setImagesInfo] = useState({});
   const [fetchQuizzes, isLoadingQuizzes, isErrorOnLoadingQuizzes] = useFetching(async () => {
@@ -51,14 +51,15 @@ export default function QuizzesPage() {
   }, [currentPage])
 
   const filteredBySearchQuizzes = useSearchSorting(quizzes, searchQuery);
-  const sortedQuizzes = useSortingByDate(filteredBySearchQuizzes, dateParameterSort);
+  console.log(parameterSort);
+  const sortedQuizzes = useSortingByParameter(filteredBySearchQuizzes, parameterSort);
 
   return (
     <div className={styles.outer}>
       <div className={styles.container}>
       <QuizFiltersBlock setSearchQuery={setSearchQuery}
           setDifficulty={setDifficulty} setCategory={setCategory} setSubcategory={setSubcategory}
-          setLimit={setPageLimit} setDateParameterSort = {setDateParameterSort} onAccept={onAccept}/>
+          setLimit={setPageLimit} setParameterSort={setParameterSort} onAccept={onAccept}/>
         {isLoadingQuizzes
         ? <Loading/>
         : isErrorOnLoadingQuizzes

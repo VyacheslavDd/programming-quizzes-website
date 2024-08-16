@@ -9,7 +9,7 @@ export default function QuizList({quizzes, imagesInfo, setImagesInfo}) {
             <QuizCard imagesInfo={imagesInfo} setImagesInfo={setImagesInfo}
              quiz={{id: curQuiz.id, title: curQuiz.title, description: curQuiz.description,
     difficulty: curQuiz.difficulty, imageUrl: curQuiz.imageUrl, categoryName: curQuiz.categoryName,
-     subcategories: curQuiz.subcategories}}/>
+     subcategories: curQuiz.subcategories, quizRatingsInfo: curQuiz.quizRatingsInfo}}/>
             </li>)}
     </ul>
   )

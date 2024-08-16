@@ -24,7 +24,7 @@ export function useFilterSorting(quizzes, difficulty, category, subcategory) {
   return filteredQuizzes;
 }
 
-export function useSortingByDate(quizzes, dateField) {
+export function useSortingByParameter(quizzes, parameter) {
 
   const parseDate = (date) => {
     var parts = date.split('.');
@@ -32,11 +32,19 @@ export function useSortingByDate(quizzes, dateField) {
     return dateObject.getTime();
   }
 
+  const getRating = (quiz) => {
+    let value = quiz.quizRatingsInfo.ratedByCount === 0 ? 0 : quiz.quizRatingsInfo.ratingSum / quiz.quizRatingsInfo.ratedByCount;
+    return value;
+  }
+
   const sortedQuizzes = useMemo(() => {
-    let isReversed = dateField.includes("-") ? true : false;
+    if (parameter === "rating") {
+      return [...quizzes].sort((a, b) => getRating(b) - getRating(a));
+    }
+    let isReversed = parameter.includes("-") ? true : false;
     return [...quizzes].sort((a, b) => isReversed ? parseDate(a.creationDate) - parseDate(b.creationDate)
     : parseDate(b.creationDate) - parseDate(a.creationDate));
-  }, [quizzes, dateField])
+  }, [quizzes, parameter])
 
   return sortedQuizzes;
 }

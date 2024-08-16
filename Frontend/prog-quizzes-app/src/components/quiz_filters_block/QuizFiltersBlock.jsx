@@ -1,5 +1,5 @@
 import useCategorySelect from "../../hooks/useCategorySelect"
-import useDateSortingSelect from "../../hooks/useDateSortingSelect"
+import useSortingSelect from "../../hooks/useSortingSelect"
 import useDifficultySelect from "../../hooks/useDifficultySelect"
 import useLimitSelect from "../../hooks/useLimitSelect"
 import useSubcategorySelect from "../../hooks/useSubcategorySelect"
@@ -13,7 +13,7 @@ import styles from "./QuizFiltersBlock.module.css"
 import React, { useEffect, useRef, useState } from 'react'
 
 export default function QuizFiltersBlock({setSearchQuery, setDifficulty, setCategory, setSubcategory,
-    setLimit, setDateParameterSort, onAccept}) {
+    setLimit, setParameterSort, onAccept}) {
 
     const onSearchInputAction = (query) => {
         setSearchQuery(query);
@@ -37,8 +37,8 @@ export default function QuizFiltersBlock({setSearchQuery, setDifficulty, setCate
         setSubcategory(value === "" ? null : value);
     }
 
-    const onDateParameterSortSelect = (e) => {
-        setDateParameterSort(e.target.value);
+    const onParameterSortSelect = (e) => {
+        setParameterSort(e.target.value);
     }
 
     const onLimitSelect = (e) => {
@@ -49,7 +49,7 @@ export default function QuizFiltersBlock({setSearchQuery, setDifficulty, setCate
     const [difficultyOptions, setDifficultyOptions] = useDifficultySelect();
     const [categoryOptions, setCategoryOptions] = useCategorySelect();
     const [subcategoryOptions, setSubcategoryOptions] = useSubcategorySelect(categoryOptions);
-    const [dateSortOptions, setDateSortOptions] = useDateSortingSelect();
+    const [sortOptions, setSortOptions] = useSortingSelect();
     const [limitOptions, setLimitOptions] = useLimitSelect();
 
 
@@ -59,7 +59,7 @@ export default function QuizFiltersBlock({setSearchQuery, setDifficulty, setCate
             await setSubcategoryOptions();
         }
         setDifficultyOptions();
-        setDateSortOptions();
+        setSortOptions();
         setLimitOptions();
         asynchronousPreparations();
     }, [])
@@ -83,7 +83,7 @@ export default function QuizFiltersBlock({setSearchQuery, setDifficulty, setCate
                 <GenericButton onClick={() => onAccept()}>Применить</GenericButton>
             </div>
             <div className={styles.dateSort}>
-                <OptionsSelect label="Сортировать по дате:" options={dateSortOptions} onChange={onDateParameterSortSelect}/>
+                <OptionsSelect label="Сортировать по:" options={sortOptions} onChange={onParameterSortSelect}/>
             </div>
         </div>
   )
