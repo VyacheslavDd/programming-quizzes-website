@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styles from "./QuizPage.module.css"
 import { useParams } from 'react-router-dom'
 import QuizIntro from '../../components/quiz_page_components/quiz_intro/QuizIntro'
@@ -17,6 +17,8 @@ import { useDispatch, useSelector } from 'react-redux'
 import { setQuestionsCount, setCurrentQuestion, setQuestionAnswersInfo, setAnsweredQuestionsInfo, resetState } from '../../redux/slices/QuizSlice'
 import GenericButton from '../../components/UI/buttons/generic_button/GenericButton'
 import QuizFinish from '../../components/quiz_page_components/quiz_finish/QuizFinish'
+import { AuthContext } from '../../context/AuthContext'
+import { jwtDecode } from 'jwt-decode'
 
 export default function QuizPage() {
 
@@ -36,12 +38,21 @@ export default function QuizPage() {
       quizDispatch(setAnsweredQuestionsInfo(data.questions.length));
     }, true);
 
+    const getUserGuid = () => {
+      const decodedToken = jwtDecode(token);
+      setUserId(decodedToken["Id"]);
+    }
+
     const [isIntro, setIsIntro] = useState(true);
     const [isFinished, setIsFinished] = useState(false);
+
+    const { token } = useContext(AuthContext);
+    const [userId, setUserId] = useState();
 
     useEffect(() => {
       quizDispatch(resetState())
       fetchQuiz();
+      getUserGuid();
     }, [])
 
     return (
@@ -63,7 +74,7 @@ export default function QuizPage() {
           onClick={() => setIsFinished(true)}>Закончить попытку</GenericButton>
         </div>
       </>
-      : <QuizFinish questions={quiz.questions} setIsFinished={setIsFinished}/>
+      : <QuizFinish questions={quiz.questions} setIsFinished={setIsFinished} quizId={quiz.id} userId={userId}/>
     }
       </div>
     </div>

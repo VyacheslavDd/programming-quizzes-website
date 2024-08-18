@@ -51,7 +51,6 @@ export default function QuizzesPage() {
   }, [currentPage])
 
   const filteredBySearchQuizzes = useSearchSorting(quizzes, searchQuery);
-  console.log(parameterSort);
   const sortedQuizzes = useSortingByParameter(filteredBySearchQuizzes, parameterSort);
 
   return (

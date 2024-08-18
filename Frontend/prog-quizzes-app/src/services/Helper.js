@@ -10,6 +10,16 @@ export default class Helper {
         1: "radio",
         2: "checkbox"
     }
+
+    static rateOptions = [
+        {id: 1, text: "Без оценки", value: 0},
+        {id: 2, text: "Ужасно", value: 1},
+        {id: 3, text: "Плохо", value: 2},
+        {id: 4, text: "Удовлетворительно", value: 3},
+        {id: 5, text: "Хорошо", value: 4},
+        {id: 6, text: "Отлично", value: 5},
+    ]
+
     static inputTextType = "text";
     static inputPasswordType = "password";
     static inputNumberType = "number";
