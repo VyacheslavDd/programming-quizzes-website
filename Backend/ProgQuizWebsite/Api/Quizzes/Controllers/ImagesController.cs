@@ -3,6 +3,8 @@ using Core.Base.Service.Interfaces;
 using Core.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Minio;
+using ProgQuizWebsite.Api.Quizzes.PostModels;
 using ProgQuizWebsite.Infrastracture.Quizzes.Filters;
 
 namespace ProgQuizWebsite.Api.Quizzes.Controllers
@@ -12,40 +14,42 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    [ServiceFilter(typeof(QuizElementsExceptionFilter))]
+    //[ServiceFilter(typeof(QuizElementsExceptionFilter))]
     public class ImagesController : ControllerBase
     {
         private readonly IImageService _imageService;
-        private readonly IWebHostEnvironment _environment;
+        private readonly IMinioClientFactory _minioClientFactory;
 
-        public ImagesController(IImageService imageService, IWebHostEnvironment environment)
+        public ImagesController(IImageService imageService, IMinioClientFactory minioClientFactory)
         {
             _imageService = imageService;
-            _environment = environment;
+            _minioClientFactory = minioClientFactory;
         }
 
         /// <summary>
         /// Метод для получения изображения викторины по имени файла
         /// </summary>
-        /// <param name="url">Название файла полностью, с расширением</param>
+        /// <param name="url">Название файла</param>
         /// <returns>Возвращает изображение как массив байтов (base64)</returns>
         [HttpGet]
         [Route("quiz/{url}")]
         public async Task<IActionResult> GetQuizImageAsByteArray([FromRoute] string url)
         {
-            return StatusCode(200, await _imageService.GetFileAsByteArrayAsync(_environment.ContentRootPath, SpecialConstants.QuizImagesDirectoryName, url));
+            var minioClient = _minioClientFactory.CreateClient();
+            return StatusCode(200, await _imageService.GetFileAsByteArrayAsync(minioClient, SpecialConstants.QuizImagesBucketName, url));
         }
 
         /// <summary>
         /// Метод для получения изображения вопроса по имени файла
         /// </summary>
-        /// <param name="url">Название файла полностью, с расширением</param>
+        /// <param name="url">Название файла полностью</param>
         /// <returns>Возвращает изображение как массив байтов (base64)</returns>
         [HttpGet]
         [Route("question/{url}")]
         public async Task<IActionResult> GetQuestionImageAsByteArray([FromRoute] string url)
         {
-            return StatusCode(200, await _imageService.GetFileAsByteArrayAsync(_environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, url));
+			var minioClient = _minioClientFactory.CreateClient();
+			return StatusCode(200, await _imageService.GetFileAsByteArrayAsync(minioClient, SpecialConstants.QuestionImagesBucketName, url));
         }
-    }
+	}
 }

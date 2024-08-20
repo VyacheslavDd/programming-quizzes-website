@@ -9,6 +9,7 @@ using ProgQuizWebsite.Api.Quizzes.PostModels;
 using ProgQuizWebsite.Api.Quizzes.ViewModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
 using ProgQuizWebsite.Infrastracture.Quizzes.Filters;
+using Minio;
 
 namespace ProgQuizWebsite.Api.Quizzes.Controllers
 {

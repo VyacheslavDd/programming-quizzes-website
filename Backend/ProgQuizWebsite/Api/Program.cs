@@ -32,6 +32,8 @@ using UserService.Infrastructure.Filters;
 using UserService.Infrastructure.Startups;
 using ProgQuizWebsite.Infrastracture.Notifications.Startups;
 using ProgQuizWebsite.Infrastracture.Messaging;
+using Minio;
+using ProgQuizWebsite.Infrastracture.MinIO;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
@@ -64,7 +66,7 @@ builder.Services.AddNotificationsDomain();
 
 builder.Host.AddSerilog();
 builder.Services.AddRedis(builder.Configuration);
-
+builder.Services.AddMinIOService(builder.Configuration);
 builder.Services.AddUserServices();
 builder.Services.AddQuizServices();
 builder.Services.AddNotificationsServices();

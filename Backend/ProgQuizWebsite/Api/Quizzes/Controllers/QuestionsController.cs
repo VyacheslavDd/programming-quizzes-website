@@ -2,6 +2,7 @@
 using Core.Base.Service.Interfaces;
 using Core.Constants;
 using Microsoft.AspNetCore.Mvc;
+using Minio;
 using ProgQuizWebsite.Api.Quizzes.PostModels;
 using ProgQuizWebsite.Api.Quizzes.ViewModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
@@ -18,16 +19,16 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
     public class QuestionsController : BaseController
     {
         private readonly IService<Question> _service;
-        private readonly IWebHostEnvironment _environment;
         private readonly IImageService _imageService;
         private readonly IMapper _mapper;
+        private readonly IMinioClientFactory _minioClientFactory;
 
-        public QuestionsController(IService<Question> service, IMapper mapper, IWebHostEnvironment environment, IImageService imageService)
+        public QuestionsController(IService<Question> service, IMapper mapper, IImageService imageService, IMinioClientFactory minioClientFactory)
         {
             _service = service;
             _mapper = mapper;
-            _environment = environment;
             _imageService = imageService;
+            _minioClientFactory = minioClientFactory;
         }
         /// <summary>
         /// Метод для получения всех вопросов для всех викторин. Не включает ответы на вопрос
@@ -62,9 +63,13 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         {
             var path = _imageService.CreateName(postModel.Image.FileName);
             var mappedQuestion = _mapper.Map<Question>(postModel);
-            mappedQuestion.ImageUrl = path;
+            mappedQuestion.ImageUrl = postModel.Image.FileName;
             var entityGuid = await _service.AddAsync(mappedQuestion);
-            if (entityGuid != Guid.Empty) await _imageService.SaveFileAsync(postModel.Image, _environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, path);
+            if (entityGuid != Guid.Empty)
+            {
+                var minioClient = _minioClientFactory.CreateClient();
+				await _imageService.SaveFileAsync(postModel.Image, minioClient, SpecialConstants.QuestionImagesBucketName, path);
+			}
             return StatusCode(201, entityGuid);
         }
         /// <summary>
@@ -78,18 +83,19 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         [Consumes("multipart/form-data")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromForm] QuestionPostModel questionModel)
         {
+            var minioClient = _minioClientFactory.CreateClient();
             var path = _imageService.CreateName(questionModel.Image.FileName);
             var entity = await _service.GetByGuidAsync(id);
-            _imageService.DeleteFile(_environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, entity.ImageUrl);
+            await _imageService.DeleteFile(minioClient, SpecialConstants.QuestionImagesBucketName, entity.ImageUrl);
             entity.Title = questionModel.Title;
             entity.Description = questionModel.Description;
             entity.SuccessInfo = questionModel.SuccessInfo;
             entity.FailureInfo = questionModel.FailureInfo;
             entity.QuizId = questionModel.QuizId;
             entity.Type = questionModel.Type;
-            entity.ImageUrl = path;
+            entity.ImageUrl = questionModel.Image.FileName;
             await _service.UpdateAsync(entity);
-            await _imageService.SaveFileAsync(questionModel.Image, _environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, path);
+            await _imageService.SaveFileAsync(questionModel.Image, minioClient, SpecialConstants.QuestionImagesBucketName, path);
             return StatusCode(200);
         }
         /// <summary>
@@ -101,9 +107,10 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         [Route("{id}")]
         public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
+            var minioClient = _minioClientFactory.CreateClient();
             var question = await _service.GetByGuidAsync(id);
             await _service.DeteteAsync(id);
-            _imageService.DeleteFile(_environment.ContentRootPath, SpecialConstants.QuestionImagesDirectoryName, question.ImageUrl);
+            await _imageService.DeleteFile(minioClient, SpecialConstants.QuestionImagesBucketName, question.ImageUrl);
             return StatusCode(200);
         }
     }

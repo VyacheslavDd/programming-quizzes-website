@@ -10,8 +10,8 @@ namespace Core.Constants
     {
         public static string UnknownValue { get; } = "Unknown";
         public static string UploadsDirectoryName { get; } = "Uploads";
-        public static string QuizImagesDirectoryName { get; } = "QuizImages";
-        public static string QuestionImagesDirectoryName { get; } = "QuestionImages";
+        public static string QuizImagesBucketName { get; } = "quiz-images";
+        public static string QuestionImagesBucketName { get; } = "question-images";
         public static string ContentCountHeaderName { get; } = "Content-Count";
         public static string NotificationsQueueName { get; } = "NotificationsQueue";
         public static string JwtTokenKeyPath { get; } = "AppSettings:JwtTokenKey";

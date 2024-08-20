@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Minio;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +11,8 @@ namespace Core.Base.Service.Interfaces
     public interface IImageService
     {
         public string CreateName(string fileName);
-        public Task SaveFileAsync(IFormFile file, string root, string directory, string filePath);
-        public void DeleteFile(string root, string directory, string fileName);
-        public Task<byte[]> GetFileAsByteArrayAsync(string root, string directory, string fileName);
+        public Task SaveFileAsync(IFormFile file, IMinioClient minioClient, string bucketName, string fileName);
+        public Task DeleteFile(IMinioClient minioClient, string bucketName, string fileName);
+        public Task<byte[]> GetFileAsByteArrayAsync(IMinioClient minioClient, string bucketName, string fileName);
     }
 }
