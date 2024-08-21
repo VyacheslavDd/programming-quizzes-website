@@ -20,7 +20,7 @@ namespace UserService.Services.Interfaces
 		Task DeleteByGuidAsync(Guid id);
 		Task ClearNewNotificationsCountFieldAsync(Guid id);
 		bool IsRoleAssigned(User user, Role role);
-		Task<UpdateUserResponse> UpdateAsync(Guid id, User userModel);
+		Task<UpdateUserResponse> UpdateAsync(Guid id, User userModel, IFormFile avatar);
 		Task<UpdateUserPasswordResponse> UpdatePasswordAsync(Guid id, UpdatePasswordModel passwordModel);
 		Task<UpdateUserNotificationsResponse> UpdateUserNotificationsAsync(Guid id, UpdateNotificationsModel notificationsModel);
 	}

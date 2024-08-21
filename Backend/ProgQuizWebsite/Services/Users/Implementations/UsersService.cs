@@ -10,16 +10,22 @@ using BCrypt.Net;
 using ProgQuizWebsite.Api.Users.ResponseModels.Users;
 using ProgQuizWebsite.Api.Users.PostModels.Users;
 using ProgQuizWebsite.Domain.Users.Models.UserModel;
+using Minio;
+using Core.Constants;
 
 namespace UserService.Services.Implementations
 {
     internal class UsersService : IUsersService
 	{
 		private readonly IUserRepository _userRepository;
+		private readonly IImageService _imageService;
+		private readonly IMinioClientFactory _minioClientFactory;
 
-		public UsersService(IUserRepository userRepository)
+		public UsersService(IUserRepository userRepository, IImageService imageService, IMinioClientFactory minioClientFactory)
 		{
 			_userRepository = userRepository;
+			_imageService = imageService;
+			_minioClientFactory = minioClientFactory;
 		}
 
 		public async Task ClearNewNotificationsCountFieldAsync(Guid id)
@@ -32,8 +38,14 @@ namespace UserService.Services.Implementations
 
 		public async Task DeleteByGuidAsync(Guid id)
 		{
-			await _userRepository.DeleteAsync(id);
-			await _userRepository.SaveChangesAsync();
+			var minioClient = _minioClientFactory.CreateClient();
+			var user = await FindByGuidAsync(id);
+			if (user != null)
+			{
+				await _imageService.DeleteFile(minioClient, SpecialConstants.UserImagesBucketName, user.UserInfo.ImageUrl);
+				await _userRepository.DeleteAsync(id);
+				await _userRepository.SaveChangesAsync();
+			}
 		}
 
 		public async Task<User> FindByEmailAsync(string email)
@@ -75,7 +87,7 @@ namespace UserService.Services.Implementations
 			return false;
 		}
 
-		public async Task<UpdateUserResponse> UpdateAsync(Guid id, User userModel)
+		public async Task<UpdateUserResponse> UpdateAsync(Guid id, User userModel, IFormFile avatar)
 		{
 			var user = await FindByGuidAsync(id);
 			if (user == null) return new UpdateUserResponse() { ResponseCode = ResponseCode.NotFound,
@@ -85,13 +97,19 @@ namespace UserService.Services.Implementations
 			u.UserInfo.PhoneNumber == userModel.UserInfo.PhoneNumber) && u.Id != id).FirstOrDefault();
 			if (conflictingUser != null) return new UpdateUserResponse() { ResponseCode = ResponseCode.BadRequest,
 				ErrorMessage = "Неуникальный адрес почты, логин или телефон" };
+			var minioClient = _minioClientFactory.CreateClient();
+			if (avatar != null) await _imageService.DeleteFile(minioClient, SpecialConstants.UserImagesBucketName, user.UserInfo.ImageUrl);
+			var path = avatar == null ? user.UserInfo.ImageUrl : _imageService.CreateName(avatar.FileName);
 			user.UserInfo.Name = userModel.UserInfo.Name;
 			user.UserInfo.Surname = userModel.UserInfo.Surname;
 			user.UserInfo.Email = userModel.UserInfo.Email;
 			user.UserInfo.Login = userModel.UserInfo.Login;
 			user.UserInfo.PhoneNumber = userModel.UserInfo.PhoneNumber;
 			user.UserInfo.BirthDate = userModel.UserInfo.BirthDate.AddDays(1).ToUniversalTime();
+			user.UserInfo.ImageUrl = path;
 			await _userRepository.SaveChangesAsync();
+			if (avatar != null)
+				await _imageService.SaveFileAsync(avatar, minioClient, SpecialConstants.UserImagesBucketName, path);
 			return new UpdateUserResponse() { ResponseCode = ResponseCode.Success };
 		}
 

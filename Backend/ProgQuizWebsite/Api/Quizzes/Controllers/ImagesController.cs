@@ -32,7 +32,7 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <param name="url">Название файла</param>
         /// <returns>Возвращает изображение как массив байтов (base64)</returns>
         [HttpGet]
-        [Route("quiz/{url}")]
+        [Route("quizzes/{url}")]
         public async Task<IActionResult> GetQuizImageAsByteArray([FromRoute] string url)
         {
             var minioClient = _minioClientFactory.CreateClient();
@@ -45,11 +45,24 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <param name="url">Название файла полностью</param>
         /// <returns>Возвращает изображение как массив байтов (base64)</returns>
         [HttpGet]
-        [Route("question/{url}")]
+        [Route("questions/{url}")]
         public async Task<IActionResult> GetQuestionImageAsByteArray([FromRoute] string url)
         {
 			var minioClient = _minioClientFactory.CreateClient();
 			return StatusCode(200, await _imageService.GetFileAsByteArrayAsync(minioClient, SpecialConstants.QuestionImagesBucketName, url));
         }
+
+		/// <summary>
+		/// Метод для получения аватарки пользователя по имени файла
+		/// </summary>
+		/// <param name="url">Название файла полностью</param>
+		/// <returns>Возвращает изображение как массив байтов (base64)</returns>
+		[HttpGet]
+		[Route("users/{url}")]
+		public async Task<IActionResult> GetUserImageAsByteArray([FromRoute] string url)
+		{
+			var minioClient = _minioClientFactory.CreateClient();
+			return StatusCode(200, await _imageService.GetFileAsByteArrayAsync(minioClient, SpecialConstants.UserImagesBucketName, url));
+		}
 	}
 }

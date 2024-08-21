@@ -50,7 +50,7 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         {
             var path = _imageService.CreateName(model.QuizImage.FileName);
             var mappedModel = _mapper.Map<Quiz>(model);
-            mappedModel.ImageUrl = model.QuizImage.FileName;
+            mappedModel.ImageUrl = path;
             var entityGuid = await _service.AddAsync(mappedModel, model.SubcategoriesId);
             if (entityGuid != Guid.Empty)
             {
@@ -118,7 +118,7 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
             entity.Description = quizModel.Description;
             entity.LanguageCategoryId = quizModel.LanguageCategoryId;
             entity.Difficulty = quizModel.Difficulty;
-            entity.ImageUrl = quizModel.QuizImage.FileName;
+            entity.ImageUrl = path;
             await _service.MatchSubcategoriesAsync(entity, quizModel.SubcategoriesId);
             await _service.UpdateAsync(entity);
             await _imageService.SaveFileAsync(quizModel.QuizImage, minioClient, SpecialConstants.QuizImagesBucketName, path);

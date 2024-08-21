@@ -34,17 +34,15 @@ export default class UserAPI {
         return await axios.get(`https://localhost:7184/api/users/${guid}`);
     }
 
-    static async updateUser(user, userId) {
-        let result = await axios.put(`https://localhost:7184/api/users/update/${userId}`, {
-            userInfo: {
-                name: user.name,
-                surname: user.surname,
-                birthDate: user.birthDate,
-                phoneNumber: user.phoneNumber,
-                email: user.email,
-                login: user.login
+    static async updateUser(user, userId, file) {
+        const formData = new FormData();
+        for (let entry of Object.entries(user)) {
+            if (entry[0] !== "imageUrl") {
+                formData.append(`userInfo.${entry[0]}`, entry[1]);
             }
-        });
+        }
+        formData.append("avatar", file);
+        let result = await axios.put(`https://localhost:7184/api/users/update/${userId}`, formData);
         return result.data;
     }
 

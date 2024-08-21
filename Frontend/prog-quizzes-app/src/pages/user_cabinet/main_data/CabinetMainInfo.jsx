@@ -15,14 +15,16 @@ import UserAPI from '../../../services/API/UserAPI'
 import useSuccessTimeout from '../../../hooks/useSuccessTimeout'
 import FormErrorMessage from '../../../components/form/error_message/FormErrorMessage'
 import SuccessContainer from '../../../components/success_container/SuccessContainer'
+import ImageAPI from '../../../services/API/ImageAPI'
 
 export default function CabinetMainInfo({user, setUser, userId}) {
 
     const [avatar, setAvatar] = useState(null);
+    const [file, setFile] = useState(null);
     const [corrects, setCorrects] = useState({isNameCorrect: false, isSurnameCorrect: false, isBirthDateCorrect: false, isPhoneCorrect: false,
     isEmailCorrect: false, isLoginCorrect: false});
     const [submitValue, isPending, isSuccess, message, submit] = useFormSubmit("Сохранить", "Сохраняем данные...", async () => {
-      return await UserAPI.updateUser(user, userId);
+      return await UserAPI.updateUser(user, userId, file);
     });
     const [isShowingSuccess, setIsShowingSuccess, doTimeout] = useSuccessTimeout(3000);
 
@@ -36,11 +38,14 @@ export default function CabinetMainInfo({user, setUser, userId}) {
     const updateUser = async (e) => {
       e.preventDefault();
       let result = await submit();
-      console.log(result);
     }
 
   useEffect(() => {
-    setAvatar(user.avatar === undefined || user.avatar === "" ? userLogo : user.avatar);
+    async function loadAvatar() {
+      let response = await ImageAPI.getUserImageAsync(user.imageUrl);
+      setAvatar(response === "" ? userLogo : `data:image;base64,${response}`);
+    }
+    loadAvatar();
   }, [])
 
   useEffect(() => {
@@ -58,7 +63,7 @@ export default function CabinetMainInfo({user, setUser, userId}) {
     <form action='post' className={styles.userInfo} onSubmit={(e) => updateUser(e)}>
         <div className={styles.infoInputs}>
           <div className={styles.infoDiv}>
-            <FormImage avatar={avatar} setAvatar={setAvatar}/>
+            <FormImage avatar={avatar} setAvatar={setAvatar} setFile={setFile}/>
           </div>
           <div className={styles.infoDiv}>
             <TextField input={user.name} correctPropertyName="isNameCorrect" hintMessage="Длина от 2 до 15 символов, используйте только буквы" label="Имя"

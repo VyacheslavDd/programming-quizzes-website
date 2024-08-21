@@ -12,6 +12,7 @@ namespace Core.Constants
         public static string UploadsDirectoryName { get; } = "Uploads";
         public static string QuizImagesBucketName { get; } = "quiz-images";
         public static string QuestionImagesBucketName { get; } = "question-images";
+        public static string UserImagesBucketName { get; } = "user-images";
         public static string ContentCountHeaderName { get; } = "Content-Count";
         public static string NotificationsQueueName { get; } = "NotificationsQueue";
         public static string JwtTokenKeyPath { get; } = "AppSettings:JwtTokenKey";

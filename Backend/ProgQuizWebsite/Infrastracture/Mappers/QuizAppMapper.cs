@@ -87,7 +87,13 @@ namespace ProgQuizWebsite.Infrastracture.Mappers
 				model.LoginOrEmail.Contains('@') ? model.LoginOrEmail : ""))
 				.ForPath(user => user.UserInfo.Login, opt => opt.MapFrom(model =>
 				model.LoginOrEmail.Contains('@') ? "" : model.LoginOrEmail));
-			CreateMap<UpdateUserModel, User>();
+			CreateMap<UpdateUserModel, User>()
+				.ForPath(u => u.UserInfo.Name, opt => opt.MapFrom(um => um.UserInfo.Name))
+				.ForPath(u => u.UserInfo.Surname, opt => opt.MapFrom(um => um.UserInfo.Surname))
+				.ForPath(u => u.UserInfo.BirthDate, opt => opt.MapFrom(um => um.UserInfo.BirthDate))
+				.ForPath(u => u.UserInfo.PhoneNumber, opt => opt.MapFrom(um => um.UserInfo.PhoneNumber))
+				.ForPath(u => u.UserInfo.Email, opt => opt.MapFrom(um => um.UserInfo.Email))
+				.ForPath(u => u.UserInfo.Login, opt => opt.MapFrom(um => um.UserInfo.Login));
 			CreateMap<Role, RoleResponse>();
 			CreateMap<RolePostModel, Role>();
 			CreateMap<RoleUpdateModel, Role>();

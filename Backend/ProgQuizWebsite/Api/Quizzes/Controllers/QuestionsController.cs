@@ -63,7 +63,7 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         {
             var path = _imageService.CreateName(postModel.Image.FileName);
             var mappedQuestion = _mapper.Map<Question>(postModel);
-            mappedQuestion.ImageUrl = postModel.Image.FileName;
+            mappedQuestion.ImageUrl = path;
             var entityGuid = await _service.AddAsync(mappedQuestion);
             if (entityGuid != Guid.Empty)
             {
@@ -93,7 +93,7 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
             entity.FailureInfo = questionModel.FailureInfo;
             entity.QuizId = questionModel.QuizId;
             entity.Type = questionModel.Type;
-            entity.ImageUrl = questionModel.Image.FileName;
+            entity.ImageUrl = path;
             await _service.UpdateAsync(entity);
             await _imageService.SaveFileAsync(questionModel.Image, minioClient, SpecialConstants.QuestionImagesBucketName, path);
             return StatusCode(200);

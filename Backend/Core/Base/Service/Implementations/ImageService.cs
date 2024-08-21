@@ -36,7 +36,7 @@ namespace Core.Base.Service.Implementations
             {
                 await file.CopyToAsync(stream);
                 stream.Position = 0;
-                var objectArgs = new PutObjectArgs().WithBucket(bucketName).WithObject(file.FileName)
+                var objectArgs = new PutObjectArgs().WithBucket(bucketName).WithObject(fileName)
                     .WithContentType(file.ContentType).WithStreamData(stream).WithObjectSize(stream.Length);
                 await minioClient.PutObjectAsync(objectArgs);
 			}

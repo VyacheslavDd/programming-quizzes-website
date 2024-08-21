@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Core.Base.Service.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Minio;
 using ProgQuizWebsite.Api.Users.PostModels.Users;
 using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using UserService.Api.PostModels.Users;
@@ -75,10 +77,10 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpPut]
 		[Route("update/{id}")]
-		public async Task<IActionResult> UpdateByGuidAsync([FromRoute] Guid id, [FromBody] UpdateUserModel updateUserModel)
+		public async Task<IActionResult> UpdateByGuidAsync([FromRoute] Guid id, [FromForm] UpdateUserModel updateUserModel)
 		{
 			var userModel = _mapper.Map<User>(updateUserModel);
-			var response = await _usersService.UpdateAsync(id, userModel);
+			var response = await _usersService.UpdateAsync(id, userModel, updateUserModel.Avatar);
 			return new JsonResult(response);
 		}
 
