@@ -50,12 +50,23 @@ namespace Core.Redis.Implementations
 
 					ReferenceLoopHandling = ReferenceLoopHandling.Ignore
 				});
-				await _distributedCache.SetStringAsync(key, serializedObject);
+				var cacheOptions = new DistributedCacheEntryOptions()
+				{
+					AbsoluteExpiration = DateTimeOffset.UtcNow.AddDays(7)
+				};
+				await _distributedCache.SetStringAsync(key, serializedObject, cacheOptions);
 			}
 			catch (RedisConnectionException)
 			{
 
 			}
+		}
+
+		public async Task Remove(string key)
+		{
+			var value = await _distributedCache.GetStringAsync(key);
+			if (value != null)
+				await _distributedCache.RemoveAsync(key);
 		}
 	}
 }

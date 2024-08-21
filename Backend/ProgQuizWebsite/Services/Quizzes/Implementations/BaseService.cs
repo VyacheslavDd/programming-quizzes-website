@@ -59,8 +59,6 @@ namespace ProgQuizWebsite.Services.Quizzes.Implementations
                     await _redisService.Set(name, entries);
                 return entries;
             }
-            foreach (var result in results)
-                _quizAppContext.Set<T>().Attach(result);
             return results;
         }
 
