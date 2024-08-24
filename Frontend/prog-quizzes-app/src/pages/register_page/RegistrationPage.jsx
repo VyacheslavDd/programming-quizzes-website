@@ -38,7 +38,7 @@ export default function RegistrationPage() {
 
     useEffect(() => {
       if (isSuccess) {
-        router("/login", { state: {msg: "Аккаунт успешно зарегистрирован!" }});
+        router("/login", { state: {msg: "Регистрация почти завершена! Проверьте почту для завершения." }});
       }
     }, [isSuccess])
 
