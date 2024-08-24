@@ -33,6 +33,15 @@ namespace Core.Emailing.Services
 			await SendSimpleEmailAsync(mail);
 		}
 
+		public async Task SendRegistrationFinishedEmailAsync(string userLogin, string to)
+		{
+			var mail = new SimpleEmail();
+			mail.To = to;
+			mail.Subject = "Quizz: регистрация завершена";
+			mail.Body = $"{userLogin}, регистрация завершена успешно. Теперь вам доступен весь функционал.";
+			await SendSimpleEmailAsync(mail);
+		}
+
 		public async Task SendSimpleEmailAsync(SimpleEmail email)
 		{
 			var mail = new MimeMessage();

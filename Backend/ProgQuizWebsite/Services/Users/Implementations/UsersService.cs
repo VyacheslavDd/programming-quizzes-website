@@ -13,6 +13,7 @@ using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using Minio;
 using Core.Constants;
 using ProgQuizWebsite.Services.Users.Interfaces;
+using Core.Emailing.Services;
 
 namespace UserService.Services.Implementations
 {
@@ -21,14 +22,16 @@ namespace UserService.Services.Implementations
 		private readonly IUserRepository _userRepository;
 		private readonly IImageService _imageService;
 		private readonly IConfirmationService _confirmationService;
+		private readonly IEmailService _emailService;
 		private readonly IMinioClientFactory _minioClientFactory;
 
 		public UsersService(IUserRepository userRepository, IImageService imageService,
-			IConfirmationService confirmationService, IMinioClientFactory minioClientFactory)
+			IConfirmationService confirmationService, IEmailService emailService, IMinioClientFactory minioClientFactory)
 		{
 			_userRepository = userRepository;
 			_imageService = imageService;
 			_confirmationService = confirmationService;
+			_emailService = emailService;
 			_minioClientFactory = minioClientFactory;
 		}
 
@@ -62,6 +65,7 @@ namespace UserService.Services.Implementations
 			user.IsConfirmed = true;
 			await _confirmationService.RemoveConfirmationAsync(guid);
 			await _confirmationService.SaveChangesAsync();
+			await _emailService.SendRegistrationFinishedEmailAsync(user.UserInfo.Login, user.UserInfo.Email);
 			return new ConfirmUserResponse() { ResponseCode = ResponseCode.Success };
 		}
 

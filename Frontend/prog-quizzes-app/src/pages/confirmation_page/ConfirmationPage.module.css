@@ -1,0 +1,15 @@
+
+.confirmWindow {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.response {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+.countDown {
+    font-size: 20px;
+}

@@ -8,13 +8,15 @@ import QuizPageContainer from "../../../pages/quiz/QuizPageContainer";
 import LoginPage from "../../../pages/login_page/LoginPage";
 import RegistrationPage from "../../../pages/register_page/RegistrationPage";
 import CabinetPage from "../../../pages/user_cabinet/CabinetPage";
+import ConfirmationPage from "../../../pages/confirmation_page/ConfirmationPage";
 
 export const defaultRoutes = [
     {path: "/", element: MainPage},
     {path: "/quizzes", element: QuizzesPage},
     {path: "/login", element: LoginPage},
     {path: "/register", element: RegistrationPage},
-    {path: "*", element: LoginPage}
+    {path: "/confirm-email/:sequence", element: ConfirmationPage},
+    {path: "*", element: LoginPage},
 ]
 
 export const authorizedRoutes = [

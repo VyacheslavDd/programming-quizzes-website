@@ -11,5 +11,6 @@ namespace Core.Emailing.Services
 	{
 		Task SendSimpleEmailAsync(SimpleEmail email);
 		Task SendConfirmationEmailAsync(string userLogin, string to, string sequence);
+		Task SendRegistrationFinishedEmailAsync(string userLogin, string to);
 	}
 }
