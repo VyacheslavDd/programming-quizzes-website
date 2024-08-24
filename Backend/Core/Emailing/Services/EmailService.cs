@@ -1,4 +1,5 @@
-﻿using Core.Emailing.Models;
+﻿using Core.CommonFunctions;
+using Core.Emailing.Models;
 using Core.Emailing.Options;
 using MailKit.Net.Smtp;
 using MassTransit.Configuration;
@@ -21,6 +22,17 @@ namespace Core.Emailing.Services
 		{
 			_mailOptions = mailOptions.Value;
 		}
+
+		public async Task SendConfirmationEmailAsync(string userLogin, string to, string sequence)
+		{
+			var mail = new SimpleEmail();
+			mail.To = to;
+			mail.Subject = "Завершение регистрации на сайте Quizz";
+			mail.Body = $@"{userLogin}, вы регистрировались на сайте Quizz. Завершите регистрацию, пройдя по ссылке:
+			http://localhost:5173/confirm-email/{sequence}";
+			await SendSimpleEmailAsync(mail);
+		}
+
 		public async Task SendSimpleEmailAsync(SimpleEmail email)
 		{
 			var mail = new MimeMessage();

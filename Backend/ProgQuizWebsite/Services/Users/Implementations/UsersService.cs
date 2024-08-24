@@ -12,6 +12,7 @@ using ProgQuizWebsite.Api.Users.PostModels.Users;
 using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using Minio;
 using Core.Constants;
+using ProgQuizWebsite.Services.Users.Interfaces;
 
 namespace UserService.Services.Implementations
 {
@@ -19,12 +20,15 @@ namespace UserService.Services.Implementations
 	{
 		private readonly IUserRepository _userRepository;
 		private readonly IImageService _imageService;
+		private readonly IConfirmationService _confirmationService;
 		private readonly IMinioClientFactory _minioClientFactory;
 
-		public UsersService(IUserRepository userRepository, IImageService imageService, IMinioClientFactory minioClientFactory)
+		public UsersService(IUserRepository userRepository, IImageService imageService,
+			IConfirmationService confirmationService, IMinioClientFactory minioClientFactory)
 		{
 			_userRepository = userRepository;
 			_imageService = imageService;
+			_confirmationService = confirmationService;
 			_minioClientFactory = minioClientFactory;
 		}
 
@@ -34,6 +38,31 @@ namespace UserService.Services.Implementations
 			if (user == null) return;
 			user.UserNotificationsInfo.NewNotificationsCount = 0;
 			await _userRepository.SaveChangesAsync();
+		}
+
+		public async Task<ConfirmUserResponse> ConfirmUserAsync(Guid? id)
+		{
+			if (id == null) return new ConfirmUserResponse()
+			{
+				ResponseCode = ResponseCode.BadRequest,
+				ErrorMessage = "Некорректная ссылка."
+			};
+			var guid = id.Value;
+			var user = await FindByGuidAsync(guid);
+			if (user == null) return new ConfirmUserResponse()
+			{
+				ResponseCode = ResponseCode.BadRequest,
+				ErrorMessage = "Аккаунта не существует"
+			};
+			if (user.IsConfirmed) return new ConfirmUserResponse()
+			{
+				ResponseCode = ResponseCode.BadRequest,
+				ErrorMessage = "Аккаунт уже подтвержден"
+			};
+			user.IsConfirmed = true;
+			await _confirmationService.RemoveConfirmationAsync(guid);
+			await _confirmationService.SaveChangesAsync();
+			return new ConfirmUserResponse() { ResponseCode = ResponseCode.Success };
 		}
 
 		public async Task DeleteByGuidAsync(Guid id)

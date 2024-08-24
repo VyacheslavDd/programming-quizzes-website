@@ -18,5 +18,7 @@ namespace Core.Constants
         public static string NotificationsQueueName { get; } = "NotificationsQueue";
         public static string JwtTokenKeyPath { get; } = "AppSettings:JwtTokenKey";
 
+        public static int RNGLength { get; } = 32;
+
 	}
 }

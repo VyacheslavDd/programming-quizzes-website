@@ -10,5 +10,6 @@ namespace Core.Emailing.Services
 	public interface IEmailService
 	{
 		Task SendSimpleEmailAsync(SimpleEmail email);
+		Task SendConfirmationEmailAsync(string userLogin, string to, string sequence);
 	}
 }

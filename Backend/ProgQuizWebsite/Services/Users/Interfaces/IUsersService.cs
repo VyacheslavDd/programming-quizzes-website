@@ -23,5 +23,6 @@ namespace UserService.Services.Interfaces
 		Task<UpdateUserResponse> UpdateAsync(Guid id, User userModel, IFormFile avatar);
 		Task<UpdateUserPasswordResponse> UpdatePasswordAsync(Guid id, UpdatePasswordModel passwordModel);
 		Task<UpdateUserNotificationsResponse> UpdateUserNotificationsAsync(Guid id, UpdateNotificationsModel notificationsModel);
+		Task<ConfirmUserResponse> ConfirmUserAsync(Guid? id);
 	}
 }
