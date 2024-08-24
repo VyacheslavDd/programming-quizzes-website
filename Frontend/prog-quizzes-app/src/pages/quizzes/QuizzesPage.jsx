@@ -66,10 +66,10 @@ export default function QuizzesPage() {
         : <>
           <QuizList imagesInfo={imagesInfo} quizzes={sortedQuizzes} setImagesInfo={setImagesInfo}/>
           <div className={styles.pagination}>
-            <PaginationRow count={Math.ceil(totalCount / curPageLimit)} currentPage={currentPage - 1}
-            onPaginationClick={(pageNumber) => onPaginationClick(pageNumber + 1)} showOnly={5}/>
           </div>
         </>}
+        <PaginationRow count={Math.ceil(totalCount / curPageLimit)} currentPage={currentPage - 1}
+            onPaginationClick={(pageNumber) => onPaginationClick(pageNumber + 1)} showOnly={5}/>
       </div>
     </div>
   )

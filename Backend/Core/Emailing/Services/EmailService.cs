@@ -33,7 +33,7 @@ namespace Core.Emailing.Services
 			using (var smtpClient = new SmtpClient())
 			{
 				await smtpClient.ConnectAsync(_mailOptions.Host, _mailOptions.Port);
-				await smtpClient.AuthenticateAsync(_mailOptions.Username, _mailOptions.Password);;
+				await smtpClient.AuthenticateAsync(_mailOptions.Username, EmailingHelper.ReadSmtpPassword());
 				await smtpClient.SendAsync(mail);
 				await smtpClient.DisconnectAsync(true);
 			}
