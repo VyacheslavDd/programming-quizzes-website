@@ -13,7 +13,7 @@ namespace ProgQuizWebsite.Infrastracture.Messaging
 			services.AddMassTransit(config =>
 			{
 				config.SetKebabCaseEndpointNameFormatter();
-				config.AddConsumer<NotificationsConsumer>();
+				config.AddConsumer<WebsiteNotificationsConsumer>();
 				config.UsingRabbitMq((context, rabbitmq) =>
 				{
 					rabbitmq.Host(rabbitMqConfiguration.GetValue<string>("Host"), config =>
@@ -23,7 +23,7 @@ namespace ProgQuizWebsite.Infrastracture.Messaging
 					});
 					rabbitmq.ReceiveEndpoint(SpecialConstants.NotificationsQueueName, notifyQueueConfig =>
 					{
-						notifyQueueConfig.ConfigureConsumer<NotificationsConsumer>(context);
+						notifyQueueConfig.ConfigureConsumer<WebsiteNotificationsConsumer>(context);
 					});
 					rabbitmq.ConfigureEndpoints(context);
 				});

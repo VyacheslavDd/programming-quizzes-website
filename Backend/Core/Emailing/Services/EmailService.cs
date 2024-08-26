@@ -33,6 +33,16 @@ namespace Core.Emailing.Services
 			await SendSimpleEmailAsync(mail);
 		}
 
+		public async Task SendNewQuizPublishedEmailAsync(string userLogin, string to, string quizTitle, string languageCategory, string quizId)
+		{
+			var mail = new SimpleEmail();
+			mail.To = to;
+			mail.Subject = "Quizz: новая викторина!";
+			mail.Body = $"{userLogin}, на сайте появилась новая викторина {quizTitle} ({languageCategory})<br>" +
+				$"<a href='http://localhost:5173/quizzes/{quizId}'>Решить тест</a>";
+			await SendSimpleEmailAsync(mail);
+		}
+
 		public async Task SendRegistrationFinishedEmailAsync(string userLogin, string to)
 		{
 			var mail = new SimpleEmail();
@@ -49,7 +59,7 @@ namespace Core.Emailing.Services
 			mail.To.Add(MailboxAddress.Parse(email.To));
 			mail.Subject = email.Subject;
 			var builder = new BodyBuilder();
-			builder.TextBody = email.Body;
+			builder.HtmlBody = email.Body;
 			mail.Body = builder.ToMessageBody();
 			using (var smtpClient = new SmtpClient())
 			{

@@ -56,9 +56,9 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
             {
                 var minioClient = _minioClientFactory.CreateClient();
 				await _imageService.SaveFileAsync(model.QuizImage, minioClient, SpecialConstants.QuizImagesBucketName, path);
+				var message = new SimpleNotificationPostModel() { Content = $"На сайте появилась новая викторина {model.Title}!" };
+				await _messagingBus.Publish(message);
 			}
-            var message = new NotificationPostModel() { Content = $"На сайте появилась новая викторина {model.Title}!" };
-            await _messagingBus.Publish(message);
             return StatusCode(201, entityGuid);
         }
         /// <summary>

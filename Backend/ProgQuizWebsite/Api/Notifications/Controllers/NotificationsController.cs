@@ -62,7 +62,7 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[Route("notify")]
-		public async Task<IActionResult> NotifyUsersAsync([FromBody] NotificationPostModel notificationPostModel)
+		public async Task<IActionResult> NotifyUsersAsync([FromBody] SimpleNotificationPostModel notificationPostModel)
 		{
 			var notification = _mapper.Map<Notification>(notificationPostModel);
 			var guid = await _notificationsService.NotifyUsersAsync(notification);
@@ -77,7 +77,7 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[Route("notify/{userId}")]
-		public async Task<IActionResult> NotifyUserAsync([FromRoute] Guid userId, [FromBody] NotificationPostModel notificationPostModel)
+		public async Task<IActionResult> NotifyUserAsync([FromRoute] Guid userId, [FromBody] SimpleNotificationPostModel notificationPostModel)
 		{
 			var notification = _mapper.Map<Notification>(notificationPostModel);
 			var response = await _notificationsService.NotifyUserAsync(notification, userId);
