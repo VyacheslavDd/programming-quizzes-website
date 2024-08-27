@@ -33,9 +33,9 @@ using UserService.Infrastructure.Startups;
 using ProgQuizWebsite.Infrastracture.Notifications.Startups;
 using ProgQuizWebsite.Infrastracture.Messaging;
 using Minio;
-using ProgQuizWebsite.Infrastracture.MinIO;
 using Core.Emailing.Startup;
 using Core.Emailing;
+using Core.MinIO;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
