@@ -15,7 +15,8 @@ namespace Core.Constants
         public static string UserImagesBucketName { get; } = "user-images";
         public static string SmptPasswordFileName { get; } = "SmtpPassword.txt";
         public static string ContentCountHeaderName { get; } = "Content-Count";
-        public static string NotificationsQueueName { get; } = "NotificationsQueue";
+        public static string SimpleNotificationsQueueName { get; } = "SimpleNotificationsQueue";
+        public static string QuizEmailNotificationsQueueName { get; } = "QuizEmailNotificationsQueue";
         public static string JwtTokenKeyPath { get; } = "AppSettings:JwtTokenKey";
 
         public static int RNGLength { get; } = 32;

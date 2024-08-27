@@ -14,6 +14,7 @@ namespace ProgQuizWebsite.Infrastracture.Messaging
 			{
 				config.SetKebabCaseEndpointNameFormatter();
 				config.AddConsumer<WebsiteNotificationsConsumer>();
+				config.AddConsumer<QuizEmailNotificationsConsumer>();
 				config.UsingRabbitMq((context, rabbitmq) =>
 				{
 					rabbitmq.Host(rabbitMqConfiguration.GetValue<string>("Host"), config =>
@@ -21,9 +22,13 @@ namespace ProgQuizWebsite.Infrastracture.Messaging
 						config.Username(rabbitMqConfiguration.GetValue<string>("Username"));
 						config.Password(rabbitMqConfiguration.GetValue<string>("Password"));
 					});
-					rabbitmq.ReceiveEndpoint(SpecialConstants.NotificationsQueueName, notifyQueueConfig =>
+					rabbitmq.ReceiveEndpoint(SpecialConstants.SimpleNotificationsQueueName, notifyQueueConfig =>
 					{
 						notifyQueueConfig.ConfigureConsumer<WebsiteNotificationsConsumer>(context);
+					});
+					rabbitmq.ReceiveEndpoint(SpecialConstants.QuizEmailNotificationsQueueName, queueConfig =>
+					{
+						queueConfig.ConfigureConsumer<QuizEmailNotificationsConsumer>(context);
 					});
 					rabbitmq.ConfigureEndpoints(context);
 				});

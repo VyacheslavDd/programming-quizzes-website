@@ -25,17 +25,17 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
     {
         private readonly IImageService _imageService;
         private readonly IQuizService _service;
+        private readonly IBusQuizNotificationsService _busQuizNotificationsService;
         private readonly IMapper _mapper;
-        private readonly IBus _messagingBus;
         private readonly IMinioClientFactory _minioClientFactory;
 
         public QuizzesController(IQuizService service, IMapper mapper, IImageService imageService,
-            IBus messagingBus, IMinioClientFactory minioClientFactory)
+           IBusQuizNotificationsService busQuizNotificationsService ,IMinioClientFactory minioClientFactory)
         {
             _service = service;
             _mapper = mapper;
             _imageService = imageService;
-            _messagingBus = messagingBus;
+            _busQuizNotificationsService = busQuizNotificationsService;
             _minioClientFactory = minioClientFactory;
         }
         /// <summary>
@@ -56,8 +56,7 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
             {
                 var minioClient = _minioClientFactory.CreateClient();
 				await _imageService.SaveFileAsync(model.QuizImage, minioClient, SpecialConstants.QuizImagesBucketName, path);
-				var message = new SimpleNotificationPostModel() { Content = $"На сайте появилась новая викторина {model.Title}!" };
-				await _messagingBus.Publish(message);
+                await _busQuizNotificationsService.DoNewQuizNotificationsAsync(mappedModel, entityGuid);
 			}
             return StatusCode(201, entityGuid);
         }
