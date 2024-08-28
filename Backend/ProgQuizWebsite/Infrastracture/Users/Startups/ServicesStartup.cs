@@ -15,6 +15,7 @@ namespace UserService.Infrastructure.Startups
 			services.AddScoped<IUsersService, UsersService>();
 			services.AddScoped<IAuthService, AuthService>();
 			services.AddScoped<IRolesService, RolesService>();
+			services.AddScoped<IResetPasswordRequestService, ResetPasswordRequestService>();
 			services.AddScoped<AuthFilter>();
 			services.AddScoped<RoleFilter>();
 			return services;

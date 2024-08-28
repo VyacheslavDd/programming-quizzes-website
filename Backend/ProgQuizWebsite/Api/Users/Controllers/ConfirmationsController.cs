@@ -18,6 +18,11 @@ namespace ProgQuizWebsite.Api.Users.Controllers
 			_confirmationService = confirmationService;
 		}
 
+		/// <summary>
+		/// Подтвердить аккаунт пользователя
+		/// </summary>
+		/// <param name="sequence">Уникальная последовательность для подтверждения</param>
+		/// <returns></returns>
 		[HttpPatch]
 		[Route("confirm")]
 		public async Task<IActionResult> ConfirmUserAsync([FromQuery] string sequence)

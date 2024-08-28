@@ -159,6 +159,24 @@ namespace UserService.Services.Implementations
 			return new UpdateUserPasswordResponse() { ResponseCode = ResponseCode.Success };
 		}
 
+		public async Task<ResetPasswordResponse> ResetPasswordAsync(Guid? id, ResetPasswordModel resetPasswordModel)
+		{
+			if (id == null) return new ResetPasswordResponse()
+			{
+				ResponseCode = ResponseCode.BadRequest,
+				ErrorMessage = "Запрос не существует или истёк его срок действия"
+			};
+			var user = await FindByGuidAsync(id.Value);
+			if (user == null) return new ResetPasswordResponse()
+			{
+				ResponseCode = ResponseCode.BadRequest,
+				ErrorMessage = "Данного аккаунта не существует"
+			};
+			user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(resetPasswordModel.Password);
+			await _userRepository.SaveChangesAsync();
+			return new ResetPasswordResponse() { ResponseCode = ResponseCode.Success };
+		}
+
 		public async Task<UpdateUserNotificationsResponse> UpdateUserNotificationsAsync(Guid id, UpdateNotificationsModel notificationsModel)
 		{
 			var user = await FindByGuidAsync(id);

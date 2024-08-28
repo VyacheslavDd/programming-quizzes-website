@@ -29,7 +29,7 @@ namespace Core.Emailing.Services
 			mail.To = to;
 			mail.Subject = "Завершение регистрации на сайте Quizz";
 			mail.Body = $@"{userLogin}, вы регистрировались на сайте Quizz. Завершите регистрацию, пройдя по ссылке:
-			http://localhost:5173/confirm-email/{sequence}";
+			<a href='http://localhost:5173/confirm-email/{sequence}'>Завершить регистрацию</a>";
 			await SendSimpleEmailAsync(mail);
 		}
 
@@ -49,6 +49,16 @@ namespace Core.Emailing.Services
 			mail.To = to;
 			mail.Subject = "Quizz: регистрация завершена";
 			mail.Body = $"{userLogin}, регистрация завершена успешно. Теперь вам доступен весь функционал.";
+			await SendSimpleEmailAsync(mail);
+		}
+
+		public async Task SendResetPasswordEmailAsync(string userLogin, string to, string sequence)
+		{
+			var mail = new SimpleEmail();
+			mail.Subject = "Quizz: сброс пароля";
+			mail.To = to;
+			mail.Body = $"{userLogin}, был запрошен сброс пароля. Перейдите по ссылке и следуйте дальнейшим инструкциям:<br>" +
+				$"<a href='http://localhost:5173/password-reset/{sequence}'>Сбросить пароль</a>";
 			await SendSimpleEmailAsync(mail);
 		}
 

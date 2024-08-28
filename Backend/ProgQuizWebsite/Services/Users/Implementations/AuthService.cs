@@ -46,7 +46,7 @@ namespace UserService.Services.Implementations
 			try
 			{
 				await _userRepository.AddAsync(user);
-				var confirmSequence = CommonUtils.GenerateUniqueSequenceForEmailConfirmation();
+				var confirmSequence = CommonUtils.GenerateUniqueSequence();
 				await _confirmationService.AddConfirmationAsync(user, confirmSequence);
 				await _emailService.SendConfirmationEmailAsync(user.UserInfo.Login, user.UserInfo.Email, confirmSequence);
 				await _userRepository.SaveChangesAsync();

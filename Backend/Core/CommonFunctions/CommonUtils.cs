@@ -18,7 +18,7 @@ namespace Core.CommonFunctions
 			return DataRestrictions.AllowedImageExtensions.Any(ext => extension.EndsWith(ext));
 		}
 
-		public static string GenerateUniqueSequenceForEmailConfirmation()
+		public static string GenerateUniqueSequence()
 		{
 			var randomData = RandomNumberGenerator.GetBytes(SpecialConstants.RNGLength);
 			var sequenceString = new StringBuilder();

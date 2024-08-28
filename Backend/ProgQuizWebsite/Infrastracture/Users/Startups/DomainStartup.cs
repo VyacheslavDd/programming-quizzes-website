@@ -16,6 +16,7 @@ namespace UserService.Infrastructure.Startups
 			services.AddScoped<IRoleRepository, RoleRepository>();
 			services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 			services.AddScoped<IConfirmationRepository, ConfirmationRepository>();
+			services.AddScoped<IResetPasswordRequestRepository, ResetPasswordRequestRepository>();
 			return services;
 		}
 	}

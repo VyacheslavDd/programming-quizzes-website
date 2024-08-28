@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Minio;
 using ProgQuizWebsite.Api.Users.PostModels.Users;
 using ProgQuizWebsite.Domain.Users.Models.UserModel;
+using ProgQuizWebsite.Services.Users.Interfaces;
 using UserService.Api.PostModels.Users;
 using UserService.Api.ResponseModels.Roles;
 using UserService.Api.ResponseModels.Users;
@@ -18,11 +19,13 @@ namespace UserService.Api.Controllers
 	public class UsersController : ControllerBase
 	{
 		private readonly IUsersService _usersService;
+		private readonly IResetPasswordRequestService _resetPasswordRequestService;
 		private readonly IMapper _mapper;
 
-		public UsersController(IUsersService usersService, IMapper mapper)
+		public UsersController(IUsersService usersService, IResetPasswordRequestService resetPasswordRequestService, IMapper mapper)
 		{
 			_usersService = usersService;
+			_resetPasswordRequestService = resetPasswordRequestService;
 			_mapper = mapper;
 		}
 
@@ -124,6 +127,25 @@ namespace UserService.Api.Controllers
 		{
 			await _usersService.ClearNewNotificationsCountFieldAsync(id);
 			return Ok();
+		}
+
+		/// <summary>
+		/// Сбросить пароль
+		/// </summary>
+		/// <param name="sequence">Уникальная последовательность</param>
+		/// <param name="id">Guid пользователя</param>
+		/// <param name="resetPasswordModel">Данные формы сброса пароля</param>
+		/// <returns></returns>
+		[HttpPatch]
+		[Route("reset-password/{id}")]
+		public async Task<IActionResult> ResetPasswordAsync([FromQuery] string sequence, [FromRoute] Guid id,
+			[FromBody] ResetPasswordModel resetPasswordModel)
+		{
+			var request = await _resetPasswordRequestService.GetBySequenceAsync(sequence);
+			var response = await _usersService.ResetPasswordAsync(request.ResetPasswordRequest?.UserId, resetPasswordModel);
+			if (response.ResponseCode == Core.Enums.ResponseCode.Success)
+				await _resetPasswordRequestService.DeleteAsync(id);
+			return new JsonResult(response);
 		}
 	}
 }

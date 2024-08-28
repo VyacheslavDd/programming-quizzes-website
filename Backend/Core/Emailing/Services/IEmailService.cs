@@ -13,5 +13,6 @@ namespace Core.Emailing.Services
 		Task SendConfirmationEmailAsync(string userLogin, string to, string sequence);
 		Task SendRegistrationFinishedEmailAsync(string userLogin, string to);
 		Task SendNewQuizPublishedEmailAsync(string userLogin, string to, string quizTitle, string languageCategory, string quizId);
+		Task SendResetPasswordEmailAsync(string userLogin, string to, string sequence);
 	}
 }

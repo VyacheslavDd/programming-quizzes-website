@@ -5,6 +5,7 @@ using ProgQuizWebsite.Domain.Quizzes.Models.CategoryModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizModels;
 using ProgQuizWebsite.Domain.Users.Models;
+using ProgQuizWebsite.Domain.Users.Models.ResetPasswordRequests;
 using ProgQuizWebsite.Domain.Users.Models.UserConfirm;
 using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using System;
@@ -27,6 +28,7 @@ namespace ProgQuizWebsite.Infrastracture.Contexts
 		public virtual DbSet<User?> Users { get; set; }
         public virtual DbSet<RefreshToken?> RefreshTokens { get; set; }
         public virtual DbSet<UserConfirmation?> UserConfirmations { get; set; }
+        public virtual DbSet<ResetPasswordRequest?> ResetPasswordRequests { get; set; }
 		public virtual DbSet<Role?> Roles { get; set; }
         public virtual DbSet<Notification?> Notifications { get; set; }
 

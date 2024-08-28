@@ -22,6 +22,7 @@ namespace UserService.Services.Interfaces
 		bool IsRoleAssigned(User user, Role role);
 		Task<UpdateUserResponse> UpdateAsync(Guid id, User userModel, IFormFile avatar);
 		Task<UpdateUserPasswordResponse> UpdatePasswordAsync(Guid id, UpdatePasswordModel passwordModel);
+		Task<ResetPasswordResponse> ResetPasswordAsync(Guid? id, ResetPasswordModel resetPasswordModel);
 		Task<UpdateUserNotificationsResponse> UpdateUserNotificationsAsync(Guid id, UpdateNotificationsModel notificationsModel);
 		Task<ConfirmUserResponse> ConfirmUserAsync(Guid? id);
 	}
