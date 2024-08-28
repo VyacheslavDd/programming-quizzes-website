@@ -9,6 +9,8 @@ import LoginPage from "../../../pages/login_page/LoginPage";
 import RegistrationPage from "../../../pages/register_page/RegistrationPage";
 import CabinetPage from "../../../pages/user_cabinet/CabinetPage";
 import ConfirmationPage from "../../../pages/confirmation_page/ConfirmationPage";
+import SendPasswordResetRequestPage from "../../../pages/send_password_reset_request_page/SendPasswordResetRequestPage";
+import ResetPasswordPage from "../../../pages/reset_password_page/ResetPasswordPage";
 
 export const defaultRoutes = [
     {path: "/", element: MainPage},
@@ -16,6 +18,8 @@ export const defaultRoutes = [
     {path: "/login", element: LoginPage},
     {path: "/register", element: RegistrationPage},
     {path: "/confirm-email/:sequence", element: ConfirmationPage},
+    {path: "/send-reset", element: SendPasswordResetRequestPage},
+    {path: "/password-reset/:sequence", element: ResetPasswordPage},
     {path: "*", element: LoginPage},
 ]
 

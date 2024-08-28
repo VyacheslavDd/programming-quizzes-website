@@ -30,6 +30,12 @@ export default class UserAPI {
         return result.data;
     }
 
+    static async resetPassword(guid, sequence, password) {
+        return (await axios.patch(`https://localhost:7184/api/users/reset-password/${guid}?sequence=${sequence}`, {
+            password
+        })).data;
+    }
+
     static async getUserData(guid) {
         return await axios.get(`https://localhost:7184/api/users/${guid}`);
     }

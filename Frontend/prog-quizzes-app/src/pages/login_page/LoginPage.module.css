@@ -6,3 +6,17 @@
     min-height: 70vh;
     flex-direction: column;
 }
+
+.btnContainer {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+.forgotPasswordLink {
+    font-size: 22px;
+    margin-top: 20px;
+}
+.forgotPasswordLink:hover {
+    text-decoration: underline;
+}

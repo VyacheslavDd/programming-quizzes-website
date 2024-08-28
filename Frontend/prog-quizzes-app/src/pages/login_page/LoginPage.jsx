@@ -9,7 +9,7 @@ import LoginField from '../../components/form/login_field/LoginField'
 import LoginEmailField from '../../components/form/email_or_login_field/LoginEmailField'
 import RepeatPasswordField from '../../components/form/repeat_password_field/RepeatPasswordField'
 import FormSubmit from '../../components/form/form_submit/FormSubmit'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { AuthContext } from '../../context/AuthContext'
 import useFormSubmit from '../../hooks/useFormSubmit'
 import UserAPI from '../../services/API/UserAPI'
@@ -64,7 +64,10 @@ export default function LoginPage() {
         <Form title="Авторизация" onSubmit={() => authenticate()}>
           <LoginEmailField propertyName="loginMail" correctPropertyName="isLoginMailCorrect" input={loginData.loginMail} setInput={setLoginInfo} setIsCorrect={setCorrects}/>
           <PasswordField propertyName="password" correctPropertyName="isPasswordCorrect" input={loginData.password} setInput={setLoginInfo} setIsCorrect={setCorrects}/>
-          <FormSubmit isActive={corrects.isLoginMailCorrect && corrects.isPasswordCorrect && !isPending} value={submitValue}/>
+          <div className={styles.btnContainer}>
+            <Link to="/send-reset" className={styles.forgotPasswordLink}>Забыли пароль?</Link>
+            <FormSubmit isActive={corrects.isLoginMailCorrect && corrects.isPasswordCorrect && !isPending} value={submitValue}/>
+          </div>
         </Form>
         <FormErrorMessage message={message}/>
     </div>
