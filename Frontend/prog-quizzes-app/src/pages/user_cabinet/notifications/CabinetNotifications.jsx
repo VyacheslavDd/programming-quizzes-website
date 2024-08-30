@@ -1,4 +1,4 @@
-import { createRef, useEffect, useRef } from "react"
+import { createRef, useContext, useEffect, useRef } from "react"
 import GenericButton from "../../../components/UI/buttons/generic_button/GenericButton"
 import GenericSelectInput from "../../../components/UI/select_input_ui/GenericSelectInput"
 import UserAPI from "../../../services/API/UserAPI"
@@ -10,12 +10,15 @@ import Loading from "../../../components/animations/Loading/Loading"
 import ErrorMessage from "../../../components/error_message/ErrorMessage"
 import Notification from "./notification/Notification"
 import useObserver from "../../../hooks/useObserver"
+import { AuthContext } from "../../../context/AuthContext"
 
 export default function CabinetNotifications({user, setUser, userId}) {
 
+    const { setToken } = useContext(AuthContext);
+
     const lastNotificationInSight = async (entries) => {
         if (entries[0].isIntersecting && page <= pagesCount) {
-            let result = await NotificationsAPI.getUserNotifications(userId, page);
+            let result = await NotificationsAPI.getUserNotifications(userId, page, setToken);
             setPage(page + 1);
             setNotifications(prev => ([...prev, ...result.data.notifications]));
         }
@@ -28,31 +31,31 @@ export default function CabinetNotifications({user, setUser, userId}) {
     const [pagesCount, setPagesCount] = useState(0);
     const newNotificationsCount = useRef(user.newNotificationsCount);
     const [fetchNotifications, isLoading, isError] = useFetching(async () => {
-        let result = await NotificationsAPI.getUserNotifications(userId, page);
+        let result = await NotificationsAPI.getUserNotifications(userId, page, setToken);
         setPagesCount(Math.ceil(result.headers['content-count'] / 10));
         setPage(page + 1);
         setNotifications(result.data.notifications);
     }, true);
 
     const updateReceiveNotificationsOption = async (e) => {
-        let result = await UserAPI.updateReceiveNotificationsOption(userId, !user.receiveNotifications);
+        let result = await UserAPI.updateReceiveNotificationsOption(userId, !user.receiveNotifications, setToken);
         if (result.responseCode === 200) {
             setUser(prev => ({...prev, userNotificationsInfo: {...prev.userNotificationsInfo, receiveNotifications: !user.receiveNotifications}}));
         }
     }
 
     const removeAllNotifications = async () => {
-        await NotificationsAPI.removeAllNotifications(userId);
+        await NotificationsAPI.removeAllNotifications(userId, setToken);
         setNotifications({});
     }
 
     const removeNotification = async (notificationId) => {
-        await NotificationsAPI.removeNotification(userId, notificationId);
+        await NotificationsAPI.removeNotification(userId, notificationId, setToken);
         setNotifications(notifications.filter((notification) => notification.id !== notificationId));
     }
 
     const clearNotificationsCount = async () => {
-        await UserAPI.clearNewNotificationsCount(userId);
+        await UserAPI.clearNewNotificationsCount(userId, setToken);
         setUser(prev => ({...prev, userNotificationsInfo: {...prev.userNotificationsInfo, newNotificationsCount: 0}}));
     }
 

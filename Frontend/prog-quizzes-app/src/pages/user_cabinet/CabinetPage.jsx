@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import styles from "./CabinetPage.module.css"
 import CabinetAside from './aside/CabinetAside'
 import useFetching from '../../hooks/useFetching'
@@ -13,14 +13,19 @@ import GenericButton from '../../components/UI/buttons/generic_button/GenericBut
 import CabinetMainInfo from './main_data/CabinetMainInfo'
 import CabinetPasswordControl from './password/CabinetPasswordControl'
 import CabinetNotifications from './notifications/CabinetNotifications'
+import { AuthContext } from '../../context/AuthContext'
+import TokenHelper from '../../services/TokenHelper'
 
 export default function CabinetPage() {
+
+    const { setToken } = useContext(AuthContext);
+
     const [user, setUser] = useState(null);
     const [currentComponent, setCurrentComponent] = useState("main");
     const [fetchUser, isLoading, isError] = useFetching(async () => {
-        const token = localStorage.getItem(Helper.tokenStorageKey);
+        const token = localStorage.getItem(TokenHelper.tokenStorageKey);
         const guid = jwtDecode(token)['Id'];
-        const user = await UserAPI.getUserData(guid);
+        const user = await UserAPI.getUserData(guid, setToken);
         setUser(user.data);
     }, true)
 

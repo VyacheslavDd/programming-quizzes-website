@@ -10,6 +10,7 @@ using ProgQuizWebsite.Api.Quizzes.ViewModels;
 using ProgQuizWebsite.Domain.Quizzes.Models.QuizContentModels;
 using ProgQuizWebsite.Infrastracture.Quizzes.Filters;
 using Minio;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ProgQuizWebsite.Api.Quizzes.Controllers
 {
@@ -58,6 +59,7 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("create")]
+        [Authorize(Roles = "Admin,Redactor")]
         public async Task<IActionResult> Add(AnswerPostModel postModel)
         {
             return await AddAsync(postModel, _service, _mapper);
@@ -70,7 +72,8 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("{id}/update")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, AnswerPostModel answerModel)
+		[Authorize(Roles = "Admin,Redactor")]
+		public async Task<IActionResult> Update([FromRoute] Guid id, AnswerPostModel answerModel)
         {
             var entity = await _service.GetByGuidAsync(id);
             entity.Name = answerModel.Name;
@@ -86,7 +89,8 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+		[Authorize(Roles = "Admin,Redactor")]
+		public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             return await DeleteAsync(id, _service);
         }

@@ -1,3 +1,5 @@
+import { jwtDecode } from "jwt-decode";
+import TokensAPI from "./API/TokensAPI";
 
 export default class Helper {
     static difficulties = {
@@ -24,7 +26,6 @@ export default class Helper {
     static inputPasswordType = "password";
     static inputNumberType = "number";
     static inputDateType = "date";
-    static tokenStorageKey = "token";
     static quizDescriptionLength = 60;
     static emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     static loginRegex = /^[A-Za-z][A-Za-z_0-9]{7,19}$/;
@@ -82,10 +83,5 @@ export default class Helper {
         let testPassed = regexObject.test(input);
         setHint(testPassed ? "" : hintMessage);
         setIsCorrect((prev) => ({...prev, [correctPropertyName]: testPassed ? true : false}));
-    }
-
-    static isTokenExpired(token) {
-        let expirationTime = token['exp'] * 1000;
-        return Date.now() > expirationTime;
     }
 }

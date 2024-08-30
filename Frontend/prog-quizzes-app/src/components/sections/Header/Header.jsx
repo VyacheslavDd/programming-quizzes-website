@@ -1,14 +1,15 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext, useEffect, useMemo } from 'react'
 import styles from "./Header.module.css"
 import logo from "../../../assets/quizz-logo.png"
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { AuthContext } from '../../../context/AuthContext'
+import Helper from '../../../services/Helper'
+import TokenHelper from '../../../services/TokenHelper'
 
 export default function Header() {
 
   const { token } = useContext(AuthContext);
-
 
   return (
     <>
@@ -22,7 +23,7 @@ export default function Header() {
           </nav>
           <div className={styles.logDiv}>
           <ul className={styles.logLinks}>
-                {token === ""
+                {TokenHelper.isTokenInvalid(token) || TokenHelper.isTokenExpired(token)
                 ?
                 <>
                   <li className={styles.logLinksItem}><Link to='/login' className={styles.logInButton}>Войти</Link></li>

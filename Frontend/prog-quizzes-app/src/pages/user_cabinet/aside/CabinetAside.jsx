@@ -5,14 +5,15 @@ import GenericButton from '../../../components/UI/buttons/generic_button/Generic
 import { AuthContext } from '../../../context/AuthContext'
 import Helper from '../../../services/Helper'
 import NotificationsAsideButton from '../../../components/aside_button/notifications_aside_button/NotificationsAsideButton'
+import TokenHelper from '../../../services/TokenHelper'
 
 export default function CabinetAside({user, currentComponent, setComponent}) {
 
-  const { token, setToken } = useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
 
   const logout = () => {
+    localStorage.removeItem(TokenHelper.tokenStorageKey);
     setToken("");
-    localStorage.removeItem(Helper.tokenStorageKey);
   }
 
   return (

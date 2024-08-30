@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProgQuizWebsite.Api.Quizzes.PostModels;
@@ -73,7 +74,8 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> Add(CategoryPostModel categoryModel)
+		[Authorize(Roles = "Admin,Redactor")]
+		public async Task<IActionResult> Add(CategoryPostModel categoryModel)
         {
             return await AddAsync(categoryModel, _service, _mapper);
         }
@@ -85,7 +87,8 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpPut]
         [Route("{id}/update")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, CategoryPostModel categoryModel)
+		[Authorize(Roles = "Admin,Redactor")]
+		public async Task<IActionResult> Update([FromRoute] Guid id, CategoryPostModel categoryModel)
         {
             var entity = await _service.GetByGuidAsync(id);
             entity.Name = categoryModel.Name;
@@ -99,7 +102,8 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+		[Authorize(Roles = "Admin,Redactor")]
+		public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             return await DeleteAsync(id, _service);
         }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Minio;
 using ProgQuizWebsite.Api.Users.PostModels.Users;
 using ProgQuizWebsite.Domain.Users.Models.UserModel;
+using ProgQuizWebsite.Infrastracture.Users.Filters;
 using ProgQuizWebsite.Services.Users.Interfaces;
 using UserService.Api.PostModels.Users;
 using UserService.Api.ResponseModels.Roles;
@@ -33,8 +34,10 @@ namespace UserService.Api.Controllers
 		/// Получить всех пользователей
 		/// </summary>
 		/// <returns></returns>
+		[SimpleAuthenticateFilter]
 		[HttpGet]
 		[Route("all")]
+		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> GetAllAsync()
 		{
 			var users = await _usersService.GetAllAsync();
@@ -49,6 +52,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpGet]
 		[Route("{id}")]
+		[Authorize]
 		public async Task<IActionResult> GetByGuidAsync([FromRoute] Guid id)
 		{
 			var user = await _usersService.FindByGuidAsync(id);
@@ -66,6 +70,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpDelete]
 		[Route("delete/{id}")]
+		[Authorize]
 		public async Task<IActionResult> DeleteByGuidAsync([FromRoute] Guid id)
 		{
 			await _usersService.DeleteByGuidAsync(id);
@@ -80,6 +85,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpPut]
 		[Route("update/{id}")]
+		[Authorize]
 		public async Task<IActionResult> UpdateByGuidAsync([FromRoute] Guid id, [FromForm] UpdateUserModel updateUserModel)
 		{
 			var userModel = _mapper.Map<User>(updateUserModel);
@@ -95,6 +101,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpPatch]
 		[Route("update/{id}/password")]
+		[Authorize]
 		public async Task<IActionResult> UpdatePasswordAsync([FromRoute] Guid id, [FromBody] UpdatePasswordModel updatePasswordModel)
 		{
 			var response = await _usersService.UpdatePasswordAsync(id, updatePasswordModel);
@@ -109,6 +116,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpPatch]
 		[Route("update/{id}/notifications")]
+		[Authorize]
 		public async Task<IActionResult> UpdateNotificationsOptionAsync([FromRoute] Guid id,
 			[FromBody] UpdateNotificationsModel updateNotificationsModel)
 		{
@@ -123,6 +131,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpPatch]
 		[Route("clear/{id}/notifications-count")]
+		[Authorize]
 		public async Task<IActionResult> ClearNewNotificationsCountFieldAsync([FromRoute] Guid id)
 		{
 			await _usersService.ClearNewNotificationsCountFieldAsync(id);

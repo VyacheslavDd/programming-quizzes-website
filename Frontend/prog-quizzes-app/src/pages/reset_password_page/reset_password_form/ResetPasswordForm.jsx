@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Form from '../../../components/form/Form';
 import PasswordField from '../../../components/form/password_field/PasswordField';
 import RepeatPasswordField from '../../../components/form/repeat_password_field/RepeatPasswordField';
@@ -8,14 +8,17 @@ import FormErrorMessage from '../../../components/form/error_message/FormErrorMe
 import useFormSubmit from '../../../hooks/useFormSubmit';
 import UserAPI from '../../../services/API/UserAPI';
 import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../../context/AuthContext';
 
 export default function ResetPasswordForm({requestData}) {
+
+    const { setToken } = useContext(AuthContext);
 
     const router = useNavigate();
     const [resetData, setResetData] = useState({password: "", repeatPassword: ""});
     const [corrects, setCorrects] = useState({isPasswordCorrect: false, isPasswordCorresponding: false});
     const [submitValue, isPending, isSuccess, message, submit] = useFormSubmit("Установить", "Ожидание...", async () => {
-        return await UserAPI.resetPassword(requestData.userId, requestData.sequence, resetData.password);
+        return await UserAPI.resetPassword(requestData.userId, requestData.sequence, resetData.password, setToken);
     });
 
     const setResetInfo = (propertyName, value) => {

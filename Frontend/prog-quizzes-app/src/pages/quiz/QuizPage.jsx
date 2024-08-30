@@ -19,6 +19,7 @@ import GenericButton from '../../components/UI/buttons/generic_button/GenericBut
 import QuizFinish from '../../components/quiz_page_components/quiz_finish/QuizFinish'
 import { AuthContext } from '../../context/AuthContext'
 import { jwtDecode } from 'jwt-decode'
+import Helper from '../../services/Helper'
 
 export default function QuizPage() {
 
@@ -43,10 +44,11 @@ export default function QuizPage() {
       setUserId(decodedToken["Id"]);
     }
 
+    const { token } = useContext(AuthContext);
+
     const [isIntro, setIsIntro] = useState(true);
     const [isFinished, setIsFinished] = useState(false);
 
-    const { token } = useContext(AuthContext);
     const [userId, setUserId] = useState();
 
     useEffect(() => {

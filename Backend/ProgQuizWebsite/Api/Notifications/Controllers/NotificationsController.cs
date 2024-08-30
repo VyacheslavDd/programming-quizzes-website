@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProgQuizWebsite.Api.Notifications.PostModels;
@@ -28,6 +29,7 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 		/// <returns></returns>
 		[HttpGet]
 		[Route("all")]
+		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> GetAllAsync()
 		{
 			var notifications = await _notificationsService.GetAllAsync();
@@ -43,6 +45,7 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 		/// <returns></returns>
 		[HttpGet]
 		[Route("{userId}")]
+		[Authorize]
 		public async Task<IActionResult> GetAllUserNotificationsAsync([FromRoute] Guid userId, [FromQuery] NotificationsFilter filter)
 		{
 			var notificationsResponse = await _notificationsService.GetUserNotificationsAsync(userId, filter, Response);
@@ -62,6 +65,7 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[Route("notify")]
+		[Authorize(Roles = "Admin,Redactor")]
 		public async Task<IActionResult> NotifyUsersAsync([FromBody] SimpleNotificationPostModel notificationPostModel)
 		{
 			var notification = _mapper.Map<Notification>(notificationPostModel);
@@ -77,6 +81,7 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[Route("notify/{userId}")]
+		[Authorize(Roles = "Admin,Redactor")]
 		public async Task<IActionResult> NotifyUserAsync([FromRoute] Guid userId, [FromBody] SimpleNotificationPostModel notificationPostModel)
 		{
 			var notification = _mapper.Map<Notification>(notificationPostModel);
@@ -91,6 +96,7 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 		/// <returns></returns>
 		[HttpDelete]
 		[Route("clear/{userId}")]
+		[Authorize]
 		public async Task<IActionResult> ClearUserNotificationsAsync([FromRoute] Guid userId)
 		{
 			var response = await _notificationsService.ClearUserNotificationsAsync(userId);
@@ -105,6 +111,7 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 		/// <returns></returns>
 		[HttpDelete]
 		[Route("{notificationId}/remove/{userId}")]
+		[Authorize]
 		public async Task<IActionResult> RemoveUserNotificationAsync([FromRoute] Guid notificationId, [FromRoute] Guid userId)
 		{
 			var response = await _notificationsService.RemoveUserNotificationAsync(notificationId, userId);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import styles from "./CabinetPasswordControl.module.css"
 import EmailField from '../../../components/form/email_field/EmailField'
 import FormField from '../../../components/form/form_field/FormField';
@@ -11,13 +11,17 @@ import UserAPI from '../../../services/API/UserAPI';
 import FormErrorMessage from '../../../components/form/error_message/FormErrorMessage';
 import useSuccessTimeout from '../../../hooks/useSuccessTimeout';
 import SuccessContainer from '../../../components/success_container/SuccessContainer';
+import { AuthContext } from '../../../context/AuthContext';
 
 export default function CabinetPasswordControl({user}) {
+
+  const { setToken } = useContext(AuthContext);
+
   const [passwordData, setPasswordData] = useState({oldPassword: "", newPassword: "", repeatPassword: ""});
   const [corrects, setCorrects] = useState({isPasswordCorrect: false, isRepeatCorrect: false});
   const [isShowingSuccess, setIsShowingSuccess, doTimeout] = useSuccessTimeout(3000);
   const [submitValue, isPending, isSuccess, message, submit] = useFormSubmit("Сменить пароль", "Смена пароля...", async () => {
-    return await UserAPI.updatePassword(user.id, passwordData);
+    return await UserAPI.updatePassword(user.id, passwordData, setToken);
   });
   const updatePassword = async (e) => {
     e.preventDefault();

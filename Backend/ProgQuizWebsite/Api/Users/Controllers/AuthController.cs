@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProgQuizWebsite.Domain.Users.Models.UserModel;
 using UserService.Api.PostModels.Auth;
-using UserService.Infrastructure.Filters;
 using UserService.Services.Interfaces;
 
 namespace UserService.Api.Controllers
@@ -27,7 +26,6 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[Route("register")]
-		[ServiceFilter(typeof(AuthFilter))]
 		public async Task<IActionResult> RegisterAsync([FromBody] RegistrationModel registrationModel)
 		{
 			var user = _mapper.Map<User>(registrationModel);
@@ -42,7 +40,6 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[Route("authenticate")]
-		[ServiceFilter(typeof(AuthFilter))]
 		public async Task<IActionResult> AuthenticateAsync([FromBody] AuthenticationModel authenticationModel)
 		{
 			var user = _mapper.Map<User>(authenticationModel);

@@ -2,6 +2,7 @@
 using Core.Base.Service.Interfaces;
 using Core.Constants;
 using MassTransit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Minio;
@@ -46,7 +47,8 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         [HttpPost]
         [Route("create")]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Add([FromForm] QuizPostModel model)
+		[Authorize(Roles = "Admin,Redactor")]
+		public async Task<IActionResult> Add([FromForm] QuizPostModel model)
         {
             var path = _imageService.CreateName(model.QuizImage.FileName);
             var mappedModel = _mapper.Map<Quiz>(model);
@@ -107,7 +109,8 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         [HttpPut]
         [Route("{id}/update")]
         [Consumes("multipart/form-data")]
-        public async Task<IActionResult> Update([FromRoute] Guid id, [FromForm] QuizPostModel quizModel)
+		[Authorize(Roles = "Admin,Redactor")]
+		public async Task<IActionResult> Update([FromRoute] Guid id, [FromForm] QuizPostModel quizModel)
         {
             var minioClient = _minioClientFactory.CreateClient();
             var entity = await _service.GetByGuidAsync(id);
@@ -130,7 +133,8 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> Delete([FromRoute] Guid id)
+		[Authorize(Roles = "Admin,Redactor")]
+		public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var minioClient = _minioClientFactory.CreateClient();
             var quiz = await _service.GetByGuidAsync(id);

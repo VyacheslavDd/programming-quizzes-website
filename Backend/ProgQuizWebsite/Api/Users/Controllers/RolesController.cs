@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using UserService.Api.PostModels.Roles;
 using UserService.Api.ResponseModels.Roles;
 using UserService.Domain.Models;
-using UserService.Infrastructure.Filters;
 using UserService.Services.Interfaces;
 
 namespace UserService.Api.Controllers
@@ -54,6 +54,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpDelete]
 		[Route("delete/{id}")]
+		[Authorize(Roles = "Admin,Redactor")]
 		public async Task<IActionResult> DeleteByIdAsync([FromRoute] Guid id)
 		{
 			await _rolesService.DeteteAsync(id);
@@ -67,7 +68,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[Route("create")]
-		[ServiceFilter(typeof(RoleFilter))]
+		[Authorize(Roles = "Admin,Redactor")]
 		public async Task<IActionResult> CreateAsync([FromBody] RolePostModel model)
 		{
 			var role = _mapper.Map<Role>(model);
@@ -83,7 +84,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpPut]
 		[Route("update/{id}")]
-		[ServiceFilter(typeof(RoleFilter))]
+		[Authorize(Roles = "Admin,Redactor")]
 		public async Task<IActionResult> UpdateAsync([FromBody] RoleUpdateModel model, [FromRoute] Guid id)
 		{
 			var role = _mapper.Map<Role>(model);
@@ -99,7 +100,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[Route("{roleId}/assign/{userId}")]
-		[ServiceFilter(typeof(RoleFilter))]
+		[Authorize(Roles = "Admin,Redactor")]
 		public async Task<IActionResult> AssignRoleAsync([FromRoute] Guid roleId, [FromRoute] Guid userId)
 		{
 			var response = await _rolesService.AssignRoleAsync(roleId, userId);
@@ -114,7 +115,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpDelete]
 		[Route("{roleId}/revoke/{userId}")]
-		[ServiceFilter(typeof(RoleFilter))]
+		[Authorize(Roles = "Admin,Redactor")]
 		public async Task<IActionResult> RevokeRoleAsync([FromRoute] Guid roleId, [FromRoute] Guid userId)
 		{
 			var response = await _rolesService.RevokeRoleAsync(roleId, userId);

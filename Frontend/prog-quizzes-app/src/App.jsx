@@ -4,23 +4,23 @@ import QuizAppRouter from "./components/router/app_router/QuizAppRouter"
 import { AuthContext } from "./context/AuthContext"
 import Helper from "./services/Helper";
 import { jwtDecode } from "jwt-decode";
+import TokenHelper from "./services/TokenHelper";
 
 function App() {
-  
+
   const [token, setToken] = useState("");
 
   useEffect(() => {
-    let storedToken = localStorage.getItem(Helper.tokenStorageKey);
-    if (storedToken !== null) {
-      let decodedToken = jwtDecode(storedToken);
-      let isExpired = Helper.isTokenExpired(decodedToken);
-      setToken(isExpired ? "" : storedToken);
+    async function pullToken() {
+      setToken(localStorage.getItem(TokenHelper.tokenStorageKey));
+      await TokenHelper.tryRefreshToken(setToken);
     }
+    pullToken();
   }, [])
 
   return(
     <AuthContext.Provider value={{token, setToken}}>
-      <QuizAppRouter/>
+      <QuizAppRouter />
     </AuthContext.Provider>
   )
 }

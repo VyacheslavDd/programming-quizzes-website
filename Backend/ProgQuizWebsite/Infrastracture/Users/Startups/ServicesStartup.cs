@@ -1,6 +1,6 @@
-﻿using ProgQuizWebsite.Services.Users.Implementations;
+﻿using ProgQuizWebsite.Infrastracture.Users.Filters;
+using ProgQuizWebsite.Services.Users.Implementations;
 using ProgQuizWebsite.Services.Users.Interfaces;
-using UserService.Infrastructure.Filters;
 using UserService.Services.Implementations;
 using UserService.Services.Interfaces;
 
@@ -16,8 +16,7 @@ namespace UserService.Infrastructure.Startups
 			services.AddScoped<IAuthService, AuthService>();
 			services.AddScoped<IRolesService, RolesService>();
 			services.AddScoped<IResetPasswordRequestService, ResetPasswordRequestService>();
-			services.AddScoped<AuthFilter>();
-			services.AddScoped<RoleFilter>();
+			services.AddScoped<SimpleAuthenticateFilter>();
 			return services;
 		}
 	}

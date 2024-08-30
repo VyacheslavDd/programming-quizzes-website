@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import styles from "./CabinetMainInfo.module.css"
 import Form from '../../../components/form/Form'
 import FormImage from '../../../components/form/form_image/FormImage'
@@ -16,15 +16,19 @@ import useSuccessTimeout from '../../../hooks/useSuccessTimeout'
 import FormErrorMessage from '../../../components/form/error_message/FormErrorMessage'
 import SuccessContainer from '../../../components/success_container/SuccessContainer'
 import ImageAPI from '../../../services/API/ImageAPI'
+import { AuthContext } from '../../../context/AuthContext'
 
 export default function CabinetMainInfo({user, setUser, userId}) {
+
+
+    const { setToken } = useContext(AuthContext);
 
     const [avatar, setAvatar] = useState(null);
     const [file, setFile] = useState(null);
     const [corrects, setCorrects] = useState({isNameCorrect: false, isSurnameCorrect: false, isBirthDateCorrect: false, isPhoneCorrect: false,
     isEmailCorrect: false, isLoginCorrect: false});
     const [submitValue, isPending, isSuccess, message, submit] = useFormSubmit("Сохранить", "Сохраняем данные...", async () => {
-      return await UserAPI.updateUser(user, userId, file);
+      return await UserAPI.updateUser(user, userId, file, setToken);
     });
     const [isShowingSuccess, setIsShowingSuccess, doTimeout] = useSuccessTimeout(3000);
 

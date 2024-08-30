@@ -15,6 +15,7 @@ import useFormSubmit from '../../hooks/useFormSubmit'
 import UserAPI from '../../services/API/UserAPI'
 import FormErrorMessage from '../../components/form/error_message/FormErrorMessage'
 import SuccessContainer from '../../components/success_container/SuccessContainer'
+import TokenHelper from '../../services/TokenHelper'
 
 export default function LoginPage() {
 
@@ -41,7 +42,7 @@ export default function LoginPage() {
 
   useEffect(() => {
     if (isSuccess) {
-      localStorage.setItem(Helper.tokenStorageKey, loginResult.token);
+      localStorage.setItem(TokenHelper.tokenStorageKey, loginResult.token);
       setToken(loginResult.token);
       router("/");
     }

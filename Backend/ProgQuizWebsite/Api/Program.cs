@@ -28,7 +28,6 @@ using ProgQuizWebsite.Infrastracture.Quizzes.Filters;
 using ProgQuizWebsite.Infrastracture.Quizzes.Validators.PostModelValidators;
 using ProgQuizWebsite.Infrastracture.Contexts;
 using ProgQuizWebsite.Infrastracture.Mappers;
-using UserService.Infrastructure.Filters;
 using UserService.Infrastructure.Startups;
 using ProgQuizWebsite.Infrastracture.Notifications.Startups;
 using ProgQuizWebsite.Infrastracture.Messaging;

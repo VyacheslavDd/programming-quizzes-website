@@ -5,7 +5,8 @@ import MainPage from '../../../pages/main_page/MainPage'
 import { authorizedRoutes, defaultRoutes } from './Routes'
 import Footer from '../../sections/Footer/Footer'
 import { AuthContext } from '../../../context/AuthContext'
-import AuthMiddleware from '../../../middlewares/AuthMiddleware'
+import Helper from '../../../services/Helper'
+import TokenHelper from '../../../services/TokenHelper'
 
 export default function QuizAppRouter() {
 
@@ -13,10 +14,9 @@ export default function QuizAppRouter() {
 
   return (
       <BrowserRouter>
-          <AuthMiddleware>
             <Header/>
             <Routes>
-              {token === ""
+              {TokenHelper.isTokenInvalid(token) || TokenHelper.isTokenExpired(token)
               ? 
                 defaultRoutes.map(route => 
                     <Route key={route.path} path={route.path} element={<route.element/>}/>)
@@ -25,7 +25,6 @@ export default function QuizAppRouter() {
               }
             </Routes>
             <Footer/>
-          </AuthMiddleware>
       </BrowserRouter>
   )
 }

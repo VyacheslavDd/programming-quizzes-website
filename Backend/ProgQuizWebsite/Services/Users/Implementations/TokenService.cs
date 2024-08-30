@@ -67,8 +67,8 @@ namespace UserService.Services.Implementations
 
 		public Tuple<string, string> CreateTokens(User user)
 		{
-			var refreshToken = CreateToken(user, DateTime.Now.AddMonths(1));
-			var accessToken = CreateToken(user, DateTime.Now.AddMinutes(15));
+			var refreshToken = CreateToken(user, DateTime.UtcNow.AddMonths(1));
+			var accessToken = CreateToken(user, DateTime.UtcNow.AddMinutes(15));
 			return new Tuple<string, string>(accessToken, refreshToken);
 		}
 

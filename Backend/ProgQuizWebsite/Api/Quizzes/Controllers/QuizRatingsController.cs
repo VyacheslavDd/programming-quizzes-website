@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProgQuizWebsite.Api.Quizzes.PostModels.QuizRatings;
@@ -43,6 +44,7 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
 		/// <returns></returns>
 		[HttpPost]
 		[Route("rate")]
+		[Authorize]
 		public async Task<IActionResult> AddQuizRatingAsync([FromBody] QuizRatingPostModel quizRatingPostModel)
 		{
 			var rating = _mapper.Map<QuizRating>(quizRatingPostModel);
@@ -57,6 +59,7 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
 		/// <returns></returns>
 		[HttpPatch]
 		[Route("update")]
+		[Authorize]
 		public async Task<IActionResult> UpdateQuizRatingAsync([FromBody] QuizRatingUpdateModel quizRatingUpdateModel)
 		{
 			var rating = _mapper.Map<QuizRating>(quizRatingUpdateModel);
@@ -73,6 +76,7 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
 		/// <returns></returns>
 		[HttpDelete]
 		[Route("remove")]
+		[Authorize]
 		public async Task<IActionResult> RemoveQuizRatingAsync([FromQuery] Guid userId, [FromQuery] Guid quizId, [FromQuery] int rating)
 		{
 			await _quizRatingService.RemoveQuizRatingAsync(userId, quizId, rating);
