@@ -28,9 +28,9 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpGet]
 		[Route("all")]
-		public async Task<IActionResult> GetAllAsync()
+		public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
 		{
-			var roles = await _rolesService.GetAllAsync();
+			var roles = await _rolesService.GetAllAsync(cancellationToken);
 			var models = _mapper.Map<List<RoleResponse>>(roles);
 			return Ok(models);
 		}

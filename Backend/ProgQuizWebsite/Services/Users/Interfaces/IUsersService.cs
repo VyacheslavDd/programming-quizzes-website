@@ -11,7 +11,7 @@ namespace UserService.Services.Interfaces
 {
     public interface IUsersService
 	{
-		Task<List<User>> GetAllAsync();
+		Task<List<User>> GetAllAsync(CancellationToken cancellationToken = default);
 		Task<List<User>> GetNotificationSubscribers();
 		Task<User> FindByGuidAsync(Guid id);
 		Task<User> FindByEmailAsync(string email);

@@ -32,9 +32,9 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            return await GetAllAsync<QuizSubcategory, SubcategoryViewModel>(_service, _mapper);
+            return await GetAllAsync<QuizSubcategory, SubcategoryViewModel>(_service, _mapper, cancellationToken);
         }
         /// <summary>
         /// Метод для получения подкатегории

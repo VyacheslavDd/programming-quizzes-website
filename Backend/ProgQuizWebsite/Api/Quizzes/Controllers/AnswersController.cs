@@ -37,9 +37,9 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            return await GetAllAsync<Answer, AnswerViewModel>(_service, _mapper);
+            return await GetAllAsync<Answer, AnswerViewModel>(_service, _mapper, cancellationToken);
         }
         /// <summary>
         /// Метод для получения ответа

@@ -101,9 +101,9 @@ namespace UserService.Services.Implementations
 			return await _userRepository.FindByPhoneAsync(phone);
 		}
 
-		public async Task<List<User>> GetAllAsync()
+		public async Task<List<User>> GetAllAsync(CancellationToken cancellationToken = default)
 		{
-			return await _userRepository.GetAllAsync();
+			return await _userRepository.GetAllAsync(cancellationToken);
 		}
 
 		public async Task<List<User>> GetNotificationSubscribers()
@@ -125,7 +125,7 @@ namespace UserService.Services.Implementations
 			var user = await FindByGuidAsync(id);
 			if (user == null) return new UpdateUserResponse() { ResponseCode = ResponseCode.NotFound,
 				ErrorMessage = "Пользователь не найден" };
-			var conflictingUser = (await GetAllAsync()).Where(u => (u.UserInfo.Email == userModel.UserInfo.Email ||
+			var conflictingUser = (await GetAllAsync(CancellationToken.None)).Where(u => (u.UserInfo.Email == userModel.UserInfo.Email ||
 			u.UserInfo.Login == userModel.UserInfo.Login ||
 			u.UserInfo.PhoneNumber == userModel.UserInfo.PhoneNumber) && u.Id != id).FirstOrDefault();
 			if (conflictingUser != null) return new UpdateUserResponse() { ResponseCode = ResponseCode.BadRequest,

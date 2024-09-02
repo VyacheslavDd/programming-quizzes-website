@@ -68,9 +68,9 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            return await GetAllAsync<Quiz, QuizViewModel>(_service, _mapper);
+            return await GetAllAsync<Quiz, QuizViewModel>(_service, _mapper, cancellationToken);
         }
         /// <summary>
         /// Метод для получения всех викторин в соответствии с заданным фильтром
@@ -79,9 +79,9 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("")]
-        public async Task<IActionResult> GetPage([FromQuery] GetQuizzesFilter filter)
+        public async Task<IActionResult> GetPage([FromQuery] GetQuizzesFilter filter, CancellationToken cancellationToken)
         {
-            var results = await _service.GetByFilterAsync(filter, Response);
+            var results = await _service.GetByFilterAsync(filter, Response, cancellationToken);
             var models = _mapper.Map<List<QuizViewModel>>(results);
             return StatusCode(200, models);
         }

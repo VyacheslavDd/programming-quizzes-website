@@ -21,7 +21,7 @@ namespace ProgQuizWebsite.Api.Users.Controllers
 		/// </summary>
 		/// <param name="userId">Guid пользователя</param>
 		/// <returns></returns>
-		[HttpGet]
+		[HttpPost]
 		[Route("refresh/{userId}")]
 		public async Task<IActionResult> RefreshTokensAsync([FromRoute] Guid userId)
 		{

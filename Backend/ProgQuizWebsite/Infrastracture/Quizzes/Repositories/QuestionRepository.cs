@@ -19,15 +19,15 @@ namespace ProgQuizWebsite.Infrastracture.Quizzes.Repositories
             _context = context;
         }
 
-        public override async Task<List<Question?>> GetAllAsync()
+        public override async Task<List<Question?>> GetAllAsync(CancellationToken cancellationToken = default)
         {
-            return await _context.Questions.AsNoTracking().Include(q => q.Quiz).ToListAsync();
+            return await _context.Questions.AsNoTracking().Include(q => q.Quiz).ToListAsync(cancellationToken);
         }
 
-        public override async Task<Question?> GetByGuidAsync(Guid id)
+        public override async Task<Question?> GetByGuidAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return await _context.Questions.Include(q => q.Quiz).Include(q => q.Answers)
-                .FirstOrDefaultAsync(q => q.Id == id);
+                .FirstOrDefaultAsync(q => q.Id == id, cancellationToken);
         }
     }
 }

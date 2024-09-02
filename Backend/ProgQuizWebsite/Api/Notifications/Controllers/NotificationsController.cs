@@ -30,9 +30,9 @@ namespace ProgQuizWebsite.Api.Notifications.Controllers
 		[HttpGet]
 		[Route("all")]
 		[Authorize(Roles = "Admin")]
-		public async Task<IActionResult> GetAllAsync()
+		public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
 		{
-			var notifications = await _notificationsService.GetAllAsync();
+			var notifications = await _notificationsService.GetAllAsync(cancellationToken);
 			var mappedNotifications = _mapper.Map<List<NotificationResponseModel>>(notifications);
 			return Ok(mappedNotifications);
 		}

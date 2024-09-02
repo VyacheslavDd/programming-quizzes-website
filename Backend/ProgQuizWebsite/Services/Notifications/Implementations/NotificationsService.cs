@@ -20,9 +20,9 @@ namespace ProgQuizWebsite.Services.Notifications.Implementations
 			_usersService = usersService;
 		}
 
-		public async Task<List<Notification>> GetAllAsync()
+		public async Task<List<Notification>> GetAllAsync(CancellationToken cancellationToken = default)
 		{
-			return (await _notificationsRepository.GetAllAsync()).OrderByDescending(n => n.Date).ToList();
+			return (await _notificationsRepository.GetAllAsync(cancellationToken)).OrderByDescending(n => n.Date).ToList();
 		}
 
 		public async Task<UserNotificationsResponse> GetUserNotificationsAsync(Guid userId, NotificationsFilter notificationsFilter,

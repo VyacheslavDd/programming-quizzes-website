@@ -31,12 +31,12 @@ namespace Core.Base.Repository
 			_dbSet.Remove(item);
 		}
 
-		public virtual async Task<List<T?>> GetAllAsync()
+		public virtual async Task<List<T?>> GetAllAsync(CancellationToken cancellationToken = default)
 		{
-			return await _dbSet.AsNoTracking().ToListAsync();
+			return await _dbSet.AsNoTracking().ToListAsync(cancellationToken);
 		}
 
-		public virtual async Task<T?> GetByGuidAsync(Guid id)
+		public virtual async Task<T?> GetByGuidAsync(Guid id, CancellationToken cancellationToken = default)
 		{
 			return await _dbSet.FindAsync(id);
 		}

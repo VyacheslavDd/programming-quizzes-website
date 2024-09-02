@@ -25,9 +25,9 @@ namespace UserService.Services.Implementations
 			await _rolesRepository.SaveChangesAsync();
 		}
 
-		public async Task<List<Role?>> GetAllAsync()
+		public async Task<List<Role?>> GetAllAsync(CancellationToken cancellationToken = default)
 		{
-			return await _rolesRepository.GetAllAsync();
+			return await _rolesRepository.GetAllAsync(cancellationToken);
 		}
 
 		public async Task<Role?> GetByGuidAsync(Guid id)

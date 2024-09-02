@@ -48,13 +48,13 @@ namespace ProgQuizWebsite.Services.Quizzes.Implementations
             await UpdateCache();
         }
 
-        public virtual async Task<List<T?>> GetAllAsync()
+        public virtual async Task<List<T?>> GetAllAsync(CancellationToken cancellationToken = default)
         {
             var name = typeof(T).Name;
             var (results, response) = await _redisService.Get<List<T>>(name);
             if (results == null)
             {
-                var entries = await _repository.GetAllAsync();
+                var entries = await _repository.GetAllAsync(cancellationToken);
                 if (response == RedisServiceResponse.Success)
                     await _redisService.Set(name, entries);
                 return entries;

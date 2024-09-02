@@ -64,10 +64,10 @@ namespace ProgQuizWebsite.Services.Quizzes.Implementations.MainServices
             }
         }
 
-        public async Task<List<Quiz?>> GetByFilterAsync(GetQuizzesFilter filter, HttpResponse response)
+        public async Task<List<Quiz?>> GetByFilterAsync(GetQuizzesFilter filter, HttpResponse response, CancellationToken cancellationToken = default)
         {
             if (filter is null || filter.Page - 1 < 0 || filter.Limit <= 0) return new List<Quiz?>();
-            var quizzes = (await GetAllAsync())
+            var quizzes = (await GetAllAsync(cancellationToken))
                 .Where(q => filter.CategoryId == Guid.Empty || q.LanguageCategoryId == filter.CategoryId)
                 .Where(q => filter.SubcategoryId == Guid.Empty || q.Subcategories.Any(s => s.Id == filter.SubcategoryId))
                 .Where(q => filter.Difficulty <= 0 || q.Difficulty == filter.Difficulty)

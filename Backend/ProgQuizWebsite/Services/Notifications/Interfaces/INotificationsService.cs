@@ -6,7 +6,7 @@ namespace ProgQuizWebsite.Services.Notifications.Interfaces
 {
 	public interface INotificationsService
 	{
-		Task<List<Notification>> GetAllAsync();
+		Task<List<Notification>> GetAllAsync(CancellationToken cancellationToken = default);
 		Task<Notification> GetByGuidAsync(Guid id);
 		Task<UserNotificationsResponse> GetUserNotificationsAsync(Guid userId, NotificationsFilter notificationsFilter, HttpResponse httpResponse);
 		Task<Guid> NotifyUsersAsync(Notification notification);

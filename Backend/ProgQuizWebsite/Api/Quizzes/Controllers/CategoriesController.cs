@@ -33,9 +33,9 @@ namespace ProgQuizWebsite.Api.Quizzes.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("all")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll(CancellationToken cancellationToken)
         {
-            return await GetAllAsync<LanguageCategory, CategoryViewModel>(_service, _mapper);
+            return await GetAllAsync<LanguageCategory, CategoryViewModel>(_service, _mapper, cancellationToken);
         }
         /// <summary>
         /// Метод для получения категории. Включает в себя существующие подкатегории, и викторины, соответствующие категории

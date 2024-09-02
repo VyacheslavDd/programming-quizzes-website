@@ -37,9 +37,10 @@ namespace UserService.Infrastructure.Repositories
 			return await _quizAppContext.Users.Where(u => u.UserNotificationsInfo.ReceiveNotifications).ToListAsync();
 		}
 
-		public async override Task<User?> GetByGuidAsync(Guid id)
+		public async override Task<User?> GetByGuidAsync(Guid id, CancellationToken cancellationToken = default)
 		{
-			return await _quizAppContext.Users.Include(u => u.Roles).Include(u => u.Notifications).FirstOrDefaultAsync(u => u.Id == id);
+			return await _quizAppContext.Users.Include(u => u.Roles).Include(u => u.Notifications)
+				.FirstOrDefaultAsync(u => u.Id == id, cancellationToken);
 		}
 	}
 }

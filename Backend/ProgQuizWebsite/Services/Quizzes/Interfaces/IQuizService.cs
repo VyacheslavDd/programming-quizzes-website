@@ -13,7 +13,7 @@ namespace ProgQuizWebsite.Services.Quizzes.Interfaces
     public interface IQuizService : IService<Quiz>
     {
         Task<Guid> AddAsync(Quiz quiz, List<Guid> subcategoriesId);
-        Task<List<Quiz?>> GetByFilterAsync(GetQuizzesFilter filter, HttpResponse response);
+        Task<List<Quiz?>> GetByFilterAsync(GetQuizzesFilter filter, HttpResponse response, CancellationToken cancellationToken = default);
         Task MatchSubcategoriesAsync(Quiz quiz, List<Guid> subcategoriesId);
     }
 }

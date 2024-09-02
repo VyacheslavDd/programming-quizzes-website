@@ -20,9 +20,9 @@ namespace ProgQuizWebsite.Infrastracture.Notifications.Repositories
 			return res.Entity.Id;
 		}
 
-		public async Task<List<Notification>> GetAllAsync()
+		public async Task<List<Notification>> GetAllAsync(CancellationToken cancellationToken = default)
 		{
-			return await _context.Notifications.AsNoTracking().ToListAsync();
+			return await _context.Notifications.AsNoTracking().ToListAsync(cancellationToken);
 		}
 
 		public async Task<Notification> GetByGuidAsync(Guid id)

@@ -35,6 +35,7 @@ using Minio;
 using Core.Emailing.Startup;
 using Core.Emailing;
 using Core.MinIO;
+using ProgQuizWebsite.Infrastracture.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 var defaultPolicyName = "FrontPolicy";
@@ -100,9 +101,12 @@ if (app.Environment.IsDevelopment())
 app.UseSerilogRequestLogging();
 app.UseHttpsRedirection();
 
+
 app.UseCors(defaultPolicyName);
 
 app.UseAuthorization();
+
+app.UseCancellationMiddleware();
 
 app.MapControllers();
 

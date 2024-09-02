@@ -34,13 +34,12 @@ namespace UserService.Api.Controllers
 		/// Получить всех пользователей
 		/// </summary>
 		/// <returns></returns>
-		[SimpleAuthenticateFilter]
 		[HttpGet]
 		[Route("all")]
-		[Authorize(Roles = "Admin")]
-		public async Task<IActionResult> GetAllAsync()
+		//[Authorize(Roles = "Admin")]
+		public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
 		{
-			var users = await _usersService.GetAllAsync();
+			var users = await _usersService.GetAllAsync(cancellationToken);
 			var models = _mapper.Map<List<UserResponse>>(users);
 			return Ok(models);
 		}
