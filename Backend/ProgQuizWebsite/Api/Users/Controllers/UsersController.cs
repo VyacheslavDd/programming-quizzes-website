@@ -36,7 +36,7 @@ namespace UserService.Api.Controllers
 		/// <returns></returns>
 		[HttpGet]
 		[Route("all")]
-		//[Authorize(Roles = "Admin")]
+		[Authorize(Roles = "Admin")]
 		public async Task<IActionResult> GetAllAsync(CancellationToken cancellationToken)
 		{
 			var users = await _usersService.GetAllAsync(cancellationToken);
